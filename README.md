@@ -7,7 +7,6 @@
 - 봇을 서버에 초대하려면 `index.html`의 초대 링크에 `YOUR_BOT_ID`를 실제 봇 ID로 교체하세요.
 
 ## 초대 링크
-- 예시 OAuth2 초대: `https://discord.com/oauth2/authorize?client_id=YOUR_BOT_ID&scope=bot`
 - 서버 초대(일반 링크): `https://discord.gg/tnMXbQ65Hk`
 
 ## 작성자
