@@ -39,9 +39,19 @@ if(signupForm){
     }
     createUserWithEmailAndPassword(auth, email, pw)
       .then(() => {
-        signupMsg.innerText = "회원가입 완료! 로그인 해주세요.";
+        signupMsg.innerText = "회원가입 완료! 자동으로 로그인 됩니다.";
         signupMsg.className = "";
         signupForm.reset();
+
+        // 자동 로그인
+        signInWithEmailAndPassword(auth, email, pw)
+          .then(() => {
+            window.location.href = "home.html"; // 로그인 후 홈 화면으로 리다이렉트
+          })
+          .catch(err => {
+            signupMsg.innerText = "로그인 중 오류 발생: " + err.message;
+            signupMsg.className = "error";
+          });
       })
       .catch(err => {
         if(err.code === "auth/email-already-in-use"){
