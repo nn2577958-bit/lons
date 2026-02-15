@@ -3,64 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS SV Palworld</title>
+  <title>LONS SV 홈</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- 배경 아기 캐릭터 + 드래곤 의상 -->
-  <div class="background"></div>
-
-  <header>
+<body class="home-bg">
+  <div class="home-container">
     <h1>LONS SV Palworld</h1>
-    <p>오늘도 찾아 와주셔서 감사 합니다!</p>
-  </header>
+    <p>로그인 후 주요 기능과 정보를 확인하세요!</p>
 
-  <main>
-    <div class="card" id="auth-card">
-      <h2>계정 로그인 / 회원가입</h2>
+    <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank">
+      디스코드 바로가기
+    </a>
 
-      <form id="signup-form">
-        <input type="email" id="signup-email" placeholder="이메일" required />
-        <input type="password" id="signup-password" placeholder="비밀번호 (6자 이상)" required />
-        <button type="submit">회원가입</button>
-      </form>
-      <p id="signup-msg" class="error"></p>
+    <button id="logout-btn">로그아웃</button>
 
-      <hr>
-
-      <form id="login-form">
-        <input type="email" id="login-email" placeholder="이메일" required />
-        <input type="password" id="login-password" placeholder="비밀번호" required />
-        <button type="submit">로그인</button>
-      </form>
-      <p id="login-msg" class="error"></p>
-
-      <hr>
-
-      <button id="google-login">Google 계정으로 로그인</button>
-      <p id="google-msg" class="error"></p>
-    </div>
-
-    <div class="card" id="main-card" style="display:none;">
-      <div class="button-group">
-        <button class="logout-btn" id="logout-btn">로그아웃</button>
-        <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank" class="btn">디스코드 바로가기</a>
-      </div>
-
-      <h2 style="text-align:center;">주요 기능</h2>
-      <ul style="text-align:center;">
-        <li>실시간 알림 & 다양한 소식 & 정보</li>
-        <li>공지사항 & 꿀팁 정보</li>
-        <li>02월 15일 [ 1 SV ] OPEN</li>
-        <li>02월 20일 새로운 하드코어 OPEN</li>
-        <li>즐거운 명절 보내시기 바랍니다</li>
-      </ul>
-    </div>
-  </main>
-
-  <footer>
-    <p style="text-align:center;">© 2026 LONS SV ONLINE</p>
-  </footer>
+    <footer>© 2026 LONS SV ONLINE</footer>
+  </div>
 
   <script type="module" src="script.js"></script>
 </body>
