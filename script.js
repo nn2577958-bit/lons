@@ -84,9 +84,15 @@ googleBtn.addEventListener("click", () => {
     .catch(err => { googleMsg.innerText = err.message; googleMsg.className = "error"; });
 });
 
-// 로그아웃
 logoutBtn.addEventListener("click", () => {
-  signOut(auth).then(() => { alert("로그아웃 완료!"); });
+  const user = auth.currentUser; // 현재 로그인된 사용자 확인
+  if(user){
+    signOut(auth)
+      .then(() => { alert("로그아웃 완료!"); })
+      .catch(err => { alert("로그아웃 실패: " + err.message); });
+  } else {
+    alert("로그인 상태가 아닙니다."); // 로그인 안 되어 있으면 안내
+  }
 });
 
 // 계정 삭제
