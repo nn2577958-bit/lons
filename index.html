@@ -67,8 +67,8 @@ a:hover{text-decoration:underline;}
 
 <!-- 모듈 9 화면 -->
 <div class="module9" id="module9">
-<h2 id="welcomeMsg">모듈 9</h2>
-<p id="introMsg">로그인 성공! 아래는 모듈 9의 주요 내용입니다.</p>
+<h2 id="welcomeMsg">LONS 행운을 빕니다! 9</h2>
+<p id="introMsg">로그인 성공!</p>
 <div id="moduleContent"></div>
 <button id="gachaBtn">🎲 뽑기</button>
 <div id="gachaResult"></div>
@@ -92,10 +92,10 @@ const gachaResult=document.getElementById('gachaResult');
 
 // 데이터
 const moduleData=[
-{title:"공지사항",text:"오늘 시스템 점검이 있습니다."},
-{title:"업무 알림",text:"마감된 보고서를 확인해주세요."},
-{title:"통계",text:"이번 주 방문자 수: 1,234명"},
-{title:"새 메시지",text:"새로운 쪽지가 도착했습니다."}
+{title:"공지사항",text:"오후 8시 OPEN 됩니다."},
+{title:"업무 알림",text:"자세한 사항은 디스코드를 참여 해주세요"},
+{title:"연락",text:"항상 방문 해주셔서 감사합니다,"},
+{title:"유저들에게",text:"최선을 다하겠습니다,"}
 ];
 const gachaItems=[
   {name:"일반 카드",type:"normal"},
@@ -112,7 +112,7 @@ function showModule9(username){
   signupCard.style.display='none';
   module9.style.display='block';
   module9.classList.add('show');
-  welcomeMsg.textContent=`${username}님, 모듈 9에 오신 것을 환영합니다!`;
+  welcomeMsg.textContent=`${username}님, LONS SV 방문하신것을 환영합니다!`;
   moduleContent.innerHTML='';
   moduleData.forEach((item,index)=>{
     const card=document.createElement('div');
