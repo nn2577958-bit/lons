@@ -1,6 +1,15 @@
 // Firebase v9 모듈 방식
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  onAuthStateChanged, 
+  signOut, 
+  deleteUser 
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 // Firebase 초기화
 const firebaseConfig = {
@@ -35,13 +44,11 @@ signupForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("signup-email").value.trim();
   const pw = document.getElementById("signup-password").value;
-
   if(pw.length < 6){
     signupMsg.innerText = "비밀번호는 최소 6자 이상이어야 합니다.";
     signupMsg.className = "error";
     return;
   }
-
   createUserWithEmailAndPassword(auth, email, pw)
     .then(() => {
       signupMsg.innerText = "회원가입 완료! 로그인 해주세요.";
@@ -51,9 +58,7 @@ signupForm.addEventListener("submit", e => {
     .catch(err => {
       if(err.code === "auth/email-already-in-use"){
         signupMsg.innerText = "이미 가입된 이메일입니다. 로그인 해주세요.";
-      } else {
-        signupMsg.innerText = err.message;
-      }
+      } else { signupMsg.innerText = err.message; }
       signupMsg.className = "error";
     });
 });
@@ -63,17 +68,9 @@ loginForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("login-email").value.trim();
   const pw = document.getElementById("login-password").value;
-
   signInWithEmailAndPassword(auth, email, pw)
-    .then(() => {
-      loginMsg.innerText = "로그인 성공!";
-      loginMsg.className = "";
-      loginForm.reset();
-    })
-    .catch(err => {
-      loginMsg.innerText = err.message;
-      loginMsg.className = "error";
-    });
+    .then(() => { loginMsg.innerText = "로그인 성공!"; loginMsg.className = ""; loginForm.reset(); })
+    .catch(err => { loginMsg.innerText = err.message; loginMsg.className = "error"; });
 });
 
 // Google 로그인
@@ -84,10 +81,7 @@ googleBtn.addEventListener("click", () => {
       googleMsg.innerText = `로그인 성공! ${user.displayName || "사용자"} (${user.email})`;
       googleMsg.className = "";
     })
-    .catch(err => {
-      googleMsg.innerText = err.message;
-      googleMsg.className = "error";
-    });
+    .catch(err => { googleMsg.innerText = err.message; googleMsg.className = "error"; });
 });
 
 // 로그아웃
@@ -105,20 +99,18 @@ deleteBtn.addEventListener("click", () => {
   } else { alert("로그인 상태가 아닙니다."); }
 });
 
-// 로그인 상태 감지 및 UI 업데이트
+// 로그인 상태 감지 및 UI 전환
 onAuthStateChanged(auth, user => {
   if(user){
-    // 로그인 상태
     userInfo.style.display = "block";
     userInfo.innerText = `로그인 중: ${user.displayName || "사용자"} (${user.email})`;
     formsSection.style.display = "none";
+    featuresSection.style.display = "block"; // 로그인 시 주요 기능 표시
     statusMsg.innerText = `로그인 상태: ${user.email}`;
-    featuresSection.style.display = "block"; // 기능 화면 표시
   } else {
-    // 로그아웃 상태
     userInfo.style.display = "none";
     formsSection.style.display = "block";
+    featuresSection.style.display = "none"; // 로그아웃 시 숨김
     statusMsg.innerText = "로그아웃 상태";
-    featuresSection.style.display = "none"; // 기능 화면 숨기기
   }
 });
