@@ -43,7 +43,7 @@ input[type="password"] {
   font-size: 14px;
 }
 
-/* 버튼 공통 */
+/* 일반 버튼 공통 */
 button {
   width: 100%;
   padding: 10px;
@@ -55,6 +55,7 @@ button {
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
+  margin-bottom: 10px;
 }
 
 button:hover {
@@ -79,6 +80,14 @@ button:hover {
 
 #main-card ul li {
   margin: 6px 0;
+}
+
+/* 버튼 그룹 (로그아웃 + 디스코드) */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
 }
 
 /* 디스코드 버튼 */
@@ -106,4 +115,3 @@ footer p {
   margin-top: 20px;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
-
