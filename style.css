@@ -1,3 +1,4 @@
+/* 전체 배경 */
 body {
   font-family: sans-serif;
   margin: 0;
@@ -7,6 +8,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
 }
 
 /* 헤더 */
@@ -33,7 +35,7 @@ section {
   transition: all 0.3s ease;
 }
 
-/* 입력창, 버튼 */
+/* 로그인/회원가입 입력창, 버튼 */
 input, button {
   width: 100%;
   padding: 10px;
@@ -49,22 +51,26 @@ button {
   border: none;
   cursor: pointer;
   font-weight: bold;
+  transition: background 0.2s ease;
 }
 
 button:hover {
   background-color: #5b6eae;
 }
 
+/* 에러 메시지 */
 .error {
   color: red;
   font-size: 0.9rem;
   margin-top: 5px;
 }
 
+/* h2 제목 */
 h2 {
   margin-bottom: 15px;
 }
 
+/* 주요 기능 ul */
 ul {
   list-style: none;
   padding: 0;
@@ -76,6 +82,7 @@ ul li {
   font-weight: 500;
 }
 
+/* 디스코드 버튼 */
 #discord-btn {
   display: inline-block;
   margin: 20px 0;
@@ -87,9 +94,33 @@ ul li {
   font-weight: bold;
 }
 
+/* footer */
 footer {
   padding: 10px;
   text-align: center;
   color: #fff;
   font-size: 0.9rem;
+}
+
+/* 로그인 후 주요 기능 섹션 중앙 배치 */
+#features-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px); /* header 높이 고려 */
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+  section {
+    padding: 20px;
+  }
+  header {
+    font-size: 1.6rem;
+    padding: 15px;
+  }
+  #discord-btn {
+    padding: 10px 20px;
+  }
 }
