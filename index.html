@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebas
 import { 
   getAuth, 
   createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword,
+  signInWithEmailAndPassword, 
   signInWithPopup, 
   GoogleAuthProvider, 
   onAuthStateChanged, 
@@ -21,7 +21,6 @@ const firebaseConfig = {
   appId: "1:755692328918:web:a4eb4563cb862d3eb5b677",
   measurementId: "G-NCE37YM3LF"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -39,7 +38,7 @@ const statusMsg = document.getElementById("status-msg");
 const userInfo = document.getElementById("user-info");
 const formsSection = document.getElementById("forms-section");
 
-// 회원가입
+// ----------------- 회원가입 -----------------
 signupForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("signup-email").value.trim();
@@ -67,7 +66,7 @@ signupForm.addEventListener("submit", e => {
     });
 });
 
-// 이메일 로그인
+// ----------------- 이메일 로그인 -----------------
 loginForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("login-email").value.trim();
@@ -85,7 +84,7 @@ loginForm.addEventListener("submit", e => {
     });
 });
 
-// Google 로그인
+// ----------------- Google 로그인 -----------------
 googleBtn.addEventListener("click", () => {
   signInWithPopup(auth, provider)
     .then(result => {
@@ -99,14 +98,14 @@ googleBtn.addEventListener("click", () => {
     });
 });
 
-// 로그아웃
+// ----------------- 로그아웃 -----------------
 logoutBtn.addEventListener("click", () => {
   signOut(auth).then(() => {
     alert("로그아웃 완료!");
   });
 });
 
-// 계정 삭제
+// ----------------- 계정 삭제 -----------------
 deleteBtn.addEventListener("click", () => {
   const user = auth.currentUser;
   if(user){
@@ -118,7 +117,7 @@ deleteBtn.addEventListener("click", () => {
   }
 });
 
-// 로그인 상태 감지 및 UI 업데이트
+// ----------------- 로그인 상태 감지 -----------------
 onAuthStateChanged(auth, user => {
   if(user){
     userInfo.style.display = "block";
