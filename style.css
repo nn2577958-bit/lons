@@ -3,7 +3,7 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   margin: 0;
   padding: 0;
-  background: url('https://i.ibb.co/gYpDVdT/your-dinosaur-image.jpg') no-repeat center center fixed; /* 아기 공룡 이미지 */
+  background: url('https://ibb.co/YrNcLdk') no-repeat center center fixed; /* 아기 공룡 이미지 */
   background-size: cover; /* 이미지가 화면 전체에 꽉 차도록 설정 */
   display: flex;
   justify-content: center;
