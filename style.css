@@ -1,67 +1,51 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS SV Palworld</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <!-- 배경 아기 캐릭터 + 드래곤 의상 -->
-  <div class="background"></div>
+/* 공통 폰트 */
+body, input, button, p { font-family: 'Noto Sans KR', sans-serif; }
 
-  <header>
-    <h1>LONS SV Palworld</h1>
-    <p>오늘도 찾아 와주셔서 감사 합니다!</p>
-  </header>
+/* 로그인/회원가입 화면 */
+.login-container, .home-container {
+  max-width: 400px;
+  margin: 50px auto;
+  background: rgba(255,255,255,0.95);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
 
-  <main>
-    <div class="card" id="auth-card">
-      <h2>계정 로그인 / 회원가입</h2>
+.login-container h1, .home-container h1 { margin-bottom: 10px; }
+.login-container p, .home-container p { margin-bottom: 20px; }
 
-      <form id="signup-form">
-        <input type="email" id="signup-email" placeholder="이메일" required />
-        <input type="password" id="signup-password" placeholder="비밀번호 (6자 이상)" required />
-        <button type="submit">회원가입</button>
-      </form>
-      <p id="signup-msg" class="error"></p>
+/* 입력/버튼 */
+input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; }
+button { width: 100%; padding: 10px; border-radius: 5px; border: none; background: #333; color: #fff; cursor: pointer; }
+button:hover { background: #555; }
+.error { color: red; margin-bottom: 10px; }
 
-      <hr>
+/* 홈 화면 배경 + 그라데이션 */
+body.home-bg {
+  background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-      <form id="login-form">
-        <input type="email" id="login-email" placeholder="이메일" required />
-        <input type="password" id="login-password" placeholder="비밀번호" required />
-        <button type="submit">로그인</button>
-      </form>
-      <p id="login-msg" class="error"></p>
+/* 디스코드 버튼 */
+#discord-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  margin: 20px 0;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #7289DA, #99AAB5);
+  transition: transform 0.2s;
+}
+#discord-btn:hover { transform: scale(1.05); }
 
-      <hr>
+/* 로그아웃 버튼 */
+#logout-btn { margin-top: 10px; }
 
-      <button id="google-login">Google 계정으로 로그인</button>
-      <p id="google-msg" class="error"></p>
-    </div>
-
-    <div class="card" id="main-card" style="display:none;">
-      <div class="button-group">
-        <button class="logout-btn" id="logout-btn">로그아웃</button>
-        <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank" class="btn">디스코드 바로가기</a>
-      </div>
-
-      <h2 style="text-align:center;">주요 기능</h2>
-      <ul style="text-align:center;">
-        <li>실시간 알림 & 다양한 소식 & 정보</li>
-        <li>공지사항 & 꿀팁 정보</li>
-        <li>02월 15일 [ 1 SV ] OPEN</li>
-        <li>02월 20일 새로운 하드코어 OPEN</li>
-        <li>즐거운 명절 보내시기 바랍니다</li>
-      </ul>
-    </div>
-  </main>
-
-  <footer>
-    <p style="text-align:center;">© 2026 LONS SV ONLINE</p>
-  </footer>
-
-  <script type="module" src="script.js"></script>
-</body>
-</html>
+/* footer */
+footer { margin-top: 30px; font-size: 12px; color: #fff; }
