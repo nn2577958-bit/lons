@@ -76,12 +76,11 @@
 
   <button id="scrollTopBtn">▲ 맨 위로</button>
 
-  <!-- Firebase CDN -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <!-- Firebase v9 모듈 방식 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-  <script>
-    // 🔹 Firebase 초기화 (브라우저용)
     const firebaseConfig = {
       apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
       authDomain: "lons-dc24d.firebaseapp.com",
@@ -92,8 +91,9 @@
       measurementId: "G-NCE37YM3LF"
     };
 
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
     const signupForm = document.getElementById("signup-form");
     const signupMsg = document.getElementById("signup-msg");
@@ -112,7 +112,7 @@
       e.preventDefault();
       const email = document.getElementById("signup-email").value;
       const pw = document.getElementById("signup-password").value;
-      auth.createUserWithEmailAndPassword(email, pw)
+      createUserWithEmailAndPassword(auth, email, pw)
         .then(() => { signupMsg.innerText = "회원가입 완료!"; signupMsg.className = ""; })
         .catch(err => { signupMsg.innerText = err.message; signupMsg.className = "error"; });
     });
@@ -122,15 +122,14 @@
       e.preventDefault();
       const email = document.getElementById("login-email").value;
       const pw = document.getElementById("login-password").value;
-      auth.signInWithEmailAndPassword(email, pw)
+      signInWithEmailAndPassword(auth, email, pw)
         .then(() => { loginMsg.innerText = "로그인 성공!"; loginMsg.className = ""; })
         .catch(err => { loginMsg.innerText = err.message; loginMsg.className = "error"; });
     });
 
     // Google 로그인
-    const provider = new firebase.auth.GoogleAuthProvider();
     googleBtn.addEventListener("click", () => {
-      auth.signInWithPopup(provider)
+      signInWithPopup(auth, provider)
         .then(result => {
           const user = result.user;
           googleMsg.innerText = `로그인 성공! ${user.displayName || "사용자"} (${user.email})`;
@@ -141,20 +140,21 @@
 
     // 로그아웃
     logoutBtn.addEventListener("click", () => {
-      auth.signOut().then(() => { alert("로그아웃 완료!"); });
+      signOut(auth).then(() => { alert("로그아웃 완료!"); });
     });
 
     // 계정 삭제
     deleteBtn.addEventListener("click", () => {
       const user = auth.currentUser;
       if(user){
-        user.delete().then(() => { alert("계정 삭제 완료!"); })
+        deleteUser(user)
+          .then(() => { alert("계정 삭제 완료!"); })
           .catch(err => { alert("계정 삭제 실패: " + err.message); });
       } else { alert("로그인 상태가 아닙니다."); }
     });
 
-    // 로그인 상태 감지 및 UI 조정
-    auth.onAuthStateChanged(user => {
+    // 로그인 상태 감지 및 UI 업데이트
+    onAuthStateChanged(auth, user => {
       if(user){
         userInfo.style.display = "block";
         userInfo.innerText = `로그인 중: ${user.displayName || "사용자"} (${user.email})`;
