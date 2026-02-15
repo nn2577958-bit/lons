@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS SV Palworld</title>
+  <title>LONS SV 로그인</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>LONS SV Palworld</h1>
-    <p>로그인 후 주요 기능을 확인하세요!</p>
-  </header>
+  <div class="background"></div>
 
   <main>
-    <section id="auth-section">
-      <div id="user-info" style="display:none;"></div>
+    <section id="auth-card">
+      <h1>LONS SV Palworld</h1>
       <div id="forms-section">
         <h2>회원가입</h2>
         <form id="signup-form">
@@ -36,29 +33,25 @@
         <button id="google-login">Google 계정으로 로그인</button>
         <p id="google-msg" class="error"></p>
       </div>
+
+      <div id="user-section" style="display:none;">
+        <p id="user-info"></p>
+        <button id="logout-btn">로그아웃</button>
+      </div>
     </section>
 
-    <section id="main-section" style="display:none;">
-      <button id="logout-btn">로그아웃</button>
-
-      <h2 class="centered">주요 기능</h2>
-      <ul class="centered">
+    <section id="features" style="display:none;">
+      <h2>주요 기능</h2>
+      <ul>
         <li>실시간 알림 & 다양한 소식 & 정보</li>
         <li>공지사항 & 꿀팁 정보</li>
         <li>02월 20일 새로운 하드코어 OPEN</li>
-        <li>즐거운 명절 보내시기 바랍니다</li>
       </ul>
-
       <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord" />
-        Discord 바로가기
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord" /> Discord 바로가기
       </a>
     </section>
   </main>
-
-  <footer>
-    <p>© 2026 LONS SV ONLINE</p>
-  </footer>
 
   <script type="module" src="script.js"></script>
 </body>
