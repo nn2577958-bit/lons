@@ -1,82 +1,56 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+body, html {
+  margin: 0; padding: 0; height: 100%; font-family: 'Arial', sans-serif;
+}
 
-// Firebase 초기화
-const firebaseConfig = {
-  apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
-  authDomain: "lons-dc24d.firebaseapp.com",
-  projectId: "lons-dc24d",
-  storageBucket: "lons-dc24d.firebasestorage.app",
-  messagingSenderId: "755692328918",
-  appId: "1:755692328918:web:a4eb4563cb862d3eb5b677",
-  measurementId: "G-NCE37YM3LF"
-};
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: url('https://cdn.discordapp.com/attachments/1463400037416439869/1472460989906685973/6b38c649-3c57-4e92-a49d-5d7d6bbd40b0.png') no-repeat center center;
+  background-size: cover; z-index: -1;
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+main {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px;
+}
 
-// DOM
-const signupForm = document.getElementById("signup-form");
-const signupMsg = document.getElementById("signup-msg");
-const loginForm = document.getElementById("login-form");
-const loginMsg = document.getElementById("login-msg");
-const googleBtn = document.getElementById("google-login");
-const googleMsg = document.getElementById("google-msg");
-const logoutBtn = document.getElementById("logout-btn");
-const authSection = document.getElementById("auth-section");
-const mainSection = document.getElementById("main-section");
+#error-msg { color:red; text-align:center; }
 
-// 회원가입
-signupForm.addEventListener("submit", e=>{
-  e.preventDefault();
-  const email = document.getElementById("signup-email").value.trim();
-  const pw = document.getElementById("signup-password").value;
-  if(pw.length<6){ signupMsg.innerText="비밀번호 최소 6자 이상"; signupMsg.className="error"; return; }
-  createUserWithEmailAndPassword(auth,email,pw)
-    .then(()=>{ signupMsg.innerText="회원가입 완료! 로그인 해주세요."; signupMsg.className=""; signupForm.reset(); })
-    .catch(err=>{
-      signupMsg.innerText = err.code==="auth/email-already-in-use" ? "이미 가입된 이메일입니다. 로그인 해주세요." : err.message;
-      signupMsg.className="error";
-    });
-});
+#error-msg { margin-top:5px; }
 
-// 로그인
-loginForm.addEventListener("submit", e=>{
-  e.preventDefault();
-  const email = document.getElementById("login-email").value.trim();
-  const pw = document.getElementById("login-password").value;
-  signInWithEmailAndPassword(auth,email,pw)
-    .then(()=>{ loginMsg.innerText="로그인 성공!"; loginMsg.className=""; loginForm.reset(); })
-    .catch(err=>{ loginMsg.innerText=err.message; loginMsg.className="error"; });
-});
+#error-msg, .error { color: red; text-align: center; }
 
-// Google 로그인
-googleBtn.addEventListener("click", ()=>{
-  signInWithPopup(auth,provider)
-    .then(result=>{
-      googleMsg.innerText=`로그인 성공! ${result.user.displayName||"사용자"} (${result.user.email})`;
-      googleMsg.className="";
-    })
-    .catch(err=>{ googleMsg.innerText=err.message; googleMsg.className="error"; });
-});
+#auth-card {
+  background: rgba(255,255,255,0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  width: 100%; max-width: 400px;
+  text-align: center;
+  border: 5px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+  border-image-source: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+}
 
-// 로그아웃
-logoutBtn.addEventListener("click", ()=>{
-  signOut(auth).then(()=>{
-    authSection.style.display="block";
-    mainSection.style.display="none";
-    alert("로그아웃 완료!");
-  });
-});
+#auth-card h1 { margin-bottom: 20px; }
+#auth-card h2 { margin: 15px 0 10px; }
+#auth-card input { width: 100%; padding: 10px; margin: 5px 0; border-radius: 10px; border: 1px solid #ccc; }
+#auth-card button { width: 100%; padding: 10px; border-radius: 10px; border: none; background: #333; color: white; cursor: pointer; }
+#auth-card button:hover { background: #555; }
 
-// 로그인 상태 감지
-onAuthStateChanged(auth,user=>{
-  if(user){
-    authSection.style.display="none";
-    mainSection.style.display="block";
-  } else {
-    authSection.style.display="block";
-    mainSection.style.display="none";
-  }
-});
+#features {
+  text-align: center; margin-top: 40px;
+  background: rgba(255,255,255,0.9);
+  padding: 30px; border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+#features h2 { font-size: 28px; margin-bottom: 20px; }
+#features ul { list-style: none; padding: 0; }
+#features li { margin: 10px 0; font-size: 18px; }
+
+#discord-btn {
+  display: inline-flex; align-items: center; margin-top: 20px;
+  padding: 10px 20px; background:#7289da; color:white; text-decoration:none; border-radius:10px;
+}
+#discord-btn img { width: 24px; height: 24px; margin-right: 10px; }
