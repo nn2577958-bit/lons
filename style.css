@@ -1,101 +1,67 @@
-/* 기본 스타일 */
-body {
-  font-family: 'Noto Sans KR', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: url('https://ibb.co/YrNcLdk') no-repeat center center fixed; /* 아기 공룡 이미지 */
-  background-size: cover; /* 이미지가 화면 전체에 꽉 차도록 설정 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  transition: background 1s ease-in-out; /* 부드러운 배경 전환 */
-}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LONS SV Palworld</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 배경 아기 캐릭터 + 드래곤 의상 -->
+  <div class="background"></div>
 
-/* 홈 화면 카드 스타일 */
-.home-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
+  <header>
+    <h1>LONS SV Palworld</h1>
+    <p>오늘도 찾아 와주셔서 감사 합니다!</p>
+  </header>
 
-.card {
-  background: rgba(0, 0, 0, 0.6); /* 반투명한 검은색 배경 */
-  border-radius: 20px;
-  padding: 40px;
-  width: 350px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* 부드러운 그림자 */
-  transform: scale(0.95); /* 시작 시 작게 보이게 */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+  <main>
+    <div class="card" id="auth-card">
+      <h2>계정 로그인 / 회원가입</h2>
 
-/* 카드 hover 시 크기 증가, 그림자 강조 */
-.card:hover {
-  transform: scale(1);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-}
+      <form id="signup-form">
+        <input type="email" id="signup-email" placeholder="이메일" required />
+        <input type="password" id="signup-password" placeholder="비밀번호 (6자 이상)" required />
+        <button type="submit">회원가입</button>
+      </form>
+      <p id="signup-msg" class="error"></p>
 
-/* 제목 스타일 */
-h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #FF6347; /* 오렌지 색 */
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4); /* 텍스트에 그림자 효과 */
-}
+      <hr>
 
-/* 사용자 정보 */
-#user-info {
-  font-size: 18px;
-  margin-bottom: 20px;
-  font-weight: lighter;
-}
+      <form id="login-form">
+        <input type="email" id="login-email" placeholder="이메일" required />
+        <input type="password" id="login-password" placeholder="비밀번호" required />
+        <button type="submit">로그인</button>
+      </form>
+      <p id="login-msg" class="error"></p>
 
-#user-name {
-  font-weight: bold;
-}
+      <hr>
 
-/* 로그아웃 버튼 스타일 */
-#logout-btn {
-  background-color: #FF6347; /* 오렌지 색 */
-  color: white;
-  padding: 15px;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  width: 100%;
-}
+      <button id="google-login">Google 계정으로 로그인</button>
+      <p id="google-msg" class="error"></p>
+    </div>
 
-/* 버튼 hover 시 색상 변화 */
-#logout-btn:hover {
-  background-color: #FF4500;
-  transform: scale(1.05); /* hover 시 버튼 크기 증가 */
-}
+    <div class="card" id="main-card" style="display:none;">
+      <div class="button-group">
+        <button class="logout-btn" id="logout-btn">로그아웃</button>
+        <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank" class="btn">디스코드 바로가기</a>
+      </div>
 
-#logout-btn:active {
-  background-color: #FF8C00;
-  transform: scale(0.98); /* 클릭 시 버튼 크기 축소 */
-}
+      <h2 style="text-align:center;">주요 기능</h2>
+      <ul style="text-align:center;">
+        <li>실시간 알림 & 다양한 소식 & 정보</li>
+        <li>공지사항 & 꿀팁 정보</li>
+        <li>02월 15일 [ 1 SV ] OPEN</li>
+        <li>02월 20일 새로운 하드코어 OPEN</li>
+        <li>즐거운 명절 보내시기 바랍니다</li>
+      </ul>
+    </div>
+  </main>
 
-/* 반응형 디자인 */
-@media (max-width: 600px) {
-  .card {
-    width: 80%; /* 작은 화면에서 카드 크기 조정 */
-    padding: 20px;
-  }
+  <footer>
+    <p style="text-align:center;">© 2026 LONS SV ONLINE</p>
+  </footer>
 
-  h1 {
-    font-size: 30px; /* 작은 화면에서 제목 크기 조정 */
-  }
-
-  #logout-btn {
-    padding: 12px;
-    font-size: 16px;
-  }
-}
+  <script type="module" src="script.js"></script>
+</body>
+</html>
