@@ -1,81 +1,89 @@
-<!-- 로그인 폼 (정리된 구조) -->
-<div class="login-container">
-  <h1>LONS SPA 로그인</h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONS SPA 최종판</title>
+<style>
+body {
+  margin:0;
+  font-family:'Noto Sans KR',sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background:linear-gradient(135deg,#89f7fe,#66a6ff);
+}
+.card, .module9 {
+  background:white;
+  border-radius:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:360px;
+  padding:30px 25px;
+  text-align:center;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.5s ease, transform 0.5s ease;
+}
+.card.show,.module9.show{opacity:1;transform:translateY(0);}
+input{width:100%;padding:12px 15px;margin-bottom:15px;border:1px solid #ddd;border-radius:8px;font-size:14px;transition:all 0.3s;}
+input:focus{border-color:#66a6ff;box-shadow:0 0 5px rgba(102,166,255,0.5);outline:none;}
+button{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(45deg,#66a6ff,#89f7fe);color:white;font-size:16px;cursor:pointer;margin-bottom:10px;transition:transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;}
+button:hover{transform:scale(1.1) rotate(-2deg);box-shadow:0 8px 20px rgba(0,0,0,0.3);background:linear-gradient(45deg,#89f7fe,#66a6ff);}
+button:active{transform:scale(0.95) rotate(0deg);box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+p{margin-top:10px;font-size:14px;color:#666;}
+a{color:#66a6ff;text-decoration:none;font-weight:500;}
+a:hover{text-decoration:underline;}
+.module-card{background:#f7f9ff;padding:15px;margin:10px 0;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);text-align:left;opacity:0;transform:translateY(20px);animation:fadeInUp 0.5s forwards;}
+.gacha-card{display:inline-block;padding:15px;margin:5px;border-radius:12px;box-shadow:0 5px 10px rgba(0,0,0,0.2);opacity:0;transform:translateY(20px);animation:fadeInUp 0.5s forwards;font-weight:bold;}
+.gacha-normal{background:#f7f7f7;color:#333;}
+.gacha-rare{background:#cce5ff;color:#0056b3;}
+.gacha-super{background:#d7b3ff;color:#4b0082;}
+.gacha-legend{background:#ffe066;color:#b36b00;}
+.gacha-code{display:block;margin-top:5px;font-size:12px;color:#333;font-weight:normal;}
+@keyframes fadeInUp{to{transform:translateY(0);opacity:1;}}
+</style>
+</head>
+<body>
 
-  <div class="input-group">
-    <input type="text" id="username" placeholder="아이디 입력" autocomplete="username">
-  </div>
-
-  <div class="input-group password-group">
-    <input type="password" id="password" placeholder="비밀번호 입력" autocomplete="current-password">
-    <span class="toggle-eye" id="togglePass">👁️</span>
-  </div>
-
-  <button id="loginBtn">로그인</button>
-  <p>회원이 아니신가요? <a href="#" id="showSignup">회원가입</a></p>
+<div class="card show" id="loginCard">
+<h1>로그인</h1>
+<input type="text" id="username" placeholder="아이디">
+<input type="password" id="password" placeholder="비밀번호">
+<button id="loginBtn">로그인</button>
+<p>회원이 아니신가요? <a href="#" id="showSignup">회원가입</a></p>
 </div>
 
-<style>
-.login-container{
-  max-width: 360px;
-  margin:50px auto;
-  padding:20px;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 5px 18px rgba(0,0,0,0.15);
-  text-align:center;
-}
-.login-container h1{
-  margin-bottom:15px;
-  font-size:22px;
-  color:#333;
-}
-.input-group{
-  position:relative;
-  width:100%;
-  margin-bottom:15px;
-}
-.input-group input{
-  width:100%;
-  padding:12px 15px;
-  border:1px solid #ccc;
-  border-radius:8px;
-  font-size:14px;
-}
-.password-group input{
-  padding-right:42px;
-}
-.toggle-eye{
-  position:absolute;
-  right:12px;
-  top:50%;
-  transform:translateY(-50%);
-  cursor:pointer;
-  font-size:18px;
-  color:#66a6ff;
-}
-button{
-  width:100%;
-  padding:12px;
-  background:linear-gradient(45deg,#66a6ff,#89f7fe);
-  border:none;
-  border-radius:8px;
-  color:#fff;
-  font-size:16px;
-  cursor:pointer;
-  margin-top:8px;
-}
-button:hover{
-  opacity:0.9;
-}
-</style>
+<div class="card" id="signupCard" style="display:none;">
+<h1>회원가입</h1>
+<input type="text" id="newUsername" placeholder="아이디">
+<input type="password" id="newPassword" placeholder="비밀번호">
+<input type="password" id="confirmPassword" placeholder="비밀번호 확인">
+<button id="signupBtn">회원가입</button>
+<p>이미 계정이 있으신가요? <a href="#" id="backToLogin">로그인</a></p>
+</div>
+
+<div class="module9" id="module9" style="display:none;">
+<h2 id="welcomeMsg">모듈 9</h2>
+<p id="introMsg">로그인 성공! 아래는 모듈 9의 주요 내용입니다.</p>
+<div id="moduleContent"></div>
+<button id="gachaBtn">🎲 뽑기</button>
+<div id="gachaResult"></div>
+<button id="logoutBtn">로그아웃</button>
+</div>
 
 <script>
-// 비밀번호 토글
-const pwd = document.getElementById("password");
-const toggle = document.getElementById("togglePass");
-toggle.addEventListener("click", ()=>{
-  pwd.type = pwd.type === "password" ? "text" : "password";
-  toggle.textContent = pwd.type==="password" ? "👁️":"🙈";
-});
-</script>
+document.addEventListener('DOMContentLoaded',()=>{
+
+const loginBtn=document.getElementById('loginBtn');
+const logoutBtn=document.getElementById('logoutBtn');
+const loginCard=document.getElementById('loginCard');
+const module9=document.getElementById('module9');
+const moduleContent=document.getElementById('moduleContent');
+const welcomeMsg=document.getElementById('welcomeMsg');
+const showSignup=document.getElementById('showSignup');
+const backToLogin=document.getElementById('backToLogin');
+const signupCard=document.getElementById('signupCard');
+const signupBtn=document.getElementById('signupBtn');
+const gachaBtn=document.getElementById('gachaBtn');
+const gachaResult=document.getEle
