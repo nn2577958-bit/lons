@@ -1,51 +1,45 @@
 body {
   font-family: sans-serif;
-  background: linear-gradient(135deg, #a8edea, #fed6e3);
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
+  margin:0;
+  min-height:100vh;
+  background: linear-gradient(to bottom, #ccefff, #ffffff); /* 구름빛 배경 */
 }
 
 header {
   text-align: center;
-  margin-bottom: 20px;
+  background: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 section {
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
   max-width: 400px;
-  width: 100%;
-  margin-bottom: 20px;
-  border: 4px solid;
-  border-image-slice: 1;
-  border-width: 4px;
-  border-image-source: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 input, button {
   width: 100%;
-  padding: 10px;
   margin-bottom: 10px;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  box-sizing: border-box;
 }
 
 button {
-  background-color: #333;
+  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
   color: #fff;
   border: none;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #555;
+  opacity: 0.85;
 }
 
 .error {
@@ -53,29 +47,29 @@ button:hover {
   text-align: center;
 }
 
-#main-section {
+.centered {
   text-align: center;
 }
 
-#main-section ul {
-  list-style: none;
+ul.centered {
+  list-style-type: none;
   padding: 0;
 }
 
-#main-section li {
-  margin-bottom: 8px;
-}
-
 #discord-btn {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #7289da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  background: #7289da;
   color: #fff;
   text-decoration: none;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 10px;
 }
 
-#discord-btn:hover {
-  background-color: #5b6eae;
+#discord-btn img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
 }
