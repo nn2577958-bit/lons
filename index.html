@@ -7,11 +7,27 @@
   <link rel="stylesheet" href="style.css">
   <style>
     /* 로그인/사용자 관리 섹션 스타일 */
-    #auth-section { margin-top: 50px; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+    #auth-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
     #auth-section input { display: block; width: 100%; margin-bottom: 10px; padding: 8px; }
     #auth-section button { padding: 8px 16px; margin-bottom: 10px; }
     #auth-section p { margin: 5px 0; }
     #auth-section p.error { color: red; }
+
+    /* 맨 위로 버튼 */
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      font-size: 14px;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: none;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
@@ -21,20 +37,7 @@
   </header>
 
   <main>
-    <a id="invite-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank">
-      디스코드 바로가기
-    </a>
-
-    <section class="features">
-      <h2>주요 기능</h2>
-      <ul>
-        <li>실시간 알림 & 다양한 소식 & 정보</li>
-        <li>공지사항 꿀팁 정보 얻어 보세요!</li>
-        <li>02월 20일 새로운 하드코어 OPEN</li>
-      </ul>
-    </section>
-
-    <!-- Firebase 로그인/사용자 관리 섹션 -->
+    <!-- 🔹 로그인/회원가입 섹션 상단 배치 -->
     <section id="auth-section">
       <h2>회원가입</h2>
       <form id="signup-form">
@@ -64,11 +67,27 @@
       <p id="status-msg">로그인 상태를 확인 중...</p>
     </section>
 
+    <!-- 기존 홈페이지 콘텐츠 -->
+    <a id="invite-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank">
+      디스코드 바로가기
+    </a>
+
+    <section class="features">
+      <h2>주요 기능</h2>
+      <ul>
+        <li>실시간 알림 & 다양한 소식 & 정보</li>
+        <li>공지사항 꿀팁 정보 얻어 보세요!</li>
+        <li>02월 20일 새로운 하드코어 OPEN</li>
+      </ul>
+    </section>
   </main>
 
   <footer>
     <p>© 2026 LONS SV ONLINE</p>
   </footer>
+
+  <!-- 🔹 맨 위로 버튼 -->
+  <button id="scrollTopBtn">▲ 맨 위로</button>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
@@ -148,6 +167,19 @@
     auth.onAuthStateChanged(user => {
       if(user) statusMsg.innerText = `로그인 중: ${user.email}`;
       else statusMsg.innerText = "로그아웃 상태";
+    });
+
+    // 🔹 맨 위로 버튼 동작
+    const scrollBtn = document.getElementById("scrollTopBtn");
+    window.onscroll = () => {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        scrollBtn.style.display = "block";
+      } else {
+        scrollBtn.style.display = "none";
+      }
+    };
+    scrollBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
 </body>
