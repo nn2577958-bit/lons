@@ -3,28 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS SV 홈</title>
+  <title>홈 화면</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="home-bg">
+<body>
+
+  <!-- 홈 화면 배경 -->
   <div class="home-container">
-    <h1>LONS SV Palworld</h1>
-    <p>02 / 20 = 하드코어 OPEN</p>
-    <p>02 / 15 = 1 SV OPEN</p>
-    <p>생동감 넘치는 SV LONS</p>
-    <p>오늘도 행복한 하루 되세요.</p>
-    <p>02 / 15 = 1 SV + 2 SV 거점 정리</p>
-    <p>새벽 부터 진행 될 예정 입니다</p>
-    <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank">
-      디스코드 바로가기
-    </a>
-
-    <button id="logout-btn">로그아웃</button>
-
-    <footer>© 2026 LONS SV ONLINE</footer>
+    <div class="card">
+      <h1>환영합니다!</h1>
+      <p id="user-info">사용자: <span id="user-name"></span></p>
+      <button id="logout-btn">로그아웃</button>
+    </div>
   </div>
 
-  <script type="module" src="script.js"></script>
+  <script src="firebase.js"></script>
 </body>
 </html>
-
