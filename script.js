@@ -15,14 +15,16 @@ const signupForm = document.getElementById("signup-form");
 const signupMsg = document.getElementById("signup-msg");
 const loginForm = document.getElementById("login-form");
 const loginMsg = document.getElementById("login-msg");
-const authSection = document.getElementById("auth-section");
 
 // 회원가입
 signupForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("signup-email").value;
   const pw = document.getElementById("signup-password").value;
-  if (pw.length < 6) { signupMsg.innerText = "비밀번호는 최소 6자 이상"; return; }
+  if (pw.length < 6) { 
+    signupMsg.innerText = "비밀번호는 최소 6자 이상"; 
+    return; 
+  }
 
   auth.createUserWithEmailAndPassword(email, pw)
     .then(() => { signupMsg.innerText = "회원가입 완료!"; })
