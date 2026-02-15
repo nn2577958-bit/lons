@@ -30,7 +30,8 @@
       messagingSenderId: "755692328918",
       appId: "1:755692328918:web:a4eb4563cb862d3eb5b677"
     };
-
+    
+    // Firebase 앱 초기화
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
@@ -40,11 +41,12 @@
 
     // 로그인된 사용자 정보 표시
     auth.onAuthStateChanged(user => {
-      console.log(user);  // 로그인된 사용자의 정보 확인
+      console.log("Auth State Changed:", user); // 로그인 상태 확인을 위한 로그
       if (user) {
         userNameElement.textContent = user.email; // 사용자 이메일 표시
       } else {
-        window.location.href = "index.html"; // 로그인 안 된 경우 로그인 페이지로 리다이렉트
+        // 로그인 안 된 경우 index.html로 리다이렉트
+        window.location.href = "index.html";
       }
     });
 
@@ -52,6 +54,8 @@
     logoutBtn.addEventListener("click", () => {
       auth.signOut().then(() => {
         window.location.href = "index.html"; // 로그아웃 후 로그인 페이지로 이동
+      }).catch((error) => {
+        console.error("로그아웃 실패:", error);
       });
     });
   </script>
