@@ -3,62 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>홈 화면</title>
-  <!-- Firebase SDK -->
-  <script type="module">
-    // Firebase 초기화
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
-      authDomain: "lons-dc24d.firebaseapp.com",
-      projectId: "lons-dc24d",
-      storageBucket: "lons-dc24d.appspot.com",
-      messagingSenderId: "755692328918",
-      appId: "1:755692328918:web:a4eb4563cb862d3eb5b677"
-    };
-    
-    // Firebase 앱 초기화
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // DOM 요소
-    const logoutBtn = document.getElementById("logout-btn");
-    const userNameElement = document.getElementById("user-name");
-
-    // 로그인된 사용자 정보 표시
-    onAuthStateChanged(auth, user => {
-      console.log("Auth State Changed:", user); // 로그인 상태 확인을 위한 로그
-      if (user) {
-        userNameElement.textContent = user.email; // 사용자 이메일 표시
-      } else {
-        // 로그인 안 된 경우 index.html로 리다이렉트
-        window.location.href = "index.html";
-      }
-    });
-
-    // 로그아웃 기능
-    logoutBtn.addEventListener("click", () => {
-      signOut(auth).then(() => {
-        window.location.href = "index.html"; // 로그아웃 후 로그인 페이지로 이동
-      }).catch((error) => {
-        console.error("로그아웃 실패:", error);
-      });
-    });
-  </script>
+  <title>LONS SV 홈</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-  <!-- 홈 화면 배경 -->
+<body class="home-bg">
   <div class="home-container">
-    <div class="card">
-      <h1>환영합니다!</h1>
-      <p id="user-info">사용자: <span id="user-name"></span></p>
-      <button id="logout-btn">로그아웃</button>
-    </div>
+    <h1>LONS SV Palworld</h1>
+    <p>로그인 후 주요 기능과 정보를 확인하세요!</p>
+
+    <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank">
+      디스코드 바로가기
+    </a>
+
+    <!-- 로그아웃 버튼 추가 -->
+    <button id="logout-btn">로그아웃</button>
+
+    <footer>© 2026 LONS SV ONLINE</footer>
   </div>
 
+  <script type="module" src="script.js"></script>
 </body>
 </html>
