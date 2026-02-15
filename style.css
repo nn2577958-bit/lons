@@ -46,7 +46,7 @@ input, button {
 }
 
 button {
-  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  background-color: #4A90E2; /* 단일 색상 */
   color: #fff;
   font-weight: bold;
   border: none;
