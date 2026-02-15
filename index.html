@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS SV 게시판</title>
+  <title>LONS SV Palworld</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,20 +28,6 @@
       <button type="submit">로그인</button>
     </form>
     <p id="login-msg" class="error"></p>
-  </section>
-
-  <!-- 게시글 작성 (로그인 후 표시) -->
-  <section id="board-section" style="display:none;">
-    <p id="user-email"></p>
-    <button id="logout-btn">로그아웃</button>
-
-    <h2>게시글 작성</h2>
-    <form id="postForm">
-      <input type="text" id="post-title" placeholder="제목" required />
-      <textarea id="post-content" placeholder="내용" rows="5" required></textarea>
-      <button type="submit">작성</button>
-    </form>
-    <p id="status"></p>
   </section>
 
   <!-- Firebase v8 CDN -->
