@@ -31,36 +31,55 @@ signupForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("signup-email").value.trim();
   const pw = document.getElementById("signup-password").value;
-  if(pw.length < 6){ signupMsg.innerText="비밀번호 6자 이상"; return; }
-
+  if(pw.length < 6){ 
+    signupMsg.innerText="비밀번호는 최소 6자 이상이어야 합니다."; 
+    return; 
+  }
   createUserWithEmailAndPassword(auth, email, pw)
-    .then(() => { signupMsg.innerText = "회원가입 완료! 로그인 해주세요."; signupMsg.className=""; signupForm.reset(); })
-    .catch(err => { signupMsg.innerText = err.message; signupMsg.className="error"; });
+    .then(() => {
+      signupMsg.innerText = "회원가입 완료! 로그인 해주세요.";
+      signupMsg.className = "";
+      signupForm.reset();
+    })
+    .catch(err => {
+      signupMsg.innerText = err.message;
+      signupMsg.className = "error";
+    });
 });
 
-// 로그인
+// 이메일 로그인
 loginForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("login-email").value.trim();
   const pw = document.getElementById("login-password").value;
   signInWithEmailAndPassword(auth, email, pw)
-    .then(() => { loginMsg.innerText = "로그인 성공!"; loginMsg.className=""; loginForm.reset(); })
-    .catch(err => { loginMsg.innerText = err.message; loginMsg.className="error"; });
+    .then(() => {
+      loginMsg.innerText = "로그인 성공!";
+      loginMsg.className = "";
+      loginForm.reset();
+    })
+    .catch(err => {
+      loginMsg.innerText = err.message;
+      loginMsg.className = "error";
+    });
 });
 
 // Google 로그인
 googleBtn.addEventListener("click", () => {
   signInWithPopup(auth, provider)
-    .then(result => { googleMsg.innerText=`로그인 성공! ${result.user.email}`; googleMsg.className=""; })
-    .catch(err => { googleMsg.innerText=err.message; googleMsg.className="error"; });
+    .then(result => {
+      googleMsg.innerText = `로그인 성공! ${result.user.displayName || "사용자"} (${result.user.email})`;
+      googleMsg.className = "";
+    })
+    .catch(err => {
+      googleMsg.innerText = err.message;
+      googleMsg.className = "error";
+    });
 });
 
 // 로그아웃
 logoutBtn.addEventListener("click", () => {
-  signOut(auth).then(() => {
-    authCard.style.display = "block";
-    mainCard.style.display = "none";
-  });
+  signOut(auth);
 });
 
 // 로그인 상태 감지
