@@ -1,53 +1,71 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+body {
+  font-family: sans-serif;
+  background: linear-gradient(to bottom, #a1c4fd, #c2e9fb);
+  padding: 20px;
+  text-align: center;
+}
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
-  authDomain: "lons-dc24d.firebaseapp.com",
-  projectId: "lons-dc24d",
-  storageBucket: "lons-dc24d.appspot.com",
-  messagingSenderId: "755692328918",
-  appId: "1:755692328918:web:a4eb4563cb862d3eb5b677"
-};
+header h1 {
+  margin-bottom: 20px;
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+section {
+  background: white;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border: 5px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+  border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+}
 
-const authCard = document.getElementById("auth-card");
-const mainCard = document.getElementById("main-card");
-const signupForm = document.getElementById("signup-form");
-const loginForm = document.getElementById("login-form");
-const googleBtn = document.getElementById("google-login");
-const logoutBtn = document.getElementById("logout-btn");
+input, button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 
-signupForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const email = document.getElementById("signup-email").value.trim();
-  const pw = document.getElementById("signup-password").value;
-  if(pw.length < 6){ alert("비밀번호 6자 이상"); return; }
-  createUserWithEmailAndPassword(auth, email, pw).catch(err => alert(err.message));
-});
+button {
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
 
-loginForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const email = document.getElementById("login-email").value.trim();
-  const pw = document.getElementById("login-password").value;
-  signInWithEmailAndPassword(auth, email, pw).catch(err => alert(err.message));
-});
+button:hover {
+  background: #555;
+}
 
-googleBtn.addEventListener("click", () => {
-  signInWithPopup(auth, provider).catch(err => alert(err.message));
-});
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
 
-logoutBtn.addEventListener("click", () => signOut(auth));
+ul {
+  list-style-type: none;
+  padding: 0;
+}
 
-onAuthStateChanged(auth, user => {
-  if(user){
-    authCard.style.display = "none";
-    mainCard.style.display = "flex";
-  } else {
-    authCard.style.display = "flex";
-    mainCard.style.display = "none";
-  }
-});
+ul li {
+  margin-bottom: 8px;
+}
+
+#discord-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #7289DA;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+#discord-btn img {
+  vertical-align: middle;
+  margin-right: 5px;
+}
