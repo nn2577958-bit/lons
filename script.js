@@ -1,6 +1,14 @@
 // Firebase v9 모듈 방식
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 // Firebase 초기화
 const firebaseConfig = {
@@ -15,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// DOM
+// DOM 요소
 const authCard = document.getElementById("auth-card");
 const mainCard = document.getElementById("main-card");
 const signupForm = document.getElementById("signup-form");
@@ -31,50 +39,103 @@ signupForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("signup-email").value.trim();
   const pw = document.getElementById("signup-password").value;
-  if(pw.length < 6){ signupMsg.innerText="비밀번호 6자 이상"; return; }
+
+  if (!email) { 
+    signupMsg.innerText = "이메일을 입력해주세요.";
+    signupMsg.className = "error";
+    return;
+  }
+
+  if(pw.length < 6){ 
+    signupMsg.innerText = "비밀번호는 6자 이상이어야 합니다."; 
+    signupMsg.className = "error";
+    return; 
+  }
 
   createUserWithEmailAndPassword(auth, email, pw)
-    .then(() => { signupMsg.innerText="회원가입 완료! 로그인해주세요."; signupForm.reset(); })
-    .catch(err => { 
-      if(err.code==="auth/email-already-in-use") signupMsg.innerText="이미 가입된 이메일입니다.";
-      else signupMsg.innerText=err.message; 
+    .then(() => {
+      signupMsg.innerText = "회원가입 완료! 로그인 해주세요.";
+      signupMsg.className = "";
+      signupForm.reset();
+    })
+    .catch(err => {
+      if(err.code === "auth/email-already-in-use"){
+        signupMsg.innerText = "이미 가입된 이메일입니다. 로그인 해주세요.";
+      } else if(err.code === "auth/invalid-email"){
+        signupMsg.innerText = "올바른 이메일 형식으로 입력해주세요.";
+      } else {
+        signupMsg.innerText = err.message;
+      }
+      signupMsg.className = "error";
     });
 });
 
-// 로그인
-loginForm.addEventListener("submit", e=>{
+// 이메일 로그인
+loginForm.addEventListener("submit", e => {
   e.preventDefault();
   const email = document.getElementById("login-email").value.trim();
   const pw = document.getElementById("login-password").value;
+
+  if(!email){
+    loginMsg.innerText = "이메일을 입력해주세요.";
+    loginMsg.className = "error";
+    return;
+  }
+
+  if(!pw){
+    loginMsg.innerText = "비밀번호를 입력해주세요.";
+    loginMsg.className = "error";
+    return;
+  }
+
   signInWithEmailAndPassword(auth, email, pw)
-    .then(()=>{ loginMsg.innerText="로그인 성공!"; loginForm.reset(); })
-    .catch(err=>{ loginMsg.innerText=err.message; });
+    .then(() => {
+      loginMsg.innerText = "로그인 성공!";
+      loginMsg.className = "";
+      loginForm.reset();
+    })
+    .catch(err => {
+      if(err.code === "auth/invalid-email"){
+        loginMsg.innerText = "올바른 이메일 형식으로 입력해주세요.";
+      } else if(err.code === "auth/wrong-password"){
+        loginMsg.innerText = "비밀번호가 올바르지 않습니다.";
+      } else if(err.code === "auth/user-not-found"){
+        loginMsg.innerText = "가입되지 않은 이메일입니다.";
+      } else {
+        loginMsg.innerText = err.message;
+      }
+      loginMsg.className = "error";
+    });
 });
 
 // Google 로그인
-googleBtn.addEventListener("click", ()=>{
+googleBtn.addEventListener("click", () => {
   signInWithPopup(auth, provider)
-    .then(result=>{
-      googleMsg.innerText=`로그인 성공! ${result.user.displayName||"사용자"} (${result.user.email})`;
+    .then(result => {
+      const user = result.user;
+      googleMsg.innerText = `로그인 성공! ${user.displayName || "사용자"} (${user.email})`;
+      googleMsg.className = "";
     })
-    .catch(err=>{ googleMsg.innerText=err.message; });
+    .catch(err => {
+      googleMsg.innerText = err.message;
+      googleMsg.className = "error";
+    });
 });
 
 // 로그아웃
-logoutBtn.addEventListener("click", ()=>{
-  signOut(auth).then(()=>{
-    authCard.style.display="block";
-    mainCard.style.display="none";
+logoutBtn.addEventListener("click", () => {
+  signOut(auth).then(() => {
+    alert("로그아웃 완료!");
   });
 });
 
 // 로그인 상태 감지
-onAuthStateChanged(auth, user=>{
+onAuthStateChanged(auth, user => {
   if(user){
-    authCard.style.display="none";
-    mainCard.style.display="block";
+    authCard.style.display = "none";
+    mainCard.style.display = "block";
   } else {
-    authCard.style.display="block";
-    mainCard.style.display="none";
+    authCard.style.display = "block";
+    mainCard.style.display = "none";
   }
 });
