@@ -63,13 +63,13 @@ logoutBtn.addEventListener("click", ()=>{
   });
 });
 
-// 로그인 상태 감지
-onAuthStateChanged(auth,user=>{
+onAuthStateChanged(auth, user => {
   if(user){
-    authSection.style.display="none";
-    featuresSection.style.display="block";
+    authCard.style.display = "none";      // 로그인 카드 숨김
+    mainCard.style.display = "block";     // 주요 기능 카드 표시
   } else {
-    authSection.style.display="block";
-    featuresSection.style.display="none";
+    authCard.style.display = "block";
+    mainCard.style.display = "none";
   }
 });
+
