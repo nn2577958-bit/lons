@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인</title>
   <style>
-    /* 전체 화면 중앙 배치 */
     body {
       display: flex;
       justify-content: center;
@@ -16,7 +15,6 @@
       font-family: 'Noto Sans KR', sans-serif;
     }
 
-    /* 로그인 카드 */
     .login-card {
       background: white;
       padding: 40px 30px;
@@ -84,10 +82,27 @@
 <body>
   <div class="login-card">
     <h1>로그인</h1>
-    <input type="text" placeholder="아이디">
-    <input type="password" placeholder="비밀번호">
-    <button>로그인</button>
-    <p>회원이 아니신가요? <a href="#">회원가입</a></p>
+    <input type="text" id="username" placeholder="아이디">
+    <input type="password" id="password" placeholder="비밀번호">
+    <button id="loginBtn">로그인</button>
+    <p>회원이 아니신가요? <a href="signup.html">회원가입</a></p>
   </div>
+
+  <script>
+    // 로그인 버튼 클릭 이벤트
+    document.getElementById('loginBtn').addEventListener('click', function() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // 간단한 입력 체크
+      if(username === '' || password === '') {
+        alert('아이디와 비밀번호를 입력해주세요.');
+        return;
+      }
+
+      // 실제 로그인 처리 없이 바로 모듈 9 페이지로 이동
+      window.location.href = 'module9.html'; // 모듈 9 페이지 경로
+    });
+  </script>
 </body>
 </html>
