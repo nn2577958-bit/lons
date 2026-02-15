@@ -1,126 +1,153 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS SV 로그인 후 화면</title>
-  <style>
-    /* 배경: 그라데이션 + 이미지 */
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                  url('https://your-image-link.com/background.jpg') no-repeat center center;
-      background-size: cover;
-      color: #fff;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONS SV Palworld</title>
+<style>
+  /* 전체 배경 그라데이션 */
+  body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #89f7fe, #66a6ff);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .container {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 40px;
-      border-radius: 15px;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    }
+  header {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  }
 
-    h1 {
-      margin-bottom: 10px;
-      font-size: 2rem;
-    }
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 
-    p {
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-      line-height: 1.5;
-    }
+  section {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    margin: 20px 0;
+    text-align: center;
+  }
 
-    #discord-btn {
-      display: inline-block;
-      text-decoration: none;
-      background: linear-gradient(90deg, #7289da, #99aab5);
-      color: #fff;
-      padding: 12px 25px;
-      border-radius: 10px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
+  input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
 
-    #discord-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    }
+  button {
+    background-color: #7289da; /* 디스코드 스타일 */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
-    #logout-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background-color: #ff5555;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+  button:hover {
+    background-color: #5b6eae;
+  }
 
-    #logout-btn:hover {
-      background-color: #ff7777;
-      transform: scale(1.05);
-    }
-  </style>
+  .error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+
+  ul li {
+    margin: 8px 0;
+    font-weight: 500;
+  }
+
+  #discord-btn {
+    display: inline-block;
+    margin: 20px 0;
+    background-color: #43b581;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  footer {
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    font-size: 0.9rem;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>LONS SV Palworld</h1>
-    <p>로그인 후 주요 기능과 정보를 확인하세요!</p>
+  <header>LONS SV Palworld</header>
+  <main>
+    <!-- 로그인/회원가입 폼 -->
+    <section id="auth-section">
+      <h2>회원가입</h2>
+      <form id="signup-form">
+        <input type="email" id="signup-email" placeholder="이메일" required>
+        <input type="password" id="signup-password" placeholder="비밀번호" required>
+        <button type="submit">회원가입</button>
+        <p id="signup-msg" class="error"></p>
+      </form>
 
-    <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank">디스코드 바로가기</a>
+      <h2>로그인</h2>
+      <form id="login-form">
+        <input type="email" id="login-email" placeholder="이메일" required>
+        <input type="password" id="login-password" placeholder="비밀번호" required>
+        <button type="submit">로그인</button>
+        <p id="login-msg" class="error"></p>
+      </form>
 
-    <p style="margin-top:30px;">© 2026 LONS SV ONLINE</p>
+      <h2>Google 로그인</h2>
+      <button id="google-login">Google 계정으로 로그인</button>
+      <p id="google-msg" class="error"></p>
+    </section>
 
-    <button id="logout-btn">로그아웃</button>
-  </div>
+    <!-- 로그인 후 주요 기능 -->
+    <section id="features-section" style="display:none;">
+      <button id="logout-btn">로그아웃</button>
+      <h2>주요 기능</h2>
+      <ul>
+        <li>실시간 알림 & 다양한 소식 & 정보</li>
+        <li>공지사항 & 꿀팁 정보</li>
+        <li>02월 20일 새로운 하드코어 OPEN</li>
+      </ul>
+      <a id="discord-btn" href="https://discord.gg/tnMXbQ65Hk" target="_blank">디스코드 바로가기</a>
+    </section>
+  </main>
+  <footer>© 2026 LONS SV ONLINE</footer>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
-      authDomain: "lons-dc24d.firebaseapp.com",
-      projectId: "lons-dc24d",
-      storageBucket: "lons-dc24d.firebasestorage.app",
-      messagingSenderId: "755692328918",
-      appId: "1:755692328918:web:a4eb4563cb862d3eb5b677",
-      measurementId: "G-NCE37YM3LF"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const logoutBtn = document.getElementById("logout-btn");
-
-    // 로그아웃
-    logoutBtn.addEventListener("click", () => {
-      signOut(auth).then(() => { 
-        alert("로그아웃 완료!");
-        location.reload(); // 로그아웃 후 새로고침
-      });
-    });
-
-    // 로그인 상태 체크
-    onAuthStateChanged(auth, user => {
-      if(!user){
-        alert("로그인 상태가 아닙니다. 로그인 화면으로 이동합니다.");
-        window.location.href = "index.html"; // 로그인 화면으로 이동
-      }
-    });
-  </script>
+  <!-- Firebase v9 모듈 방식 -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
