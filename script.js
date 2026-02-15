@@ -1,14 +1,8 @@
-// Firebase v9 모듈 방식
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
-  onAuthStateChanged, 
-  signOut, 
-  deleteUser 
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  signInWithPopup, GoogleAuthProvider, onAuthStateChanged,
+  signOut, deleteUser 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 // Firebase 초기화
@@ -30,25 +24,23 @@ const signupForm = document.getElementById("signup-form");
 const signupMsg = document.getElementById("signup-msg");
 const loginForm = document.getElementById("login-form");
 const loginMsg = document.getElementById("login-msg");
-const googleBtn = document.getElementById("google-login");
-const googleMsg = document.getElementById("google-msg");
 const logoutBtn = document.getElementById("logout-btn");
 const deleteBtn = document.getElementById("delete-btn");
 const statusMsg = document.getElementById("status-msg");
 const userInfo = document.getElementById("user-info");
-const formsSection = document.getElementById("forms-section");
-const featuresSection = document.getElementById("features-section");
 
 // 회원가입
 signupForm.addEventListener("submit", e => {
   e.preventDefault();
-  const email = document.getElementById("signup-email").value.trim();
-  const pw = document.getElementById("signup-password").value;
+  const email = signupForm["signup-email"].value.trim();
+  const pw = signupForm["signup-password"].value;
+
   if(pw.length < 6){
-    signupMsg.innerText = "비밀번호는 최소 6자 이상이어야 합니다.";
+    signupMsg.innerText = "비밀번호는 최소 6자 이상";
     signupMsg.className = "error";
     return;
   }
+
   createUserWithEmailAndPassword(auth, email, pw)
     .then(() => {
       signupMsg.innerText = "회원가입 완료! 로그인 해주세요.";
@@ -57,66 +49,66 @@ signupForm.addEventListener("submit", e => {
     })
     .catch(err => {
       if(err.code === "auth/email-already-in-use"){
-        signupMsg.innerText = "이미 가입된 이메일 입니다.";
-      } else { signupMsg.innerText = err.message; }
+        signupMsg.innerText = "이미 가입된 이메일입니다. 로그인 해주세요.";
+      } else {
+        signupMsg.innerText = err.message;
+      }
       signupMsg.className = "error";
     });
 });
 
-// 이메일 로그인
+// 로그인
 loginForm.addEventListener("submit", e => {
   e.preventDefault();
-  const email = document.getElementById("login-email").value.trim();
-  const pw = document.getElementById("login-password").value;
+  const email = loginForm["login-email"].value.trim();
+  const pw = loginForm["login-password"].value;
+
   signInWithEmailAndPassword(auth, email, pw)
-    .then(() => { loginMsg.innerText = "로그인 성공!"; loginMsg.className = ""; loginForm.reset(); })
-    .catch(err => { loginMsg.innerText = err.message; loginMsg.className = "error"; });
-});
-
-// Google 로그인
-googleBtn.addEventListener("click", () => {
-  signInWithPopup(auth, provider)
-    .then(result => {
-      const user = result.user;
-      googleMsg.innerText = `로그인 성공! ${user.displayName || "사용자"} (${user.email})`;
-      googleMsg.className = "";
+    .then(() => {
+      loginMsg.innerText = "로그인 성공!";
+      loginMsg.className = "";
+      loginForm.reset();
     })
-    .catch(err => { googleMsg.innerText = err.message; googleMsg.className = "error"; });
+    .catch(err => {
+      loginMsg.innerText = err.message;
+      loginMsg.className = "error";
+    });
 });
 
+// 로그아웃
 logoutBtn.addEventListener("click", () => {
-  const user = auth.currentUser; // 현재 로그인된 사용자 확인
-  if(user){
-    signOut(auth)
-      .then(() => { alert("로그아웃 완료!"); })
-      .catch(err => { alert("로그아웃 실패: " + err.message); });
-  } else {
-    alert("로그인 상태가 아닙니다."); // 로그인 안 되어 있으면 안내
+  const user = auth.currentUser;
+  if(!user){
+    alert("현재 로그인 상태가 아닙니다.");
+    return;
   }
+  signOut(auth).then(() => alert("로그아웃 완료!"));
 });
 
 // 계정 삭제
 deleteBtn.addEventListener("click", () => {
   const user = auth.currentUser;
-  if(user){
-    deleteUser(user)
-      .then(() => { alert("계정 삭제 완료!"); })
-      .catch(err => { alert("계정 삭제 실패: " + err.message); });
-  } else { alert("로그인 상태가 아닙니다."); }
+  if(!user){
+    alert("로그인 상태가 아닙니다.");
+    return;
+  }
+  deleteUser(user)
+    .then(() => alert("계정 삭제 완료!"))
+    .catch(err => alert("계정 삭제 실패: " + err.message));
 });
 
-// 로그인 상태 감지 및 UI 전환
+// 로그인 상태 감지
 onAuthStateChanged(auth, user => {
   if(user){
     userInfo.style.display = "block";
     userInfo.innerText = `로그인 중: ${user.displayName || "사용자"} (${user.email})`;
-    formsSection.style.display = "none";
-    featuresSection.style.display = "block"; // 로그인 시 주요 기능 표시
+    signupForm.style.display = "none";
+    loginForm.style.display = "none";
     statusMsg.innerText = `로그인 상태: ${user.email}`;
   } else {
     userInfo.style.display = "none";
-    formsSection.style.display = "block";
-    featuresSection.style.display = "none"; // 로그아웃 시 숨김
+    signupForm.style.display = "block";
+    loginForm.style.display = "block";
     statusMsg.innerText = "로그아웃 상태";
   }
 });
