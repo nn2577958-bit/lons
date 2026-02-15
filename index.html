@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS SPA 데모</title>
+  <title>LONS SPA 팰월드 데모</title>
   <style>
     body {
       margin: 0;
@@ -12,7 +12,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
     }
 
     .card, .module9 {
@@ -22,7 +22,14 @@
       width: 360px;
       padding: 30px 25px;
       text-align: center;
-      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .card.show, .module9.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     input {
@@ -45,18 +52,24 @@
       width: 100%;
       padding: 12px;
       border: none;
-      border-radius: 8px;
-      background: #66a6ff;
+      border-radius: 10px;
+      background: linear-gradient(45deg, #66a6ff, #89f7fe);
       color: white;
       font-size: 16px;
       cursor: pointer;
       margin-bottom: 10px;
-      transition: transform 0.2s, background 0.3s;
+      transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
     }
 
     button:hover {
-      transform: scale(1.05);
-      background: #89f7fe;
+      transform: scale(1.1) rotate(-2deg);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      background: linear-gradient(45deg, #89f7fe, #66a6ff);
+    }
+
+    button:active {
+      transform: scale(0.95) rotate(0deg);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     p {
@@ -79,20 +92,19 @@
       background: #f7f9ff;
       padding: 15px;
       margin: 10px 0;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       text-align: left;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s forwards;
     }
 
-    .module-card h3 {
-      margin: 0 0 5px 0;
-      color: #333;
-    }
-
-    .module-card p {
-      margin: 0;
-      font-size: 13px;
-      color: #555;
+    @keyframes fadeInUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
   </style>
@@ -100,7 +112,7 @@
 <body>
 
   <!-- 로그인 화면 -->
-  <div class="card" id="loginCard">
+  <div class="card show" id="loginCard">
     <h1>로그인</h1>
     <input type="text" id="username" placeholder="아이디">
     <input type="password" id="password" placeholder="비밀번호">
@@ -119,17 +131,14 @@
   </div>
 
   <!-- 모듈 9 화면 -->
-  <div class="module9" id="module9" style="display:none;">
+  <div class="module9" id="module9">
     <h2 id="welcomeMsg">모듈 9</h2>
     <p id="introMsg">로그인 성공! 아래는 모듈 9의 주요 내용입니다.</p>
-
     <div id="moduleContent"></div>
-
     <button id="logoutBtn">로그아웃</button>
   </div>
 
   <script>
-    // 요소 가져오기
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const loginCard = document.getElementById('loginCard');
@@ -142,7 +151,7 @@
     const signupCard = document.getElementById('signupCard');
     const signupBtn = document.getElementById('signupBtn');
 
-    // 예시 모듈 데이터
+    // 모듈 데이터
     const moduleData = [
       { title: "공지사항", text: "오늘 시스템 점검이 있습니다." },
       { title: "업무 알림", text: "마감된 보고서를 확인해주세요." },
@@ -150,74 +159,62 @@
       { title: "새 메시지", text: "새로운 쪽지가 도착했습니다." }
     ];
 
-    // 로그인 버튼
-    loginBtn.addEventListener('click', () => {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      if(!username || !password) {
-        alert('아이디와 비밀번호를 입력해주세요.');
-        return;
-      }
-
+    function showModule9(username){
       loginCard.style.display = 'none';
+      signupCard.style.display = 'none';
       module9.style.display = 'block';
+      module9.classList.add('show');
       welcomeMsg.textContent = `${username}님, 모듈 9에 오신 것을 환영합니다!`;
 
-      // 동적 카드 생성
       moduleContent.innerHTML = '';
-      moduleData.forEach(item => {
+      moduleData.forEach((item, index) => {
         const card = document.createElement('div');
         card.className = 'module-card';
+        card.style.animationDelay = `${index * 0.1}s`; // 딜레이
         card.innerHTML = `<h3>${item.title}</h3><p>${item.text}</p>`;
         moduleContent.appendChild(card);
       });
+    }
+
+    loginBtn.addEventListener('click', () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      if(!username || !password) { alert('아이디와 비밀번호를 입력해주세요.'); return; }
+      showModule9(username);
     });
 
-    // 로그아웃 버튼
+    showSignup.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginCard.style.display = 'none';
+      signupCard.style.display = 'block';
+      signupCard.classList.add('show');
+    });
+
+    backToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      signupCard.style.display = 'none';
+      loginCard.style.display = 'block';
+      loginCard.classList.add('show');
+    });
+
+    signupBtn.addEventListener('click', () => {
+      const newUser = document.getElementById('newUsername').value.trim();
+      const newPass = document.getElementById('newPassword').value.trim();
+      const confirmPass = document.getElementById('confirmPassword').value.trim();
+
+      if(!newUser || !newPass || !confirmPass){ alert('모든 항목을 입력해주세요.'); return; }
+      if(newPass !== confirmPass){ alert('비밀번호가 일치하지 않습니다.'); return; }
+
+      alert(`${newUser}님, 회원가입 완료! 자동 로그인됩니다.`);
+      showModule9(newUser);
+    });
+
     logoutBtn.addEventListener('click', () => {
       module9.style.display = 'none';
       loginCard.style.display = 'block';
       document.getElementById('username').value = '';
       document.getElementById('password').value = '';
       moduleContent.innerHTML = '';
-    });
-
-    // 회원가입 화면 표시
-    showSignup.addEventListener('click', (e) => {
-      e.preventDefault();
-      loginCard.style.display = 'none';
-      signupCard.style.display = 'block';
-    });
-
-    // 로그인 화면 복귀
-    backToLogin.addEventListener('click', (e) => {
-      e.preventDefault();
-      signupCard.style.display = 'none';
-      loginCard.style.display = 'block';
-    });
-
-    // 회원가입 버튼
-    signupBtn.addEventListener('click', () => {
-      const newUser = document.getElementById('newUsername').value.trim();
-      const newPass = document.getElementById('newPassword').value.trim();
-      const confirmPass = document.getElementById('confirmPassword').value.trim();
-
-      if(!newUser || !newPass || !confirmPass) {
-        alert('모든 항목을 입력해주세요.');
-        return;
-      }
-      if(newPass !== confirmPass) {
-        alert('비밀번호가 일치하지 않습니다.');
-        return;
-      }
-
-      alert(`${newUser}님, 회원가입이 완료되었습니다!`);
-      signupCard.style.display = 'none';
-      loginCard.style.display = 'block';
-      document.getElementById('newUsername').value = '';
-      document.getElementById('newPassword').value = '';
-      document.getElementById('confirmPassword').value = '';
     });
   </script>
 
