@@ -1,108 +1,71 @@
 body {
   font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #89f7fe, #66a6ff);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  background: linear-gradient(to bottom, #a1c4fd, #c2e9fb);
+  padding: 20px;
+  text-align: center;
 }
 
-header {
-  width: 100%;
-  text-align: center;
-  padding: 20px;
-  color: #fff;
-  font-size: 2rem;
-  font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+header h1 {
+  margin-bottom: 20px;
 }
 
 section {
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-  padding: 30px;
+  background: white;
   max-width: 400px;
-  width: 90%;
-  margin: 20px 0;
-  text-align: center;
-  transition: all 0.3s ease;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border: 5px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+  border-image-source: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
 }
 
 input, button {
   width: 100%;
+  margin-bottom: 10px;
   padding: 10px;
-  margin: 8px 0;
-  border-radius: 8px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  font-size: 1rem;
 }
 
 button {
-  background-color: #7289da;
+  background: #333;
   color: #fff;
   border: none;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s ease;
 }
 
 button:hover {
-  background-color: #5b6eae;
+  background: #555;
 }
 
 .error {
   color: red;
-  font-size: 0.9rem;
-  margin-top: 5px;
-}
-
-h2 {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
-  margin: 10px 0;
 }
 
 ul li {
-  margin: 8px 0;
-  font-weight: 500;
+  margin-bottom: 8px;
 }
 
 #discord-btn {
   display: inline-block;
-  margin: 20px 0;
-  background-color: #43b581;
-  padding: 12px 25px;
-  border-radius: 10px;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #7289DA;
+  color: white;
   text-decoration: none;
-  color: #fff;
-  font-weight: bold;
+  border-radius: 8px;
 }
 
-footer {
-  padding: 10px;
-  text-align: center;
-  color: #fff;
-  font-size: 0.9rem;
-}
-
-#features-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 80px);
-}
-
-@media (max-width: 480px) {
-  section { padding: 20px; }
-  header { font-size: 1.6rem; padding: 15px; }
-  #discord-btn { padding: 10px 20px; }
+#discord-btn img {
+  vertical-align: middle;
+  margin-right: 5px;
 }
