@@ -1,19 +1,17 @@
-/* 배경 구름 */
+/* 전체 */
 body, html {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   height: 100%;
-  background: #87ceeb; /* 하늘색 기본 */
   overflow-x: hidden;
 }
 
+/* 배경 구름 */
 .background {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: url('https://cdn.discordapp.com/attachments/1463400037416439869/1472466823978160281/OIP.webp?ex=6992ad17&is=69915b97&hm=a255caf7787407a8826913ce6d491f9d0df361b038f1a33cd26676f65773922b') no-repeat center center;
   background-size: cover;
   z-index: -1;
@@ -22,77 +20,86 @@ body, html {
 /* 헤더 */
 header {
   text-align: center;
-  padding: 20px 0 10px;
   color: #fff;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  padding: 10px 0;
+  text-shadow: 0 0 8px rgba(0,0,0,0.7);
 }
 
-/* 카드 스타일 */
+/* 카드 */
 .card {
+  background: rgba(255,255,255,0.95);
   max-width: 400px;
-  margin: 20px auto;
+  margin: 30px auto;
   padding: 20px;
   border-radius: 15px;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-  text-align: center;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
-/* 입력창 */
-input, button {
+/* 무지개 버튼 */
+.rainbow-btn {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-button {
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-  color: #fff;
+  border: 2px solid;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  background: white;
+  color: #333;
   font-weight: bold;
-  border: none;
   cursor: pointer;
-  transition: opacity 0.3s;
+  border-radius: 8px;
+  transition: 0.3s;
 }
-
-button:hover {
-  opacity: 0.8;
+.rainbow-btn:hover {
+  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  color: white;
 }
 
 /* 로그아웃 버튼 */
 .logout-btn {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-/* 주요 기능 */
-#main-card ul {
-  list-style: none;
-  padding: 0;
+/* 폼 input */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* 오류 메시지 */
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* 주요 기능 글 중앙 */
+#main-card h2 {
   text-align: center;
 }
 
-#main-card li {
-  margin: 10px 0;
-  font-weight: bold;
+/* 주요 기능 리스트 */
+#main-card ul {
+  padding-left: 20px;
 }
 
-/* 디스코드 버튼 */
+/* 디스코드 버튼 중앙 */
 #discord-btn {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: #7289da;
-  color: #fff;
-  border-radius: 10px;
+  display: block;
+  text-align: center;
+  margin: 15px auto 0 auto;
   text-decoration: none;
-  font-weight: bold;
 }
 
-/* 에러 메시지 */
-.error {
-  color: red;
-  margin-bottom: 10px;
-  font-size: 0.9em;
+/* footer */
+footer {
+  text-align: center;
+  color: #fff;
+  padding: 10px 0;
+  margin-top: 20px;
+  text-shadow: 0 0 6px rgba(0,0,0,0.6);
 }
