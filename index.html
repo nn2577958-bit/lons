@@ -67,7 +67,7 @@ button {
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  box-shadow: 0px 6px 16px rgba(0,0,0,0.3);
 }
 
 button:active {
@@ -113,14 +113,17 @@ button i {
 
 <div class="container">
   <h2>LONS SV Palworld 로그인</h2>
-  <div id="admin-status">관리자 상태 확인중...</div>
+  <div id="admin-status">
+    관리자 상태 확인중...<br>
+    (오프라인/온라인 되면 자동으로 시간 반영됩니다)
+  </div>
   <div id="login-msg"></div>
   <button id="google-btn"><i class="fab fa-google"></i> Google 로그인</button>
 </div>
 
 <script type="module">
 import { auth } from "./firebase.js";
-import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const ADMIN_EMAIL = "2577958@gmail.com";
 const adminStatus = document.getElementById("admin-status");
@@ -133,11 +136,11 @@ function updateAdminClock(user) {
   const kstString = now.toLocaleString("ko-KR", { hour12:false, timeZone:"Asia/Seoul" });
 
   if(user && user.email === ADMIN_EMAIL){
-    adminStatus.textContent = `🟢 관리자 온라인 – ${kstString} (오프라인/온라인 되면 자동으로 시간 반영됩니다)`;
+    adminStatus.innerHTML = `🟢 관리자 온라인 – ${kstString}<br>(오프라인/온라인 되면 자동으로 시간 반영됩니다)`;
     // 깜빡임
     adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
   } else {
-    adminStatus.textContent = "🔴 관리자 오프라인 (오프라인/온라인 되면 자동으로 시간 반영됩니다)";
+    adminStatus.innerHTML = `🔴 관리자 오프라인<br>(오프라인/온라인 되면 자동으로 시간 반영됩니다)`;
     adminStatus.style.opacity = "1";
   }
 }
