@@ -1,11 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { 
   getAuth, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged,
+  signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithRedirect,
+  getRedirectResult,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -25,7 +25,7 @@ const loginForm = document.getElementById("login-form");
 const loginMsg = document.getElementById("login-msg");
 const googleBtn = document.getElementById("google-login-btn");
 
-// 이메일 로그인
+// 🔹 이메일 로그인
 loginForm?.addEventListener("submit", e => {
   e.preventDefault();
 
@@ -41,18 +41,25 @@ loginForm?.addEventListener("submit", e => {
     });
 });
 
-// 구글 로그인
+// 🔹 구글 로그인 (Redirect 방식)
 googleBtn?.addEventListener("click", () => {
-  signInWithPopup(auth, provider)
-    .then(() => {
-      window.location.href = "home.html";
-    })
-    .catch(error => {
-      loginMsg.innerText = error.message;
-    });
+  signInWithRedirect(auth, provider);
 });
 
-// 로그인 상태 체크
+// 🔹 리디렉트 로그인 결과 처리
+getRedirectResult(auth)
+  .then(result => {
+    if (result?.user) {
+      window.location.href = "home.html";
+    }
+  })
+  .catch(error => {
+    if (error) {
+      loginMsg.innerText = error.message;
+    }
+  });
+
+// 🔹 로그인 상태 확인
 onAuthStateChanged(auth, user => {
   if (!user && window.location.pathname.includes("home.html")) {
     window.location.href = "index.html";
