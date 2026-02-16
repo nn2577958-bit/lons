@@ -77,8 +77,10 @@ button:active {
 
 button i {
   margin-right: 8px;
-  color: #DB4437;
 }
+
+#google-btn i { color: #DB4437; }
+#discord-btn i { color: #7289DA; }
 
 #google-btn {
   background: #fff;
@@ -88,6 +90,15 @@ button i {
 
 #google-btn:hover {
   background: #f0f0f0;
+}
+
+#discord-btn {
+  background: #5865F2;
+  color: #fff;
+}
+
+#discord-btn:hover {
+  background: #4752C4;
 }
 
 /* ===== 관리자 상태 ===== */
@@ -116,15 +127,17 @@ button i {
   <div id="admin-status">관리자 상태 확인중...</div>
   <div id="login-msg"></div>
   <button id="google-btn"><i class="fab fa-google"></i> Google 로그인</button>
+  <button id="discord-btn"><i class="fab fa-discord"></i> Discord 참여하기</button>
 </div>
 
 <script type="module">
 import { auth } from "./firebase.js";
-import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const ADMIN_EMAIL = "nn2577958@gmail.com";
 const adminStatus = document.getElementById("admin-status");
 const googleBtn = document.getElementById("google-btn");
+const discordBtn = document.getElementById("discord-btn");
 const loginMsg = document.getElementById("login-msg");
 
 // ===== 관리자 상태 갱신 함수 =====
@@ -134,7 +147,6 @@ function updateAdminClock(user) {
 
   if(user && user.email === ADMIN_EMAIL){
     adminStatus.textContent = `🟢 관리자 온라인 – ${kstString}`;
-    // 깜빡임
     adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
   } else {
     adminStatus.textContent = "🔴 관리자 오프라인";
@@ -160,11 +172,21 @@ googleBtn.addEventListener("click", async () => {
   const provider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, provider);
-    window.location.href = "home.html";
+    alert("로그인 성공! 이제 Discord 참여하기 버튼을 클릭할 수 있습니다.");
   } catch (err) {
     loginMsg.textContent = "로그인 실패: " + err.message;
     googleBtn.disabled = false;
   }
+});
+
+// ===== Discord 참여하기 버튼 =====
+discordBtn.addEventListener("click", () => {
+  if(!auth.currentUser){
+    alert("Discord 서버 참여는 먼저 Google 로그인 후 가능합니다!");
+    return;
+  }
+  // 인증된 유저만 홈 화면 이동
+  window.location.href = "home.html";
 });
 </script>
 </body>
