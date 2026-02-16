@@ -62,8 +62,7 @@ body{ margin:0; font-family:'Segoe UI',sans-serif; background:#111; color:white;
 
 <script type="module">
 import { auth } from "./firebase.js";
-import { onAuthStateChanged, signOut } from 
-"https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const ADMIN_EMAIL="nn2577958@gmail.com";
 
@@ -74,103 +73,84 @@ const discordBtn = document.getElementById("discord-btn");
 const logoutBtn = document.getElementById("logout-btn");
 const modal = document.getElementById("pc-modal");
 
-// 공지사항 내용 그대로
 const notices = [
-{title:"공지 사항",content:"항상 모니터링 중이며 모든 파일은 데이터 베이스에 기록 됩니다.",createdAt:""},
-{title:"신규 뽑기 이벤트 시작!",content:"당첨되신 분들은 요청 주시면 지급 처리됩니다.",createdAt:""},
-{title:"업데이트 완료",content:"PAL 0.7.2 최신 패치가 적용되었습니다.",createdAt:""},
-{title:"SV 오픈 날짜",content:"2026 01.12",createdAt:""},
-{title:"지원금 안내",content:"모든 지원금은 운영비에 쓰이고 있습니다,",createdAt:""},
-{title:"서버 접속 상황",content:"1SV / 2SV 모두 정상 작동 중입니다.",createdAt:""},
-{title:"서버 오픈 안내",content:"하드코어 02 / 20 大 오픈 많이 사랑 해주세요!",createdAt:""}
+{title:"공지 사항",content:"항상 모니터링 중이며 모든 파일은 데이터 베이스에 기록 됩니다.",createdAt:"2026-02-17 12:00~12:10"},
+{title:"신규 뽑기 이벤트 시작!",content:"당첨되신 분들은 요청 주시면 지급 처리됩니다.",createdAt:"2026-02-16 14:00"},
+{title:"업데이트 완료",content:"PAL 0.7.2 최신 패치가 적용되었습니다.",createdAt:"2026-02-16 14:30"},
+{title:"SV 오픈 날짜",content:"2026 01.12",createdAt:"2026-01-12 01:00"},
+{title:"지원금 안내",content:"모든 지원금은 운영비에 쓰이고 있습니다,",createdAt:"2026-02-16 14:30"},
+{title:"서버 접속 상황",content:"1SV / 2SV 모두 정상 작동 중입니다.",createdAt:"2026-02-16 00:00"},
+{title:"서버 오픈 안내",content:"하드코어 02 / 20 大 오픈 많이 사랑 해주세요!",createdAt:"2026-02-20 12:00"}
 ];
 
-// 한국 시간 KST 시각 생성
-function getKSTTime(){
-    const now = new Date();
-    const kstTime = new Date(now.getTime() + 9*60*60*1000);
-    const year = kstTime.getFullYear();
-    const month = String(kstTime.getMonth()+1).padStart(2,'0');
-    const day = String(kstTime.getDate()).padStart(2,'0');
-    const hours = String(kstTime.getHours()).padStart(2,'0');
-    const minutes = String(kstTime.getMinutes()).padStart(2,'0');
-    const seconds = String(kstTime.getSeconds()).padStart(2,'0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
+onAuthStateChanged(auth, (user) => {
+  if(!user){ window.location.href="index.html"; return; }
 
-// 공지사항 createdAt 실시간 KST 반영
-notices.forEach(n => n.createdAt = getKSTTime());
+  // ===== 관리자 온라인 표시 (한국 시간, 1초 갱신) =====
+  if(user.email === ADMIN_EMAIL){
+      function updateAdminStatus(){
+          const now = new Date();
+          // 한국 시간: UTC+9
+          const kst = new Date(now.getTime() + 9*60*60*1000);
+          const y = kst.getFullYear();
+          const m = String(kst.getMonth()+1).padStart(2,'0');
+          const d = String(kst.getDate()).padStart(2,'0');
+          const h = String(kst.getHours()).padStart(2,'0');
+          const min = String(kst.getMinutes()).padStart(2,'0');
+          const s = String(kst.getSeconds()).padStart(2,'0');
+          adminStatus.innerHTML = `🟢 관리자 온라인 – ${y}-${m}-${d} ${h}:${min}:${s}`;
+      }
+      updateAdminStatus();
+      setInterval(updateAdminStatus, 1000);
 
-onAuthStateChanged(auth,(user)=>{
- if(!user){window.location.href="index.html";return;}
+      // 깜빡임
+      setInterval(()=>{
+          adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
+      }, 800);
 
- // ===== 관리자 온라인 표시 + 깜빡임 + 실시간 KST =====
- if(user.email === ADMIN_EMAIL){
-    function updateAdminStatus(){
-        const now = new Date();
-        const kstTime = new Date(now.getTime() + 9*60*60*1000);
-        const year = kstTime.getFullYear();
-        const month = String(kstTime.getMonth()+1).padStart(2,'0');
-        const day = String(kstTime.getDate()).padStart(2,'0');
-        const hours = String(kstTime.getHours()).padStart(2,'0');
-        const minutes = String(kstTime.getMinutes()).padStart(2,'0');
-        const seconds = String(kstTime.getSeconds()).padStart(2,'0');
+      adminStatus.style.background = "#28a745";
+  } else {
+      adminStatus.innerHTML = "🔴 관리자 오프라인";
+      adminStatus.style.background = "#dc3545";
+      adminStatus.style.opacity = "1";
+  }
 
-        adminStatus.innerHTML = `🟢 관리자 온라인 – ${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    }
-    updateAdminStatus();
-    setInterval(updateAdminStatus, 1000); // 1초마다 갱신
-
-    // 깜빡임 효과
-    setInterval(()=>{
-        adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
-    }, 800);
-
-    adminStatus.style.background = "#28a745";
- } else {
-    adminStatus.innerHTML = "🔴 관리자 오프라인";
-    adminStatus.style.background = "#dc3545";
-    adminStatus.style.opacity = "1";
- }
-
- // 공지사항 렌더
- noticeList.innerHTML="";
- notices.forEach(data=>{
-  const div=document.createElement("div");
-  div.className="notice-item";
-  div.innerHTML=`
-   <strong>${data.title}</strong>
-   <small>${data.createdAt}</small>
-   <div>${data.content}</div>
-  `;
-  noticeList.appendChild(div);
- });
+  // 공지사항 렌더 (1회만)
+  noticeList.innerHTML = "";
+  notices.forEach(data => {
+      const div = document.createElement("div");
+      div.className = "notice-item";
+      div.innerHTML = `
+          <strong>${data.title}</strong>
+          <small>${data.createdAt}</small>
+          <div>${data.content}</div>
+      `;
+      noticeList.appendChild(div);
+  });
 });
 
 // ===== 로그아웃 =====
-logoutBtn.onclick = async()=>{
- await signOut(auth);
- window.location.href="index.html";
+logoutBtn.onclick = async () => {
+  await signOut(auth);
+  window.location.href="index.html";
 };
 
 // ===== Discord 버튼 =====
-discordBtn.onclick = ()=>{
- window.open("https://discord.gg/tnMXbQ65Hk","_blank");
-};
+discordBtn.onclick = () => window.open("https://discord.gg/tnMXbQ65Hk","_blank");
 
 // ===== Pay 버튼 (실제 연결) =====
-kakaoBtn.onclick = ()=>{
- const userAgent = navigator.userAgent || navigator.vendor || window.opera;
- const isMobile = /iPhone|iPad|iPod|Android/i.test(userAgent);
- if(isMobile){
-   window.location.href="https://qr.kakaopay.com/FRydbZ6Gr";
- } else {
-   modal.style.display = "flex";
- }
+kakaoBtn.onclick = () => {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
+  if(isMobile){
+      window.location.href="https://qr.kakaopay.com/FRydbZ6Gr";
+  } else {
+      modal.style.display = "flex";
+  }
 };
 
 // ===== 모달 닫기 =====
-window.closeModal = ()=>modal.style.display="none";
+window.closeModal = () => modal.style.display="none";
 
 </script>
 
