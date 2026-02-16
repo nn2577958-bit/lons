@@ -1,225 +1,201 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS Palworld 24H</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Noto Sans KR', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(to right, #89f7fe, #66a6ff);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로그인</title>
 
-    .card, .module9 {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-      width: 360px;
-      padding: 30px 25px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
+<style>
+/* ===== 테마 변수 ===== */
+:root {
+  --bg-gradient: linear-gradient(to bottom right, #6a11cb, #2575fc);
+  --container-bg: rgba(255,255,255,0.95);
+  --text-main: #333;
+  --text-sub: #666;
+  --input-bg: #fff;
+  --input-border: #ccc;
+  --button-bg: #333;
+}
 
-    input {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: all 0.3s;
-    }
+body.dark-mode {
+  --bg-gradient: linear-gradient(to bottom right, #141e30, #243b55);
+  --container-bg: rgba(30,30,30,0.95);
+  --text-main: #f1f1f1;
+  --text-sub: #aaa;
+  --input-bg: #2a2a2a;
+  --input-border: #444;
+  --button-bg: #000;
+}
 
-    input:focus {
-      border-color: #66a6ff;
-      box-shadow: 0 0 5px rgba(102, 166, 255, 0.5);
-      outline: none;
-    }
+/* ===== 기본 레이아웃 ===== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #66a6ff;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      margin-bottom: 10px;
-      transition: transform 0.2s, background 0.3s;
-    }
+.login-container {
+  width: 90%;
+  max-width: 400px;
+  background: var(--container-bg);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
 
-    button:hover {
-      transform: scale(1.05);
-      background: #89f7fe;
-    }
+h1 {
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
 
-    p {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #666;
-    }
+p {
+  margin-bottom: 20px;
+  color: var(--text-sub);
+}
 
-    a {
-      color: #66a6ff;
-      text-decoration: none;
-      font-weight: 500;
-    }
+/* ===== 입력창 ===== */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-main);
+  transition: 0.2s;
+}
 
-    a:hover {
-      text-decoration: underline;
-    }
+input:focus {
+  border-color: #6a11cb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(106,17,203,0.3);
+}
 
-    .module-card {
-      background: #f7f9ff;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      text-align: left;
-    }
+/* ===== 기본 로그인 버튼 ===== */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--button-bg);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-bottom: 10px;
+}
 
-    .module-card h3 {
-      margin: 0 0 5px 0;
-      color: #333;
-    }
+.login-btn:hover {
+  transform: translateY(-2px);
+}
 
-    .module-card p {
-      margin: 0;
-      font-size: 13px;
-      color: #555;
-    }
+/* ===== 구글 로그인 ===== */
+.google-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #444;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.2s;
+}
 
-  </style>
+.google-btn:hover {
+  background: #f5f5f5;
+}
+
+/* ===== 디스코드 버튼 ===== */
+.discord-btn {
+  display: block;
+  padding: 12px;
+  margin-top: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #5865F2, #7289DA);
+  transition: 0.2s;
+}
+
+.discord-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ===== 다크모드 토글 ===== */
+.theme-toggle {
+  margin-top: 15px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-sub);
+}
+
+.theme-toggle:hover {
+  text-decoration: underline;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+</style>
 </head>
+
 <body>
 
-  <!-- 로그인 화면 -->
-  <div class="card" id="loginCard">
-    <h1>주소를 알고 싶으신가요?</h1>
-    <input type="text" id="username" placeholder="아이디">
-    <input type="password" id="password" placeholder="비밀번호">
-    <button id="loginBtn">로그인</button>
-    <p>회원이 아니신가요? <a href="#" id="showSignup">회원가입</a></p>
+<div class="login-container">
+  <h1>로그인</h1>
+  <p>계정으로 로그인하세요</p>
+
+  <div class="error" id="error-msg"></div>
+
+  <input type="text" placeholder="아이디">
+  <input type="password" placeholder="비밀번호">
+
+  <button class="login-btn">로그인</button>
+
+  <div style="margin:15px 0; font-size:13px; color:#999;">또는</div>
+
+  <!-- 구글 로그인 -->
+  <button class="google-btn">
+    🔵 Google로 로그인
+  </button>
+
+  <!-- 디스코드 바로가기 -->
+  <a href="https://discord.gg/tnMXbQ65Hk" class="discord-btn" target="_blank">
+    💬 디스코드 바로가기
+  </a>
+
+  <!-- 다크모드 토글 -->
+  <div class="theme-toggle" onclick="toggleTheme()">
+    🌙 다크모드 전환
   </div>
+</div>
 
-  <!-- 회원가입 화면 -->
-  <div class="card" id="signupCard" style="display:none;">
-    <h1>회원가입</h1>
-    <input type="text" id="newUsername" placeholder="아이디">
-    <input type="password" id="newPassword" placeholder="비밀번호">
-    <input type="password" id="confirmPassword" placeholder="비밀번호 확인">
-    <button id="signupBtn">회원가입</button>
-    <p>이미 계정이 있으신가요? <a href="#" id="backToLogin">로그인</a></p>
-  </div>
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("dark-mode");
+  localStorage.setItem("theme",
+    document.body.classList.contains("dark-mode") ? "dark" : "light"
+  );
+}
 
-  <!-- 모듈 9 화면 -->
-  <div class="module9" id="module9" style="display:none;">
-    <h2 id="welcomeMsg">LONS Palworld 24H</h2>
-    <p id="introMsg">디스코드를 참여 해주세요</p>
-
-    <div id="moduleContent"></div>
-
-    <button id="logoutBtn">로그아웃</button>
-  </div>
-
-  <script>
-    // 요소 가져오기
-    const loginBtn = document.getElementById('loginBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const loginCard = document.getElementById('loginCard');
-    const module9 = document.getElementById('module9');
-    const moduleContent = document.getElementById('moduleContent');
-    const welcomeMsg = document.getElementById('welcomeMsg');
-
-    const showSignup = document.getElementById('showSignup');
-    const backToLogin = document.getElementById('backToLogin');
-    const signupCard = document.getElementById('signupCard');
-    const signupBtn = document.getElementById('signupBtn');
-
-    // 예시 모듈 데이터
-    const moduleData = [
-      { title: "공지사항", text: "아래의 디스코드를 참여 해주세요" },
-      { title: "사이트 주소", text: "https://lonssv.creatorlink.net/" },
-      { title: "24시간 팰월드", text: "스팀 게임 환영 활성화" },
-      { title: "디스코드 참여", text: "https://discord.gg/tnMXbQ65Hk" }
-    ];
-
-    // 로그인 버튼
-    loginBtn.addEventListener('click', () => {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      if(!username || !password) {
-        alert('아이디와 비밀번호를 입력해주세요.');
-        return;
-      }
-
-      loginCard.style.display = 'none';
-      module9.style.display = 'block';
-      welcomeMsg.textContent = `${username}님, 방문을 환영합니다!`;
-
-      // 동적 카드 생성
-      moduleContent.innerHTML = '';
-      moduleData.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'module-card';
-        card.innerHTML = `<h3>${item.title}</h3><p>${item.text}</p>`;
-        moduleContent.appendChild(card);
-      });
-    });
-
-    // 로그아웃 버튼
-    logoutBtn.addEventListener('click', () => {
-      module9.style.display = 'none';
-      loginCard.style.display = 'block';
-      document.getElementById('username').value = '';
-      document.getElementById('password').value = '';
-      moduleContent.innerHTML = '';
-    });
-
-    // 회원가입 화면 표시
-    showSignup.addEventListener('click', (e) => {
-      e.preventDefault();
-      loginCard.style.display = 'none';
-      signupCard.style.display = 'block';
-    });
-
-    // 로그인 화면 복귀
-    backToLogin.addEventListener('click', (e) => {
-      e.preventDefault();
-      signupCard.style.display = 'none';
-      loginCard.style.display = 'block';
-    });
-
-    // 회원가입 버튼
-    signupBtn.addEventListener('click', () => {
-      const newUser = document.getElementById('newUsername').value.trim();
-      const newPass = document.getElementById('newPassword').value.trim();
-      const confirmPass = document.getElementById('confirmPassword').value.trim();
-
-      if(!newUser || !newPass || !confirmPass) {
-        alert('모든 항목을 입력해주세요.');
-        return;
-      }
-      if(newPass !== confirmPass) {
-        alert('비밀번호가 일치하지 않습니다.');
-        return;
-      }
-
-      alert(`${newUser}님, 회원가입이 완료되었습니다!`);
-      signupCard.style.display = 'none';
-      loginCard.style.display = 'block';
-      document.getElementById('newUsername').value = '';
-      document.getElementById('newPassword').value = '';
-      document.getElementById('confirmPassword').value = '';
-    });
-  </script>
+window.onload = function() {
+  if(localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+  }
+};
+</script>
 
 </body>
 </html>
