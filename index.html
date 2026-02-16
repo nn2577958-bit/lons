@@ -133,11 +133,11 @@ function updateAdminClock(user) {
   const kstString = now.toLocaleString("ko-KR", { hour12:false, timeZone:"Asia/Seoul" });
 
   if(user && user.email === ADMIN_EMAIL){
-    adminStatus.textContent = `🟢 관리자 온라인 – ${kstString}`;
+    adminStatus.textContent = `🟢 관리자 온라인 – ${kstString} (오프라인/온라인 되면 자동으로 시간 반영됩니다)`;
     // 깜빡임
     adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
   } else {
-    adminStatus.textContent = "🔴 관리자 오프라인";
+    adminStatus.textContent = ""🔴 관리자 오프라인 (오프라인/온라인 되면 자동으로 시간 반영됩니다)"";
     adminStatus.style.opacity = "1";
   }
 }
