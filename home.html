@@ -74,30 +74,28 @@ const logoutBtn = document.getElementById("logout-btn");
 const modal = document.getElementById("pc-modal");
 
 const notices = [
-{title:"공지 사항",content:"항상 모니터링 중이며 모든 파일은 데이터 베이스에 기록 됩니다.",createdAt:"2026-02-17 12:00~12:10"},
-{title:"신규 뽑기 이벤트 시작!",content:"당첨되신 분들은 요청 주시면 지급 처리됩니다.",createdAt:"2026-02-16 14:00"},
-{title:"업데이트 완료",content:"PAL 0.7.2 최신 패치가 적용되었습니다.",createdAt:"2026-02-16 14:30"},
-{title:"SV 오픈 날짜",content:"2026 01.12",createdAt:"2026-01-12 01:00"},
-{title:"지원금 안내",content:"모든 지원금은 운영비에 쓰이고 있습니다,",createdAt:"2026-02-16 14:30"},
-{title:"서버 접속 상황",content:"1SV / 2SV 모두 정상 작동 중입니다.",createdAt:"2026-02-16 00:00"},
-{title:"서버 오픈 안내",content:"하드코어 02 / 20 大 오픈 많이 사랑 해주세요!",createdAt:"2026-02-20 12:00"}
+  {title:"공지 사항",content:"항상 모니터링 중이며 모든 파일은 데이터 베이스에 기록 됩니다.",createdAt:"2026-02-17 12:00~12:10"},
+  {title:"신규 뽑기 이벤트 시작!",content:"당첨되신 분들은 요청 주시면 지급 처리됩니다.",createdAt:"2026-02-16 14:00"},
+  {title:"업데이트 완료",content:"PAL 0.7.2 최신 패치가 적용되었습니다.",createdAt:"2026-02-16 14:30"},
+  {title:"SV 오픈 날짜",content:"2026 01.12",createdAt:"2026-01-12 01:00"},
+  {title:"지원금 안내",content:"모든 지원금은 운영비에 쓰이고 있습니다,",createdAt:"2026-02-16 14:30"},
+  {title:"서버 접속 상황",content:"1SV / 2SV 모두 정상 작동 중입니다.",createdAt:"2026-02-16 00:00"},
+  {title:"서버 오픈 안내",content:"하드코어 02 / 20 大 오픈 많이 사랑 해주세요!",createdAt:"2026-02-20 12:00"}
 ];
 
 onAuthStateChanged(auth, (user) => {
   if(!user){ window.location.href="index.html"; return; }
 
-  // ===== 관리자 온라인 표시 (한국 시간, 1초 갱신) =====
+  // ===== 관리자 온라인 표시 (한국 시간 1초 갱신) =====
   if(user.email === ADMIN_EMAIL){
       function updateAdminStatus(){
           const now = new Date();
-          function updateAdminStatus(){
-    const now = new Date();
-    // 한국 시간 문자열
-    const kstString = now.toLocaleString("ko-KR", { hour12:false, timeZone:"Asia/Seoul" });
-    adminStatus.innerHTML = `🟢 관리자 온라인 – ${kstString}`;
-    }
-    updateAdminStatus();
-    setInterval(updateAdminStatus, 1000);
+          // 브라우저 로컬 시간 대신 KST로 변환
+          const kstString = now.toLocaleString("ko-KR", { hour12:false, timeZone:"Asia/Seoul" });
+          adminStatus.innerHTML = `🟢 관리자 온라인 – ${kstString}`;
+      }
+      updateAdminStatus();
+      setInterval(updateAdminStatus, 1000);
 
       // 깜빡임
       setInterval(()=>{
@@ -111,7 +109,7 @@ onAuthStateChanged(auth, (user) => {
       adminStatus.style.opacity = "1";
   }
 
-  // 공지사항 렌더 (1회만)
+  // ===== 공지사항 렌더 (1회만) =====
   noticeList.innerHTML = "";
   notices.forEach(data => {
       const div = document.createElement("div");
@@ -149,6 +147,5 @@ kakaoBtn.onclick = () => {
 window.closeModal = () => modal.style.display="none";
 
 </script>
-
 </body>
 </html>
