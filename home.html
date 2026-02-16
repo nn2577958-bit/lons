@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LONS Palworld SV</title>
 <link rel="stylesheet" href="./style.css">
+<!-- Font Awesome for Discord Icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pap6GqRk4PjQb0O2x57GqgL7kFSqP0Zg3e4c3+lQ1IF6bYjPtcT6+ZGVVq0Z6I9OCz3hWZkMtiFZk7wIh2GJ7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
 body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f0f2f5; margin:0; padding:0; }
 .container { max-width:500px; margin:50px auto; background:#fff; padding:25px 20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.08); }
@@ -14,11 +16,14 @@ button { width:100%; padding:12px; margin:5px 0; border:none; border-radius:6px;
 button:hover { background:#45a049; }
 .logout-btn { background:#f44336; }
 .logout-btn:hover { background:#d32f2f; }
+#discord-btn { background:#5865F2; display:none; } /* 초기 숨김 */
+#discord-btn:hover { background:#4752c4; }
 .notice { background:#e8e8e8; padding:12px 15px; margin:10px 0; border-radius:8px; border-left:4px solid #4CAF50; }
 .notice strong { display:block; font-size:1.1em; margin-bottom:5px; color:#333; }
 .notice small { display:block; color:#666; margin-bottom:8px; font-size:12px; }
 #load-more-btn { width:100%; padding:10px; background:#2196F3; color:#fff; border-radius:6px; border:none; cursor:pointer; margin-top:10px; transition:background 0.2s; }
 #load-more-btn:hover { background:#1976d2; }
+button i { margin-right:8px; }
 </style>
 </head>
 <body>
@@ -27,7 +32,7 @@ button:hover { background:#45a049; }
 
   <!-- 로그아웃 -->
   <div class="user-box">
-    <button id="logout-btn" class="logout-btn">로그아웃</button>
+    <button id="logout-btn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> 로그아웃</button>
   </div>
 
   <!-- 공지사항 -->
@@ -35,6 +40,11 @@ button:hover { background:#45a049; }
     <h3>📢 공지사항</h3>
     <div id="notice-list" class="notice-container">불러오는 중...</div>
     <button id="load-more-btn" style="display:none;">더보기</button>
+  </div>
+
+  <!-- Discord 참여 버튼 -->
+  <div class="user-box">
+    <button id="discord-btn"><i class="fab fa-discord"></i> 디스코드 참여하기</button>
   </div>
 </div>
 
@@ -45,6 +55,7 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 const logoutBtn = document.getElementById("logout-btn");
 const noticeList = document.getElementById("notice-list");
 const loadMoreBtn = document.getElementById("load-more-btn");
+const discordBtn = document.getElementById("discord-btn");
 
 let currentIndex = 0;
 const PAGE_SIZE = 5;
@@ -66,6 +77,10 @@ onAuthStateChanged(auth, (user) => {
     return;
   }
 
+  // 로그인 되어 있으면 Discord 버튼 활성화
+  discordBtn.style.display = "block";
+
+  // 공지사항 초기화
   noticeList.innerHTML = "";
   currentIndex = 0;
   loadNextPage();
@@ -106,6 +121,11 @@ function loadNextPage() {
 }
 
 loadMoreBtn.addEventListener("click", loadNextPage);
+
+// 🔹 Discord 버튼 클릭 시 새 창 열기
+discordBtn.addEventListener("click", () => {
+  window.open("https://discord.gg/YOUR_DISCORD_INVITE", "_blank");
+});
 </script>
 </body>
 </html>
