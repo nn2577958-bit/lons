@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupBtn = document.getElementById("signup-btn");
   const googleBtn = document.getElementById("google-btn");
 
-  // 로그인
   loginBtn.addEventListener("click", async () => {
     loginMsg.textContent = "";
     try {
@@ -32,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 회원가입
   signupBtn.addEventListener("click", async () => {
     loginMsg.textContent = "";
     try {
@@ -47,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Google 로그인
   googleBtn.addEventListener("click", async () => {
     loginMsg.textContent = "";
     try {
