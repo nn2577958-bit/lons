@@ -1,7 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palworld 홈</title>
+<link rel="stylesheet" href="./style.css">
+<style>
+  /* 간단한 공지 스타일 */
+  .notice {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .notice strong {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 3px;
+  }
+  .notice small {
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎮 LONS Palworld</h1>
+  <div class="subtitle">론즈서버 팰월드 24시간</div>
+
+  <div class="user-box">
+    <p>이메일: <strong id="user-name"></strong></p>
+    <p>UID: <span id="user-uid"></span></p>
+    <p>이메일 인증: <span id="user-verified"></span></p>
+    <a href="profile.html" class="link-btn">마이 페이지 이동</a>
+  </div>
+
+  <div class="user-box">
+    <h3>📢 공지사항</h3>
+    <div id="notice-list" class="notice-container">불러오는 중...</div>
+    <button id="load-more-btn" style="display:none;">더보기</button>
+  </div>
+
+  <button id="logout-btn" class="logout-btn">로그아웃</button>
+</div>
+
 <script type="module">
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { collection, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const logoutBtn = document.getElementById("logout-btn");
 const userName = document.getElementById("user-name");
@@ -25,10 +73,17 @@ onAuthStateChanged(auth, async (user) => {
     const isMember = userDoc.exists() && userDoc.data()?.isMember;
     if (!isMember) { noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다."; return; }
 
-    const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(postsQuery);
+    // Firestore에서 모든 공지 가져오기 (createdAt 없어도 표시 가능)
+    const postsSnapshot = await getDocs(collection(db, "posts"));
+    notices = postsSnapshot.docs.map(d => ({ id:d.id, ...d.data() }));
 
-    notices = querySnapshot.docs.map(d => ({ id:d.id, ...d.data() }));
+    // createdAt이 있으면 최신순 정렬, 없으면 뒤로
+    notices.sort((a, b) => {
+      const aTime = a.createdAt?.toDate?.().getTime() || 0;
+      const bTime = b.createdAt?.toDate?.().getTime() || 0;
+      return bTime - aTime;
+    });
+
     noticeList.innerHTML = "";
     currentIndex = 0;
     loadNextPage();
@@ -48,11 +103,9 @@ function loadNextPage() {
     const div = document.createElement("div");
     div.className = "notice";
 
-    // 제목
     const titleEl = document.createElement("strong");
     titleEl.textContent = data.title || "제목 없음";
 
-    // 날짜 (createdAt 안전 처리)
     const dateEl = document.createElement("small");
     if (data.createdAt?.toDate) {
       dateEl.textContent = new Date(data.createdAt.toDate()).toLocaleString();
@@ -60,7 +113,6 @@ function loadNextPage() {
       dateEl.textContent = "날짜 정보 없음";
     }
 
-    // 내용
     const contentEl = document.createElement("div");
     contentEl.textContent = data.content || "";
 
@@ -74,3 +126,5 @@ function loadNextPage() {
 
 loadMoreBtn.addEventListener("click", loadNextPage);
 </script>
+</body>
+</html>
