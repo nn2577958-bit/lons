@@ -4,17 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Palworld 홈</title>
-<style>
-.container { max-width: 600px; margin: auto; padding: 20px; font-family: sans-serif; }
-.user-box { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 10px; background-color: #f9f9f9; }
-.link-btn { display: inline-block; margin-top: 10px; padding: 7px 12px; background-color: #5865F2; color: #fff; text-decoration: none; border-radius: 5px; }
-.logout-btn { background-color: #f04747; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-.notice-container { max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background-color: #fff; }
-.notice { border-bottom: 1px solid #eee; padding: 10px; margin-bottom: 5px; border-radius: 5px; background-color: #f1f1f1; }
-.notice:last-child { border-bottom: none; margin-bottom: 0; }
-.notice strong { display: block; font-size: 1.1em; margin-bottom: 5px; color: #333; }
-.notice div { color: #555; }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
@@ -39,9 +29,8 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// Firebase 설정
 const firebaseConfig = {
   apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
   authDomain: "lons-dc24d.firebaseapp.com",
@@ -67,13 +56,24 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  // 사용자 정보 표시
   userName.textContent = user.email;
   userUid.textContent = user.uid;
   userVerified.textContent = user.emailVerified ? "인증됨 ✅" : "미인증 ❌";
 
+  if (!user.emailVerified) {
+    noticeList.textContent = "이메일 인증 후 이용 가능합니다.";
+    return;
+  }
+
   try {
-    // posts 컬렉션 불러오기
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    const isMember = userDoc.exists() && userDoc.data()?.isMember;
+
+    if (!isMember) {
+      noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다.";
+      return;
+    }
+
     const querySnapshot = await getDocs(collection(db, "posts"));
     noticeList.innerHTML = "";
 
@@ -97,7 +97,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// 로그아웃 버튼
 logoutBtn.addEventListener("click", () => {
   signOut(auth).then(() => window.location.href = "index.html");
 });
