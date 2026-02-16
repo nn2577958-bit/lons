@@ -5,22 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LONS Palworld 로그인</title>
 
-<!-- 사이트 파비콘 -->
 <link rel="icon" href="https://cdn.phototourl.com/uploads/2026-02-16-b555cb64-84f5-4ab4-b235-73d0d2be6482.png" type="image/png">
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
 <style>
-/* ===== 전체 배경 ===== */
 body {
   margin: 0;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
+  font-family: 'Segoe UI', sans-serif;
   background-image:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
     url('https://cdn.phototourl.com/uploads/2026-02-16-be12475d-955e-4258-b559-d05dd22da876.jpg');
@@ -29,7 +24,6 @@ body {
   background-repeat: no-repeat;
 }
 
-/* ===== 로그인 카드 ===== */
 .container {
   width: 380px;
   background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(225,225,225,0.9));
@@ -51,7 +45,6 @@ h2 {
   font-size: 24px;
 }
 
-/* ===== 버튼 ===== */
 button {
   width: 100%;
   padding: 14px;
@@ -65,48 +58,23 @@ button {
   box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-}
+button:hover { transform: translateY(-2px); box-shadow: 0px 6px 16px rgba(0,0,0,0.3); }
+button:active { transform: translateY(1px); box-shadow: 0px 2px 6px rgba(0,0,0,0.2); }
+button i { margin-right: 8px; color: #DB4437; }
+#google-btn { background: #fff; color: #444; border: 1px solid #ccc; }
+#google-btn:hover { background: #f0f0f0; }
 
-button:active {
-  transform: translateY(1px);
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
-}
-
-button i {
-  margin-right: 8px;
-  color: #DB4437;
-}
-
-#google-btn {
-  background: #fff;
-  color: #444;
-  border: 1px solid #ccc;
-}
-
-#google-btn:hover {
-  background: #f0f0f0;
-}
-
-/* 관리자 상태 */
 #admin-status {
   color: white;
   font-weight: bold;
   margin-bottom: 10px;
-  background: rgba(0,0,0,0.5); /* 글씨 뒤에 배경 */
+  background: rgba(0,0,0,0.5);
   padding: 6px 12px;
   border-radius: 8px;
   display: inline-block;
 }
 
-/* 에러 메시지 */
-#login-msg {
-  color: #ff4444;
-  margin-bottom: 10px;
-  font-weight: 500;
-}
+#login-msg { color: #ff4444; margin-bottom: 10px; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -127,31 +95,26 @@ const adminStatus = document.getElementById("admin-status");
 const googleBtn = document.getElementById("google-btn");
 const loginMsg = document.getElementById("login-msg");
 
-// ===== 관리자 온라인 시계 (로그인 전/후 상관없이) =====
-function updateAdminClock() {
-  const now = new Date();
-  const kst = new Date(now.getTime() + 9*60*60*1000); // UTC+9
-  const y = kst.getFullYear();
-  const m = String(kst.getMonth()+1).padStart(2,'0');
-  const d = String(kst.getDate()).padStart(2,'0');
-  const h = String(kst.getHours()).padStart(2,'0');
-  const min = String(kst.getMinutes()).padStart(2,'0');
-  const s = String(kst.getSeconds()).padStart(2,'0');
+// ===== 관리자 온라인 시계 (홈 화면처럼) =====
+let isAdminOnline = false;
 
-  // 로그인 여부와 상관없이 관리자 이메일이 있으면 온라인
-  onAuthStateChanged(auth, (user)=>{
-    if(user && user.email === ADMIN_EMAIL){
-      adminStatus.textContent = `🟢 관리자 온라인 – ${y}-${m}-${d} ${h}:${min}:${s}`;
-      // 깜빡임
-      adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
-    } else {
-      adminStatus.textContent = "🔴 관리자 오프라인";
-      adminStatus.style.opacity = "1";
-    }
-  });
-}
-updateAdminClock();
-setInterval(updateAdminClock, 1000);
+// 로그인 상태 체크
+onAuthStateChanged(auth, (user) => {
+  isAdminOnline = user && user.email === ADMIN_EMAIL;
+});
+
+// 매초 갱신
+setInterval(() => {
+  const now = new Date();
+  const kstString = now.toLocaleString("ko-KR", { hour12:false, timeZone:"Asia/Seoul" });
+  if(isAdminOnline){
+    adminStatus.textContent = `🟢 관리자 온라인 – ${kstString}`;
+    adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0"; // 깜빡임
+  } else {
+    adminStatus.textContent = "🔴 관리자 오프라인";
+    adminStatus.style.opacity = "1";
+  }
+}, 1000);
 
 // ===== Google 로그인 =====
 googleBtn.addEventListener("click", async () => {
