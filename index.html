@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONS Palworl SV 로그인</title>
+<title>LONS Palworld 로그인</title>
 <style>
 /* 전체 배경 - 그라데이션 */
 body {
@@ -14,7 +14,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #6a11cb, #2575fc); /* 보라-파랑 그라데이션 */
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
   color: #fff;
 }
 
@@ -36,7 +36,7 @@ h2 {
   color: #222;
 }
 
-/* Google 로그인 버튼 */
+/* 버튼 공통 */
 button {
   width: 100%;
   padding: 15px;
@@ -58,17 +58,15 @@ button:hover {
   background: #4285F4;
   color: #fff;
 }
-
 #google-btn:hover {
   background: #3367d6;
 }
 
-/* Discord 참여 버튼 */
+/* Discord 참여 */
 #discord-btn {
   background: #7289DA;
   color: #fff;
 }
-
 #discord-btn:hover {
   background: #5b6eae;
 }
@@ -79,14 +77,6 @@ button:hover {
   font-weight: 500;
   color: #e74c3c;
   min-height: 22px;
-}
-
-/* 에러 메시지 */
-.error {
-  color: #e74c3c;
-  font-weight: 500;
-  margin-bottom: 12px;
-  display: block;
   text-align: center;
 }
 </style>
@@ -120,6 +110,7 @@ googleBtn.addEventListener("click", async () => {
   const provider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, provider);
+    // 로그인 성공 후 home.html로 이동
     window.location.href = "home.html";
   } catch (err) {
     console.error(err);
@@ -130,10 +121,16 @@ googleBtn.addEventListener("click", async () => {
 // 🔹 Discord 참여 버튼
 discordBtn.addEventListener("click", () => {
   if (!auth.currentUser) {
+    // 로그인 안 되어 있으면 안내 후 로그인 페이지로 이동
     messageEl.textContent = "로그인 후 참여하실 수 있습니다!";
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1200);
     return;
   }
-  // 로그인 되어 있으면 참여 완료 메시지
+
+  // 로그인 되어 있으면 Discord 초대 링크 새 창 열기 + 안내 메시지
+  window.open("https://discord.gg/tnMXbQ65Hk", "_blank");
   messageEl.textContent = "참여하셨습니다! Discord 서버에 참여 완료 ✅";
 });
 </script>
