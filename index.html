@@ -5,20 +5,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LONS Palworld 로그인</title>
+
 <!-- Font Awesome for Google icon -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pap6GqRk4PjQb0O2x57GqgL7kFSqP0Zg3e4c3+lQ1IF6bYjPtcT6+ZGVVq0Z6I9OCz3hWZkMtiFZk7wIh2GJ7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
-/* 전체 배경: 그라데이션 + subtle 패턴 */
+/* ===== 전체 배경 ===== */
 body {
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display:flex; justify-content:center; align-items:center;
-  height:100vh; margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
   background: linear-gradient(135deg, #6a11cb, #2575fc);
   background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
   background-size: 40px 40px;
+  animation: gradientMove 20s ease infinite;
 }
 
-/* 로그인 박스 */
+/* 배경 애니메이션 */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== 로그인 카드 ===== */
 .container {
   width: 400px;
   background: rgba(255,255,255,0.95);
@@ -26,12 +39,19 @@ body {
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.15);
   text-align:center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* 카드 hover 애니메이션 */
+.container:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
 }
 
 /* 제목 */
 h2 { color:#333; margin-bottom:25px; font-size:26px; }
 
-/* 버튼 */
+/* ===== 버튼 ===== */
 button {
   width:100%;
   padding:14px;
@@ -41,11 +61,16 @@ button {
   font-size:18px;
   font-weight:600;
   cursor:pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 /* Google 버튼 */
@@ -53,7 +78,12 @@ button:hover {
 #google-btn:hover { background:#3367d6; }
 
 /* 에러 메시지 */
-#error-msg { color:#e74c3c; font-weight:500; margin-bottom:12px; text-align:center; }
+#error-msg, #login-msg {
+  color:#e74c3c;
+  font-weight:500;
+  margin-bottom:12px;
+  text-align:center;
+}
 
 button i { margin-right:8px; }
 </style>
