@@ -4,58 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Palworld 로그인</title>
-<link rel="stylesheet" href="./style.css">
 <style>
-/* 전체 배경 */
+/* 전체 배경 - 그라데이션 */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f0f2f5;
   margin: 0;
   padding: 0;
   height: 100vh;
   display: flex;
-  align-items: center;    /* 수직 중앙 */
-  justify-content: center; /* 수평 중앙 */
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6a11cb, #2575fc); /* 보라-파랑 그라데이션 */
+  color: #fff;
 }
 
 /* 중앙 박스 */
 .container {
-  width: 450px;              /* 박스 가로 크기 */
-  background: #fff;
-  padding: 40px 30px;        /* 패딩 크게 */
+  width: 480px;
+  background: rgba(255,255,255,0.95);
+  padding: 40px 30px;
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   text-align: center;
+  color: #333;
 }
 
 /* 제목 */
 h2 {
-  color: #333;
   margin-bottom: 30px;
-  font-size: 26px;
+  font-size: 28px;
+  color: #222;
 }
 
 /* Google 로그인 버튼 */
 button {
   width: 100%;
   padding: 15px;
-  margin: 15px 0;
+  margin: 12px 0;
   border: none;
   border-radius: 8px;
-  background: #4285F4;
-  color: #fff;
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
 }
 
 button:hover {
+  transform: translateY(-2px);
+}
+
+/* Google 로그인 */
+#google-btn {
+  background: #4285F4;
+  color: #fff;
+}
+
+#google-btn:hover {
   background: #3367d6;
 }
 
+/* Discord 참여 버튼 */
+#discord-btn {
+  background: #7289DA;
+  color: #fff;
+}
+
+#discord-btn:hover {
+  background: #5b6eae;
+}
+
+/* 메시지 표시 */
+#message {
+  margin-top: 15px;
+  font-weight: 500;
+  color: #e74c3c;
+  min-height: 22px;
+}
+
 /* 에러 메시지 */
-#error-msg {
+.error {
   color: #e74c3c;
   font-weight: 500;
   margin-bottom: 12px;
@@ -65,10 +92,18 @@ button:hover {
 </style>
 </head>
 <body>
+
 <div class="container">
   <h2>Palworld 로그인</h2>
-  <span id="login-msg" class="error"></span>
+
+  <!-- Google 로그인 -->
   <button id="google-btn">Google 로그인</button>
+
+  <!-- Discord 참여 -->
+  <button id="discord-btn">Discord 참여하기</button>
+
+  <!-- 메시지 표시 -->
+  <div id="message"></div>
 </div>
 
 <script type="module">
@@ -76,18 +111,30 @@ import { auth } from "./firebase.js";
 import { signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const googleBtn = document.getElementById("google-btn");
-const loginMsg = document.getElementById("login-msg");
+const discordBtn = document.getElementById("discord-btn");
+const messageEl = document.getElementById("message");
 
+// 🔹 Google 로그인
 googleBtn.addEventListener("click", async () => {
-  loginMsg.textContent = "";
+  messageEl.textContent = "";
   const provider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, provider);
     window.location.href = "home.html";
   } catch (err) {
     console.error(err);
-    loginMsg.textContent = "Google 로그인 실패: " + err.message;
+    messageEl.textContent = "Google 로그인 실패: " + err.message;
   }
+});
+
+// 🔹 Discord 참여 버튼
+discordBtn.addEventListener("click", () => {
+  if (!auth.currentUser) {
+    messageEl.textContent = "로그인 후 참여하실 수 있습니다!";
+    return;
+  }
+  // 로그인 되어 있으면 참여 완료 메시지
+  messageEl.textContent = "참여하셨습니다! Discord 서버에 참여 완료 ✅";
 });
 </script>
 </body>
