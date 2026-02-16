@@ -29,7 +29,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
@@ -74,7 +74,9 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-    const querySnapshot = await getDocs(collection(db, "posts"));
+    // 최신순 정렬된 공지사항 쿼리
+    const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(postsQuery);
     noticeList.innerHTML = "";
 
     if (querySnapshot.empty) {
@@ -83,10 +85,18 @@ onAuthStateChanged(auth, async (user) => {
       const fragment = document.createDocumentFragment();
       querySnapshot.forEach(doc => {
         const data = doc.data();
+
         const div = document.createElement("div");
         div.className = "notice";
-        div.innerHTML = `<strong>${data.title || "제목 없음"}</strong>
-                         <div>${data.content || ""}</div>`;
+
+        const titleEl = document.createElement("strong");
+        titleEl.textContent = data.title || "제목 없음";
+
+        const contentEl = document.createElement("div");
+        contentEl.textContent = data.content || "";
+
+        div.appendChild(titleEl);
+        div.appendChild(contentEl);
         fragment.appendChild(div);
       });
       noticeList.appendChild(fragment);
