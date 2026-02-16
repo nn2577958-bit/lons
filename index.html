@@ -85,43 +85,23 @@ input {
 
 <div class="login-container">
   <h2>로그인</h2>
-  <div class="error" id="error-msg"></div>
 
+  <div id="login-msg" class="error"></div>
+
+  <!-- Firebase 로그인 폼 -->
   <form id="login-form">
-    <input type="text" id="username" placeholder="아이디">
-    <input type="password" id="password" placeholder="비밀번호">
+    <input type="email" id="login-email" placeholder="이메일" required>
+    <input type="password" id="login-password" placeholder="비밀번호" required>
     <button type="submit" class="login-btn">로그인</button>
   </form>
 
   <div class="theme-toggle" onclick="toggleTheme()">🌙 다크모드 전환</div>
 </div>
 
+<!-- 🔥 Firebase script 연결 (중요) -->
+<script type="module" src="script.js"></script>
+
 <script>
-// 이미 로그인 되어있으면 홈으로
-if(localStorage.getItem("loggedIn") === "true"){
-  window.location.href = "home.html";
-}
-
-document.getElementById("login-form").addEventListener("submit", function(e){
-  e.preventDefault();
-
-  const id = document.getElementById("username").value.trim();
-  const pw = document.getElementById("password").value.trim();
-  const errorBox = document.getElementById("error-msg");
-
-  if(!id || !pw){
-    errorBox.textContent = "아이디와 비밀번호를 입력하세요.";
-    return;
-  }
-
-  if(id === "admin" && pw === "1234"){
-    localStorage.setItem("loggedIn","true");
-    window.location.href = "home.html";
-  } else {
-    errorBox.textContent = "아이디 또는 비밀번호가 틀렸습니다.";
-  }
-});
-
 // 다크모드
 function toggleTheme(){
   document.body.classList.toggle("dark-mode");
