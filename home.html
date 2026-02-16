@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONS Palworld Home (테스트용)</title>
+<title>LONS Palworld Home</title>
 <link rel="icon" href="https://cdn.phototourl.com/uploads/2026-02-16-2fc87bae-3744-4c0a-891f-19f3a20b09fd.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <style>
 body{ margin:0; font-family:'Segoe UI',sans-serif; background:#111; color:white; }
-
 /* ===== 상단바 ===== */
 .topbar{ display:flex; justify-content:space-between; align-items:center; padding:15px 25px; background:#000; border-bottom:1px solid #333; }
 .topbar-left{ font-size:20px; font-weight:bold; }
@@ -18,7 +17,6 @@ body{ margin:0; font-family:'Segoe UI',sans-serif; background:#111; color:white;
 .pay-btn{ background:#FFDC00; color:#000; }
 .discord-btn{ background:#5865F2; color:#fff; }
 .logout-btn{ background:#f44336; color:#fff; }
-
 /* ===== 공지 전체 화면 ===== */
 .notice-section{ padding:40px; }
 .notice-section h2{ font-size:26px; margin-bottom:20px; }
@@ -26,7 +24,6 @@ body{ margin:0; font-family:'Segoe UI',sans-serif; background:#111; color:white;
 .notice-item{ background:#1c1c1c; padding:20px; border-radius:12px; border-left:5px solid #4CAF50; }
 .notice-item strong{ font-size:18px; }
 .notice-item small{ display:block; color:#aaa; margin:5px 0; }
-
 /* ===== PC 모달 ===== */
 .modal{ display:none; position:fixed; top:0;left:0; width:100%;height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
 .modal-content{ background:white; color:black; padding:25px; border-radius:12px; text-align:center; width:300px; }
@@ -35,6 +32,7 @@ body{ margin:0; font-family:'Segoe UI',sans-serif; background:#111; color:white;
 </head>
 <body>
 
+<!-- 상단바 -->
 <div class="topbar">
   <div class="topbar-left">🎮 LONS Palworld</div>
   <div class="topbar-right">
@@ -47,11 +45,13 @@ body{ margin:0; font-family:'Segoe UI',sans-serif; background:#111; color:white;
   </div>
 </div>
 
+<!-- 공지 전체화면 -->
 <div class="notice-section">
   <h2>📢 공지사항</h2>
   <div class="notice-list" id="notice-list"></div>
 </div>
 
+<!-- PC 안내 팝업 -->
 <div class="modal" id="pc-modal">
   <div class="modal-content">
     <h3>📱 모바일 전용</h3>
@@ -75,7 +75,7 @@ const logoutBtn = document.getElementById("logout-btn");
 const modal = document.getElementById("pc-modal");
 
 const notices = [
-{title:"공지 사항",content:"항상 모니터링 중이며 모든 파일은 데이터 베이스에 기록 됩니다.",createdAt:"2026-02-12 13:00~13:10"},
+{title:"공지 사항",content:"항상 모니터링 중이며 모든 파일은 데이터 베이스에 기록 됩니다.",createdAt:"2026-02-17 12:00~12:10"},
 {title:"신규 뽑기 이벤트 시작!",content:"당첨되신 분들은 요청 주시면 지급 처리됩니다.",createdAt:"2026-02-16 14:00"},
 {title:"업데이트 완료",content:"PAL 0.7.2 최신 패치가 적용되었습니다.",createdAt:"2026-02-16 14:30"},
 {title:"SV 오픈 날짜",content:"2026 01.12",createdAt:"2026-01-12 01:00"},
@@ -87,19 +87,32 @@ const notices = [
 onAuthStateChanged(auth,(user)=>{
  if(!user){window.location.href="index.html";return;}
 
- // ===== 관리자 온라인 표시 및 깜빡임 =====
- if(user.email===ADMIN_EMAIL){
-  adminStatus.innerHTML="🟢 관리자 온라인";
-  adminStatus.style.background="#28a745";
+ // ===== 관리자 온라인 표시 + 깜빡임 + KST 시간 =====
+ if(user.email === ADMIN_EMAIL){
+    function updateAdminStatus(){
+        const now = new Date();
+        const kstTime = new Date(now.getTime() + 9*60*60*1000);
+        const year = kstTime.getFullYear();
+        const month = String(kstTime.getMonth()+1).padStart(2,'0');
+        const day = String(kstTime.getDate()).padStart(2,'0');
+        const hours = String(kstTime.getHours()).padStart(2,'0');
+        const minutes = String(kstTime.getMinutes()).padStart(2,'0');
+        const seconds = String(kstTime.getSeconds()).padStart(2,'0');
+        adminStatus.innerHTML = `🟢 관리자 온라인 – ${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+    updateAdminStatus();
+    setInterval(updateAdminStatus, 1000);
 
-  // 깜빡임 효과
-  setInterval(()=>{
-    adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
-  }, 800);
- }else{
-  adminStatus.innerHTML="🔴 관리자 오프라인";
-  adminStatus.style.background="#dc3545";
-  adminStatus.style.opacity = "1";
+    // 깜빡임
+    setInterval(()=>{
+        adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
+    }, 800);
+
+    adminStatus.style.background = "#28a745";
+ } else {
+    adminStatus.innerHTML = "🔴 관리자 오프라인";
+    adminStatus.style.background = "#dc3545";
+    adminStatus.style.opacity = "1";
  }
 
  // 공지사항 렌더
@@ -127,17 +140,16 @@ discordBtn.onclick = ()=>{
  window.open("https://discord.gg/tnMXbQ65Hk","_blank");
 };
 
-// ===== Pay 버튼 테스트용 =====
+// ===== Pay 버튼 (실제 연결) =====
 kakaoBtn.onclick = ()=>{
  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
  const isMobile = /iPhone|iPad|iPod|Android/i.test(userAgent);
-
  if(isMobile){
-   alert("모바일 테스트: 카카오페이 링크 이동 (실제 결제 안됨)");
-   console.log("모바일 테스트: 카카오페이 링크 이동 (실제 결제 안됨)");
+   // 실제 결제 페이지 이동
+   window.location.href="https://qr.kakaopay.com/FRydbZ6Gr";
  } else {
+   // PC에서는 안내 모달
    modal.style.display = "flex";
-   console.log("PC 테스트: 모달 표시");
  }
 };
 
