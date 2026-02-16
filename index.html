@@ -56,15 +56,24 @@ input {
   color: var(--text-main);
 }
 
-.login-btn {
+.login-btn,
+.google-btn {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
   border: none;
-  background: var(--button-bg);
   color: #fff;
   font-weight: bold;
   cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.login-btn {
+  background: var(--button-bg);
+}
+
+.google-btn {
+  background: #db4437;
 }
 
 .error {
@@ -88,21 +97,22 @@ input {
 
   <div id="login-msg" class="error"></div>
 
-  <!-- Firebase 로그인 폼 -->
   <form id="login-form">
     <input type="email" id="login-email" placeholder="이메일" required>
     <input type="password" id="login-password" placeholder="비밀번호" required>
     <button type="submit" class="login-btn">로그인</button>
   </form>
 
+  <button id="google-login-btn" class="google-btn">
+    Google로 로그인
+  </button>
+
   <div class="theme-toggle" onclick="toggleTheme()">🌙 다크모드 전환</div>
 </div>
 
-<!-- 🔥 Firebase script 연결 (중요) -->
 <script type="module" src="script.js"></script>
 
 <script>
-// 다크모드
 function toggleTheme(){
   document.body.classList.toggle("dark-mode");
   localStorage.setItem("theme",
