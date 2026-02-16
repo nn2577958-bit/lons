@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LONS SPA 데모</title>
+  <title>LONS Palworld 24H</title>
   <style>
     body {
       margin: 0;
@@ -120,8 +120,8 @@
 
   <!-- 모듈 9 화면 -->
   <div class="module9" id="module9" style="display:none;">
-    <h2 id="welcomeMsg">모듈 9</h2>
-    <p id="introMsg">로그인 성공! 아래는 모듈 9의 주요 내용입니다.</p>
+    <h2 id="welcomeMsg">LONS Palworld 24H</h2>
+    <p id="introMsg">디스코드를 참여 해주세요</p>
 
     <div id="moduleContent"></div>
 
@@ -144,10 +144,10 @@
 
     // 예시 모듈 데이터
     const moduleData = [
-      { title: "공지사항", text: "오늘 시스템 점검이 있습니다." },
-      { title: "업무 알림", text: "마감된 보고서를 확인해주세요." },
-      { title: "통계", text: "이번 주 방문자 수: 1,234명" },
-      { title: "새 메시지", text: "새로운 쪽지가 도착했습니다." }
+      { title: "공지사항", text: "아래의 디스코드를 참여 해주세요" },
+      { title: "사이트 주소", text: "https://lonssv.creatorlink.net/" },
+      { title: "24시간 팰월드", text: "스팀 게임 환영 활성화" },
+      { title: "디스코드 참여", text: "https://discord.gg/tnMXbQ65Hk" }
     ];
 
     // 로그인 버튼
@@ -162,7 +162,7 @@
 
       loginCard.style.display = 'none';
       module9.style.display = 'block';
-      welcomeMsg.textContent = `${username}님, 모듈 9에 오신 것을 환영합니다!`;
+      welcomeMsg.textContent = `${username}님, 방문을 환영합니다!`;
 
       // 동적 카드 생성
       moduleContent.innerHTML = '';
