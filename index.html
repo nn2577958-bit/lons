@@ -12,12 +12,12 @@
 <style>
 /* ===== 전체 배경 ===== */
 body {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  margin:0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
   background: linear-gradient(135deg, #6a11cb, #2575fc);
   background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
   background-size: 40px 40px;
@@ -34,15 +34,15 @@ body {
 /* ===== 로그인 카드 ===== */
 .container {
   width: 400px;
-  background: rgba(255,255,255,0.95);
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 35px 25px;
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  text-align:center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* 카드 hover 애니메이션 */
+/* 카드 hover 효과 */
 .container:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 12px 30px rgba(0,0,0,0.25);
@@ -50,22 +50,22 @@ body {
 
 /* 제목 */
 h2 {
-  color:#333;
-  margin-bottom:25px;
-  font-size:26px;
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 26px;
 }
 
 /* ===== 버튼 ===== */
 button {
-  width:100%;
-  padding:14px;
-  margin:12px 0;
-  border:none;
-  border-radius:8px;
-  font-size:18px;
-  font-weight:600;
-  cursor:pointer;
-  transition: all 0.2s;
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
@@ -79,26 +79,27 @@ button:active {
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* Google 버튼 */
+/* Google 로그인 버튼 */
 #google-btn {
-  background:#4285F4;
-  color:#fff;
+  background-color: #4285F4;
+  color: #fff;
 }
 
 #google-btn:hover {
-  background:#3367d6;
+  background-color: #3367d6;
 }
 
 /* 에러 메시지 */
 #login-msg {
-  color:#e74c3c;
-  font-weight:500;
-  margin-bottom:12px;
-  text-align:center;
+  color: #e74c3c;
+  font-weight: 500;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
+/* 버튼 아이콘 */
 button i {
-  margin-right:8px;
+  margin-right: 8px;
 }
 </style>
 </head>
@@ -117,16 +118,16 @@ const googleBtn = document.getElementById("google-btn");
 const loginMsg = document.getElementById("login-msg");
 
 googleBtn.addEventListener("click", async () => {
-  googleBtn.disabled = true; // 광클 방지
+  googleBtn.disabled = true; // 버튼 광클 방지
   loginMsg.textContent = "";
   const provider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, provider);
-    window.location.href = "home.html"; // 로그인 성공 시 home 이동
+    window.location.href = "home.html"; // 로그인 성공 시 이동
   } catch (err) {
     console.error(err);
     loginMsg.textContent = "Google 로그인 실패: " + err.message;
-    googleBtn.disabled = false; // 실패 시 버튼 다시 활성화
+    googleBtn.disabled = false; // 실패 시 버튼 활성화
   }
 });
 </script>
