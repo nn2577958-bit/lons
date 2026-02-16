@@ -112,8 +112,13 @@ function updateAdminClock(user) {
   const now = new Date();
   const kstString = now.toLocaleString("ko-KR", { hour12:false, timeZone:"Asia/Seoul" });
 
-  // ADMIN_EMAIL 비교해서 상태 결정
-  const isOnline = user && user.email === ADMIN_EMAIL;
+  // 로그인 전: 기본 온라인
+  let isOnline = true;
+
+  // 로그인 후 이메일 확인
+  if(user && user.email === ADMIN_EMAIL) isOnline = true;
+  if(user && user.email !== ADMIN_EMAIL) isOnline = false;
+
   adminStatus.innerHTML = `${isOnline ? "🟢 관리자 온라인" : "🔴 관리자 오프라인"}<br>${kstString}`;
 
   // 깜빡임 효과
