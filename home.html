@@ -75,30 +75,35 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  const userDoc = await getDoc(doc(db, "users", user.uid));
-  const isMember = userDoc.exists() && userDoc.data()?.isMember;
+  try {
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    const isMember = userDoc.exists() && userDoc.data()?.isMember;
 
-  if (!isMember) {
-    noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다.";
-    return;
-  }
+    if (!isMember) {
+      noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다.";
+      return;
+    }
 
-  noticeList.innerHTML = "";
-  const querySnapshot = await getDocs(collection(db, "posts"));
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    noticeList.innerHTML = "";
 
-  if (querySnapshot.empty) {
-    noticeList.textContent = "공지사항이 없습니다.";
-  } else {
-    const fragment = document.createDocumentFragment();
-    querySnapshot.forEach(doc => {
-      const data = doc.data();
-      const div = document.createElement("div");
-      div.className = "notice";
-      div.innerHTML = `<strong>${data.title || "제목 없음"}</strong>
-                       <div>${data.content || ""}</div>`;
-      fragment.appendChild(div);
-    });
-    noticeList.appendChild(fragment);
+    if (querySnapshot.empty) {
+      noticeList.textContent = "공지사항이 없습니다.";
+    } else {
+      const fragment = document.createDocumentFragment();
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.className = "notice";
+        div.innerHTML = `<strong>${data.title || "제목 없음"}</strong>
+                         <div>${data.content || ""}</div>`;
+        fragment.appendChild(div);
+      });
+      noticeList.appendChild(fragment);
+    }
+  } catch (error) {
+    console.error("공지사항 불러오기 오류:", error);
+    noticeList.textContent = "공지사항을 불러오는 중 오류가 발생했습니다.";
   }
 });
 
