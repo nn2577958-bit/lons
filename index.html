@@ -3,135 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONS Palworld 로그인</title>
+<title>LONS Palworld SV</title>
+<!-- Font Awesome for Discord Icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pap6GqRk4PjQb0O2x57GqgL7kFSqP0Zg3e4c3+lQ1IF6bYjPtcT6+ZGVVq0Z6I9OCz3hWZkMtiFZk7wIh2GJ7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
-/* 전체 배경 - 그라데이션 */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  color: #fff;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:#f0f2f5; margin:0; padding:0;
 }
-
-/* 중앙 박스 */
 .container {
-  width: 480px;
-  background: rgba(255,255,255,0.95);
-  padding: 40px 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  text-align: center;
-  color: #333;
+  max-width:500px; margin:50px auto; background:#fff;
+  padding:25px 20px; border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
 }
-
-/* 제목 */
-h2 {
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: #222;
+h1,h3 { text-align:center; color:#333; margin-bottom:15px; }
+.user-box {
+  background:#f9f9f9; padding:15px 20px; margin:15px 0;
+  border-radius:10px; border:1px solid #eee;
 }
-
-/* 버튼 공통 */
 button {
-  width: 100%;
-  padding: 15px;
-  margin: 12px 0;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  width:100%; padding:12px; margin:5px 0; border:none;
+  border-radius:6px; background:#4CAF50; color:#fff;
+  font-size:15px; cursor:pointer; transition: all 0.3s;
 }
-
-button:hover {
-  transform: translateY(-2px);
-}
-
-/* Google 로그인 */
-#google-btn {
-  background: #4285F4;
-  color: #fff;
-}
-#google-btn:hover {
-  background: #3367d6;
-}
-
-/* Discord 참여 */
+button:hover { background:#45a049; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.2);}
+.logout-btn { background:#f44336; }
+.logout-btn:hover { background:#d32f2f; }
 #discord-btn {
-  background: #7289DA;
-  color: #fff;
+  background:#5865F2; display:none; color:#fff;
 }
 #discord-btn:hover {
-  background: #5b6eae;
+  background:#4752c4; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }
-
-/* 메시지 표시 */
-#message {
-  margin-top: 15px;
-  font-weight: 500;
-  color: #e74c3c;
-  min-height: 22px;
-  text-align: center;
+.notice {
+  background:#e8e8e8; padding:12px 15px; margin:10px 0;
+  border-radius:8px; border-left:4px solid #4CAF50;
 }
+.notice strong { display:block; font-size:1.1em; margin-bottom:5px; color:#333; }
+.notice small { display:block; color:#666; margin-bottom:8px; font-size:12px; }
+#load-more-btn {
+  width:100%; padding:10px; background:#2196F3; color:#fff;
+  border-radius:6px; border:none; cursor:pointer; margin-top:10px; transition: background 0.2s;
+}
+#load-more-btn:hover { background:#1976d2; }
+button i { margin-right:8px; }
 </style>
 </head>
 <body>
-
 <div class="container">
-  <h2>LONS SV Palworld 로그인</h2>
+  <h1>🎮 LONS Palworld</h1>
 
-  <!-- Google 로그인 -->
-  <button id="google-btn">Google 로그인</button>
+  <!-- 로그아웃 -->
+  <div class="user-box">
+    <button id="logout-btn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> 로그아웃</button>
+  </div>
 
-  <!-- Discord 참여 -->
-  <button id="discord-btn">Discord 참여하기</button>
+  <!-- 공지사항 -->
+  <div class="user-box">
+    <h3>📢 공지사항</h3>
+    <div id="notice-list" class="notice-container">불러오는 중...</div>
+    <button id="load-more-btn" style="display:none;">더보기</button>
+  </div>
 
-  <!-- 메시지 표시 -->
-  <div id="message"></div>
+  <!-- Discord 참여 버튼 -->
+  <div class="user-box">
+    <button id="discord-btn"><i class="fab fa-discord"></i> 디스코드 참여하기</button>
+  </div>
 </div>
 
 <script type="module">
 import { auth } from "./firebase.js";
-import { signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-const googleBtn = document.getElementById("google-btn");
+const logoutBtn = document.getElementById("logout-btn");
+const noticeList = document.getElementById("notice-list");
+const loadMoreBtn = document.getElementById("load-more-btn");
 const discordBtn = document.getElementById("discord-btn");
-const messageEl = document.getElementById("message");
 
-// 🔹 Google 로그인
-googleBtn.addEventListener("click", async () => {
-  messageEl.textContent = "";
-  const provider = new GoogleAuthProvider();
-  try {
-    await signInWithPopup(auth, provider);
-    // 로그인 성공 후 home.html로 이동
-    window.location.href = "home.html";
-  } catch (err) {
-    console.error(err);
-    messageEl.textContent = "Google 로그인 실패: " + err.message;
+let currentIndex = 0;
+const PAGE_SIZE = 5;
+
+// 🔹 공지사항 데이터
+const notices = [
+  { title: "서버 오픈 안내", content: "02/20 하드코어 오픈점검", createdAt: "2026-02-20 15:00~15:10" },
+  { title: "신규 뽑기 이벤트 시작!", content: "당첨되신 분들은 요청 주시면 지급 처리됩니다.", createdAt: "2026-02-16 14:00" },
+  { title: "업데이트 완료", content: "최신 패치가 적용되었습니다.", createdAt: "2026-02-16 14:30" },
+  { title: "서버 접속 상황", content: "1SV / 2SV 모두 정상 작동 중입니다.", createdAt: "2026-02-16 00:00" },
+  { title: "공지사항", content: "홍보 많이 해주세요. 책임감 있게 운영합니다.", createdAt: "2026-02-15 12:00" },
+  { title: "이벤트 안내", content: "많은 이벤트 준비 중입니다. 기대해주세요!", createdAt: "2026-02-14 10:00" }
+];
+
+// 🔹 로그인 상태 체크
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    // 로그인 안 되어 있으면 index.html로 이동
+    window.location.href = "index.html";
+  } else {
+    // 로그인 되어 있으면 Discord 버튼 표시
+    discordBtn.style.display = "block";
+
+    // 공지사항 초기화
+    noticeList.innerHTML = "";
+    currentIndex = 0;
+    loadNextPage();
   }
 });
 
-// 🔹 Discord 참여 버튼
-discordBtn.addEventListener("click", () => {
-  if (!auth.currentUser) {
-    // 로그인 안 되어 있으면 안내 후 로그인 페이지로 이동
-    messageEl.textContent = "로그인 후 참여하실 수 있습니다!";
-    setTimeout(() => {
-      window.location.href = "login.html";
-    }, 1200);
-    return;
+// 🔹 로그아웃
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    window.location.href = "index.html";
+  } catch(err) {
+    console.error("로그아웃 실패:", err);
   }
+});
 
-  // 로그인 되어 있으면 Discord 초대 링크 새 창 열기 + 안내 메시지
+// 🔹 공지 페이지네이션
+function loadNextPage() {
+  const next = notices.slice(currentIndex, currentIndex + PAGE_SIZE);
+  next.forEach(data => {
+    const div = document.createElement("div");
+    div.className = "notice";
+
+    const titleEl = document.createElement("strong");
+    titleEl.textContent = data.title;
+
+    const dateEl = document.createElement("small");
+    dateEl.textContent = data.createdAt;
+
+    const contentEl = document.createElement("div");
+    contentEl.textContent = data.content;
+
+    div.append(titleEl, dateEl, contentEl);
+    noticeList.appendChild(div);
+  });
+
+  currentIndex += PAGE_SIZE;
+  loadMoreBtn.style.display = currentIndex < notices.length ? "block" : "none";
+}
+
+loadMoreBtn.addEventListener("click", loadNextPage);
+
+// 🔹 Discord 버튼 클릭 시 새 창 열기
+discordBtn.addEventListener("click", () => {
   window.open("https://discord.gg/tnMXbQ65Hk", "_blank");
-  messageEl.textContent = "참여하셨습니다! Discord 서버에 참여 완료 ✅";
 });
 </script>
 </body>
