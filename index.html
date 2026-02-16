@@ -6,124 +6,70 @@
 <title>로그인</title>
 
 <style>
-:root {
-  --bg-gradient: linear-gradient(to bottom right, #6a11cb, #2575fc);
-  --container-bg: rgba(255,255,255,0.95);
-  --text-main: #333;
-  --text-sub: #666;
-  --input-bg: #fff;
-  --input-border: #ccc;
-  --button-bg: #333;
-}
-
-body.dark-mode {
-  --bg-gradient: linear-gradient(to bottom right, #141e30, #243b55);
-  --container-bg: rgba(30,30,30,0.95);
-  --text-main: #f1f1f1;
-  --text-sub: #aaa;
-  --input-bg: #2a2a2a;
-  --input-border: #444;
-  --button-bg: #000;
-}
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: var(--bg-gradient);
-  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.login-container {
+.container {
+  background: rgba(255,255,255,0.95);
+  padding: 35px;
+  border-radius: 20px;
   width: 90%;
   max-width: 400px;
-  background: var(--container-bg);
-  padding: 30px;
-  border-radius: 16px;
   text-align: center;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  box-shadow: 0 0 25px rgba(0,0,0,0.2);
 }
+
+h2 { margin-bottom: 20px; }
 
 input {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
   border-radius: 8px;
-  border: 1px solid var(--input-border);
-  background: var(--input-bg);
-  color: var(--text-main);
+  border: 1px solid #ccc;
 }
 
-.login-btn,
-.google-btn {
+button {
   width: 100%;
   padding: 12px;
+  margin-bottom: 10px;
   border-radius: 8px;
   border: none;
-  color: #fff;
+  cursor: pointer;
   font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 10px;
 }
 
-.login-btn {
-  background: var(--button-bg);
-}
+.login-btn { background: #333; color: white; }
+.signup-btn { background: #4CAF50; color: white; }
+.google-btn { background: #db4437; color: white; }
 
-.google-btn {
-  background: #db4437;
-}
-
-.error {
-  color: red;
-  margin-bottom: 10px;
-}
-
-.theme-toggle {
-  margin-top: 15px;
-  font-size: 13px;
-  cursor: pointer;
-  color: var(--text-sub);
-}
+.error { color: red; margin-bottom: 10px; font-size: 14px; }
 </style>
 </head>
 
 <body>
 
-<div class="login-container">
-  <h2>로그인</h2>
+<div class="container">
+  <h2>Palworld 로그인</h2>
 
   <div id="login-msg" class="error"></div>
 
-  <form id="login-form">
-    <input type="email" id="login-email" placeholder="이메일" required>
-    <input type="password" id="login-password" placeholder="비밀번호" required>
-    <button type="submit" class="login-btn">로그인</button>
-  </form>
+  <input type="email" id="email" placeholder="이메일">
+  <input type="password" id="password" placeholder="비밀번호">
 
-  <button id="google-login-btn" class="google-btn">
-    Google로 로그인
-  </button>
-
-  <div class="theme-toggle" onclick="toggleTheme()">🌙 다크모드 전환</div>
+  <button id="login-btn" class="login-btn">로그인</button>
+  <button id="signup-btn" class="signup-btn">회원가입</button>
+  <button id="google-btn" class="google-btn">Google 로그인</button>
 </div>
 
 <script type="module" src="script.js"></script>
-
-<script>
-function toggleTheme(){
-  document.body.classList.toggle("dark-mode");
-  localStorage.setItem("theme",
-    document.body.classList.contains("dark-mode") ? "dark" : "light"
-  );
-}
-
-if(localStorage.getItem("theme") === "dark"){
-  document.body.classList.add("dark-mode");
-}
-</script>
 
 </body>
 </html>
