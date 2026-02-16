@@ -43,12 +43,27 @@ loginBtn?.addEventListener("click", () => {
     .catch(e => msg.innerText = e.message);
 });
 
-// 회원가입
-signupBtn?.addEventListener("click", () => {
+// 회원가입 (이미 존재하면 자동 로그인)
+signupBtn?.addEventListener("click", async () => {
   const { email, password } = getInput();
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(() => window.location.href = "home.html")
-    .catch(e => msg.innerText = e.message);
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    window.location.href = "home.html";
+  } catch (error) {
+
+    if (error.code === "auth/email-already-in-use") {
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "home.html";
+      } catch {
+        msg.innerText = "이미 가입된 이메일입니다. 비밀번호를 확인하세요.";
+      }
+    } else {
+      msg.innerText = error.message;
+    }
+
+  }
 });
 
 // 구글 로그인 (GitHub Pages 안전용 redirect)
