@@ -1,3 +1,4 @@
+<!-- home.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,18 +7,19 @@
 <title>Palworld 홈</title>
 <link rel="stylesheet" href="./style.css">
 <style>
-  body { font-family: Arial, sans-serif; background: #f0f2f5; margin:0; padding:0; }
-  .container { max-width: 500px; margin:50px auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
-  h1,h2,h3 { text-align:center; }
-  .user-box { background:#f9f9f9; padding:15px; margin:15px 0; border-radius:8px; }
-  button { width:100%; padding:10px; margin:5px 0; border:none; border-radius:5px; background:#4CAF50; color:#fff; cursor:pointer; }
-  button:hover { background:#45a049; }
-  .notice { border: 1px solid #ddd; padding:10px; margin-bottom:10px; border-radius:5px; }
-  .notice strong { display:block; font-size:1.1em; margin-bottom:3px; }
-  .notice small { color:#555; display:block; margin-bottom:5px; }
-  #load-more-btn { margin-top:10px; padding:5px 10px; }
-  .logout-btn { background:#f44336; margin-top:15px; }
-  .logout-btn:hover { background:#d32f2f; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin:0; padding:0; }
+.container { max-width: 500px; margin:50px auto; background:#fff; padding:25px 20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.08); }
+h1,h2,h3 { text-align:center; color:#333; margin-bottom:15px; }
+.user-box { background:#f9f9f9; padding:15px 20px; margin:15px 0; border-radius:10px; border:1px solid #eee; }
+button { width:100%; padding:12px; margin:5px 0; border:none; border-radius:6px; background:#4CAF50; color:#fff; font-size:15px; cursor:pointer; transition: background 0.2s; }
+button:hover { background:#45a049; }
+.logout-btn { background:#f44336; }
+.logout-btn:hover { background:#d32f2f; }
+.notice { background:#e8e8e8; padding:12px 15px; margin:10px 0; border-radius:8px; border-left:4px solid #4CAF50; }
+.notice strong { display:block; font-size:1.1em; margin-bottom:5px; color:#333; }
+.notice small { display:block; color:#666; margin-bottom:8px; font-size:12px; }
+#load-more-btn { width:100%; padding:10px; background:#2196F3; color:#fff; border-radius:6px; border:none; cursor:pointer; margin-top:10px; transition:background 0.2s; }
+#load-more-btn:hover { background:#1976d2; }
 </style>
 </head>
 <body>
@@ -25,7 +27,7 @@
   <h1>🎮 LONS Palworld</h1>
   <div class="subtitle">론즈서버 팰월드 24시간</div>
 
-  <!-- 로그아웃 버튼 -->
+  <!-- 로그아웃 -->
   <div class="user-box">
     <button id="logout-btn" class="logout-btn">로그아웃</button>
   </div>
@@ -40,6 +42,7 @@
 
 <script type="module">
 import { auth, signOut } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const logoutBtn = document.getElementById("logout-btn");
 const noticeList = document.getElementById("notice-list");
@@ -48,17 +51,34 @@ const loadMoreBtn = document.getElementById("load-more-btn");
 let currentIndex = 0;
 const PAGE_SIZE = 5;
 
-// 🔹 관리자가 직접 입력하는 공지 데이터
+// 🔹 관리자가 입력하는 공지
 const notices = [
   { title: "서버 점검 안내", content: "오늘 오후 8시부터 9시까지 서버 점검이 있습니다.", createdAt: "2026-02-16 15:00" },
   { title: "신규 이벤트 시작!", content: "주말 동안 특별 이벤트가 진행됩니다.", createdAt: "2026-02-15 12:30" },
-  { title: "업데이트 완료", content: "최신 패치가 적용되었습니다. 자세한 내용은 패치노트를 확인하세요.", createdAt: "2026-02-14 10:00" },
+  { title: "업데이트 완료", content: "최신 패치가 적용되었습니다.", createdAt: "2026-02-14 10:00" },
   { title: "서버 점검 완료", content: "점검이 완료되어 정상 서비스 중입니다.", createdAt: "2026-02-13 09:00" },
   { title: "공지사항 테스트", content: "이것은 테스트용 공지입니다.", createdAt: "2026-02-12 18:00" },
   { title: "이벤트 안내", content: "이번 주말 특별 이벤트를 놓치지 마세요!", createdAt: "2026-02-11 14:00" }
 ];
 
-// 🔹 페이지네이션용 함수
+// 🔹 로그인 체크
+onAuthStateChanged(auth, (user) => {
+  if (!user) window.location.href = "login.html";
+
+  noticeList.innerHTML = "";
+  currentIndex = 0;
+  loadNextPage();
+});
+
+// 🔹 로그아웃
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    window.location.href = "login.html";
+  } catch(err) { console.error("로그아웃 실패:", err); }
+});
+
+// 🔹 공지 페이지네이션
 function loadNextPage() {
   const next = notices.slice(currentIndex, currentIndex + PAGE_SIZE);
   next.forEach(data => {
@@ -82,21 +102,7 @@ function loadNextPage() {
   loadMoreBtn.style.display = currentIndex < notices.length ? "block" : "none";
 }
 
-// 초기 로드
-noticeList.innerHTML = "";
-currentIndex = 0;
-loadNextPage();
 loadMoreBtn.addEventListener("click", loadNextPage);
-
-// 🔹 로그아웃
-logoutBtn.addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-    window.location.href = "login.html";
-  } catch (err) {
-    console.error("로그아웃 실패:", err);
-  }
-});
 </script>
 </body>
 </html>
