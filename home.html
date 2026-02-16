@@ -47,23 +47,34 @@ const loadMoreBtn = document.getElementById("load-more-btn");
 let notices = [], currentIndex = 0;
 const PAGE_SIZE = 5;
 
+// 🔹 로그인 상태 변화 감지
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = "index.html"; return; }
 
+  // 이메일 인증 체크
+  if (!user.emailVerified) {
+    alert("이메일 인증 완료 후 이용 가능합니다.");
+    await signOut(auth); // 미인증 사용자 로그아웃
+    return;
+  }
+
+  // 사용자 정보 표시
   userName.textContent = user.email;
   userUid.textContent = user.uid;
-  userVerified.textContent = user.emailVerified ? "인증됨 ✅" : "미인증 ❌";
+  userVerified.textContent = "인증됨 ✅";
 
   try {
+    // 서버 가입 여부 체크
     const userDoc = await getDoc(doc(db, "users", user.uid));
     const isMember = userDoc.exists() && userDoc.data()?.isMember;
-    if (!isMember) { noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다."; return; }
+    if (!isMember) { 
+      noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다."; 
+      return; 
+    }
 
-    // 🔹 Firestore 모든 공지 가져오기 (createdAt 없어도 표시)
+    // Firestore 공지 가져오기 (createdAt 없어도 표시)
     const postsSnapshot = await getDocs(collection(db, "posts"));
-    console.log("postsSnapshot docs:", postsSnapshot.docs); // 디버그: 문서 배열
     notices = postsSnapshot.docs.map(d => ({ id:d.id, ...d.data() }));
-    console.log("notices array:", notices); // 디버그: 데이터 배열 확인
 
     // createdAt이 있으면 최신순 정렬
     notices.sort((a, b) => {
@@ -75,16 +86,19 @@ onAuthStateChanged(auth, async (user) => {
     noticeList.innerHTML = "";
     currentIndex = 0;
     loadNextPage();
+
   } catch (err) {
     console.error("공지 불러오기 오류:", err);
     noticeList.textContent = "공지사항에 오류가 발생했습니다.";
   }
 });
 
+// 로그아웃
 logoutBtn.addEventListener("click", () => {
   signOut(auth).then(() => window.location.href = "index.html");
 });
 
+// 페이지네이션
 function loadNextPage() {
   const next = notices.slice(currentIndex, currentIndex + PAGE_SIZE);
   next.forEach(data => {
