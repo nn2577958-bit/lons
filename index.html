@@ -72,7 +72,7 @@ button:hover {
 
 button:active {
   transform: translateY(1px);
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 button i {
@@ -161,7 +161,6 @@ onAuthStateChanged(auth, (user) => {
   // 1초마다 시계 갱신
   const intervalId = setInterval(() => updateAdminClock(auth.currentUser), 1000);
 
-  // 로그아웃 시 interval 종료
   return () => clearInterval(intervalId);
 });
 
