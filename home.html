@@ -39,8 +39,9 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
+// Firebase 설정
 const firebaseConfig = {
   apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
   authDomain: "lons-dc24d.firebaseapp.com",
@@ -66,24 +67,13 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
+  // 사용자 정보 표시
   userName.textContent = user.email;
   userUid.textContent = user.uid;
   userVerified.textContent = user.emailVerified ? "인증됨 ✅" : "미인증 ❌";
 
-  if (!user.emailVerified) {
-    noticeList.textContent = "이메일 인증 후 이용 가능합니다.";
-    return;
-  }
-
   try {
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    const isMember = userDoc.exists() && userDoc.data()?.isMember;
-
-    if (!isMember) {
-      noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다.";
-      return;
-    }
-
+    // posts 컬렉션 불러오기
     const querySnapshot = await getDocs(collection(db, "posts"));
     noticeList.innerHTML = "";
 
@@ -107,6 +97,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+// 로그아웃 버튼
 logoutBtn.addEventListener("click", () => {
   signOut(auth).then(() => window.location.href = "index.html");
 });
