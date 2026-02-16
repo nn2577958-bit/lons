@@ -3,11 +3,10 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
   GoogleAuthProvider, 
-  signInWithPopup,
+  signInWithPopup, 
   sendEmailVerification 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-// DOMContentLoaded로 DOM 접근 안전하게 처리
 document.addEventListener("DOMContentLoaded", () => {
   const loginMsg = document.getElementById("login-msg");
   const emailInput = document.getElementById("email");
@@ -16,13 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupBtn = document.getElementById("signup-btn");
   const googleBtn = document.getElementById("google-btn");
 
-  // 이메일/비밀번호 로그인
+  // 로그인
   loginBtn.addEventListener("click", async () => {
     loginMsg.textContent = "";
     try {
       const userCredential = await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-      const user = userCredential.user;
-      if (!user.emailVerified) {
+      if (!userCredential.user.emailVerified) {
         loginMsg.textContent = "이메일 인증 후 로그인 가능합니다.";
         return;
       }
@@ -34,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 이메일/비밀번호 회원가입
+  // 회원가입
   signupBtn.addEventListener("click", async () => {
     loginMsg.textContent = "";
     try {
