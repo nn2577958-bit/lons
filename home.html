@@ -4,41 +4,58 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LONS Palworld Home</title>
+
+<!-- 파비콘 -->
+<link rel="icon" href="https://cdn.phototourl.com/uploads/2026-02-16-2fc87bae-3744-4c0a-891f-19f3a20b09fd.png" type="image/png">
+
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
 /* ===== 전체 화면 배경 ===== */
 body {
   margin: 0;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background:#f0f2f5;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://cdn.pototourl.com/uploads/2026-02-16-7c65c59e-2911-4c5c-9949-a492ee665873.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 /* ===== 단일 카드 ===== */
 .container {
   width: 100%;
   max-width: 450px;
-  background: #fff;
+  background: rgba(255,255,255,0.95);
   border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   padding: 20px 25px;
-  box-sizing:border-box;
-  text-align:center;
+  box-sizing: border-box;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.container:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 14px 38px rgba(0,0,0,0.35);
 }
 
 /* ===== 제목 ===== */
 h1 {
   margin: 0 0 20px 0;
-  font-size:24px;
+  font-size: 24px;
+  color: #222;
 }
 
 /* ===== 카드형 섹션 ===== */
 .user-box {
   background:#f9f9f9;
-  padding:15px 15px;
+  padding:15px;
   margin:10px 0;
   border-radius:12px;
   border:1px solid #eee;
@@ -55,7 +72,7 @@ button {
   font-size:16px;
   font-weight:600;
   cursor:pointer;
-  transition: all 0.2s;
+  transition: all 0.25s;
 }
 button:hover {
   transform: translateY(-2px);
@@ -111,7 +128,7 @@ button:hover {
   <div class="user-box">
     <button id="kakao-btn">💛Pay 지원금💛</button>
     <div id="donation-note" style="font-size:12px;color:#666;margin-top:5px;">
-      본인 휴대폰 으로만 접속 가능 하십니다,PC 버전X.
+      휴대폰으로만 접속 가능합니다.
     </div>
   </div>
 
@@ -146,7 +163,7 @@ onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
   } else {
-    // 로그인 시 버튼 표시
+    // 로그인 시 공지사항 로드
     noticeList.innerHTML = "";
     notices.forEach(data => {
       const div = document.createElement("div");
