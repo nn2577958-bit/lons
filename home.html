@@ -92,7 +92,7 @@ onAuthStateChanged(auth, (user) => {
           const now = new Date();
           // 브라우저 로컬 시간 대신 KST로 변환
           const kstString = now.toLocaleString("ko-KR", { hour12:false, timeZone:"Asia/Seoul" });
-          adminStatus.innerHTML = `🟢 관리자 온라인 – ${kstString}`;
+          adminStatus.innerHTML = `🟢 관리자 온라인 – ${kstString} (오프라인/온라인 되면 자동으로 시간 반영됩니다)`;
       }
       updateAdminStatus();
       setInterval(updateAdminStatus, 1000);
