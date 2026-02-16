@@ -1,29 +1,8 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Palworld 홈</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="container">
-  <h1>🎮 LONS Palworld</h1>
-  <div class="subtitle">론즈서버 팰월드 24시간</div>
-
-  <div class="user-box">
-    <p>이메일: <strong id="user-name"></strong></p>
-    <p>UID: <span id="user-uid"></span></p>
-    <p>이메일 인증: <span id="user-verified"></span></p>
-    <a href="profile.html" class="link-btn">마이 페이지 이동</a>
-  </div>
-
-  <div class="user-box">
-    <h3>📢 공지사항</h3>
-    <div id="notice-list" class="notice-container">불러오는 중...</div>
-  </div>
-
-  <button id="logout-btn" class="logout-btn">로그아웃</button>
+<!-- 공지사항 부분 -->
+<div class="user-box">
+  <h3>📢 공지사항</h3>
+  <div id="notice-list" class="notice-container">불러오는 중...</div>
+  <button id="load-more-btn" style="display:none;">더보기</button>
 </div>
 
 <script type="module">
@@ -32,33 +11,25 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
-  authDomain: "lons-dc24d.firebaseapp.com",
-  projectId: "lons-dc24d",
-  storageBucket: "lons-dc24d.appspot.com",
-  messagingSenderId: "755692328918",
-  appId: "1:755692328918:web:a4eb4563cb862d3eb5b677"
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "..."
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const logoutBtn = document.getElementById("logout-btn");
-const userName = document.getElementById("user-name");
-const userUid = document.getElementById("user-uid");
-const userVerified = document.getElementById("user-verified");
 const noticeList = document.getElementById("notice-list");
+const loadMoreBtn = document.getElementById("load-more-btn");
+let notices = [], currentIndex = 0;
+const PAGE_SIZE = 5;
 
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  userName.textContent = user.email;
-  userUid.textContent = user.uid;
-  userVerified.textContent = user.emailVerified ? "인증됨 ✅" : "미인증 ❌";
+  if (!user) { window.location.href = "index.html"; return; }
 
   if (!user.emailVerified) {
     noticeList.textContent = "이메일 인증 후 이용 가능합니다.";
@@ -68,48 +39,42 @@ onAuthStateChanged(auth, async (user) => {
   try {
     const userDoc = await getDoc(doc(db, "users", user.uid));
     const isMember = userDoc.exists() && userDoc.data()?.isMember;
+    if (!isMember) { noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다."; return; }
 
-    if (!isMember) {
-      noticeList.textContent = "디스코드 서버 가입 후 이용 가능합니다.";
-      return;
-    }
-
-    // 최신순 정렬된 공지사항 쿼리
     const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(postsQuery);
+    notices = querySnapshot.docs.map(d => ({ id:d.id, ...d.data() }));
     noticeList.innerHTML = "";
-
-    if (querySnapshot.empty) {
-      noticeList.textContent = "공지사항이 없습니다.";
-    } else {
-      const fragment = document.createDocumentFragment();
-      querySnapshot.forEach(doc => {
-        const data = doc.data();
-
-        const div = document.createElement("div");
-        div.className = "notice";
-
-        const titleEl = document.createElement("strong");
-        titleEl.textContent = data.title || "제목 없음";
-
-        const contentEl = document.createElement("div");
-        contentEl.textContent = data.content || "";
-
-        div.appendChild(titleEl);
-        div.appendChild(contentEl);
-        fragment.appendChild(div);
-      });
-      noticeList.appendChild(fragment);
-    }
-  } catch (error) {
-    console.error("공지사항 불러오기 오류:", error);
-    noticeList.textContent = "공지사항에 오류가 발생하였습니다.";
+    currentIndex = 0;
+    loadNextPage();
+  } catch (err) {
+    console.error(err);
+    noticeList.textContent = "공지사항에 오류가 발생했습니다.";
   }
 });
 
-logoutBtn.addEventListener("click", () => {
-  signOut(auth).then(() => window.location.href = "index.html");
-});
+function loadNextPage() {
+  const next = notices.slice(currentIndex, currentIndex + PAGE_SIZE);
+  next.forEach(data => {
+    const div = document.createElement("div");
+    div.className = "notice";
+
+    const titleEl = document.createElement("strong");
+    titleEl.textContent = data.title || "제목 없음";
+
+    const dateEl = document.createElement("small");
+    if(data.createdAt?.toDate) dateEl.textContent = new Date(data.createdAt.toDate()).toLocaleString();
+
+    const contentEl = document.createElement("div");
+    contentEl.textContent = data.content || "";
+
+    div.append(titleEl, dateEl, contentEl);
+    noticeList.appendChild(div);
+  });
+
+  currentIndex += PAGE_SIZE;
+  loadMoreBtn.style.display = currentIndex < notices.length ? "block" : "none";
+}
+
+loadMoreBtn.addEventListener("click", loadNextPage);
 </script>
-</body>
-</html>
