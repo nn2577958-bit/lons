@@ -104,7 +104,7 @@ onAuthStateChanged(auth, (user) => {
 
       adminStatus.style.background = "#28a745";
   } else {
-      adminStatus.innerHTML = "🔴 관리자 오프라인";
+      adminStatus.innerHTML = "🔴 관리자 오프라인 (오프라인/온라인 되면 자동으로 시간 반영됩니다)";
       adminStatus.style.background = "#dc3545";
       adminStatus.style.opacity = "1";
   }
