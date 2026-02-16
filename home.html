@@ -42,6 +42,20 @@ h1 {
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
+  text-align: left;
+}
+
+.user-box p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.link-btn {
+  display: inline-block;
+  margin-top: 10px;
+  color: #4da6ff;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .logout-btn {
@@ -68,7 +82,11 @@ h1 {
   <div class="subtitle">팰월드 서버 관리 시스템</div>
 
   <div class="user-box">
-    로그인 사용자: <strong id="user-name"></strong>
+    <p>이메일: <strong id="user-name"></strong></p>
+    <p>UID: <span id="user-uid"></span></p>
+    <p>이메일 인증: <span id="user-verified"></span></p>
+
+    <a href="profile.html" class="link-btn">마이페이지 이동 →</a>
   </div>
 
   <button id="logout-btn" class="logout-btn">로그아웃</button>
@@ -96,14 +114,21 @@ const auth = getAuth(app);
 
 const logoutBtn = document.getElementById("logout-btn");
 const userName = document.getElementById("user-name");
+const userUid = document.getElementById("user-uid");
+const userVerified = document.getElementById("user-verified");
 
 // 로그인 상태 확인
 onAuthStateChanged(auth, user => {
-  if (user) {
-    userName.textContent = user.email;
-  } else {
+
+  if (!user) {
     window.location.href = "index.html";
+    return;
   }
+
+  userName.textContent = user.email;
+  userUid.textContent = user.uid;
+  userVerified.textContent = user.emailVerified ? "인증됨 ✅" : "미인증 ❌";
+
 });
 
 // 로그아웃
