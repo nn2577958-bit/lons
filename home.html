@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONS Palworl SV</title>
+<title>LONS Palworld SV</title>
 <link rel="stylesheet" href="./style.css">
 <style>
 body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f0f2f5; margin:0; padding:0; }
@@ -51,17 +51,20 @@ const PAGE_SIZE = 5;
 
 // 🔹 관리자가 입력하는 공지
 const notices = [
-  { title: "서버 오픈 안내, content: "02/20 하드코어 오픈점검", createdAt: "2026-02-20 15:00~15:10" },
-  { title: "신규 뽑기 이벤트 시작!", content: "당첨 되신거 요청 해주시면 지급 처리.", createdAt: "2026-02-00 00:00" },
-  { title: "업데이트 완료", content: "최신 패치가 적용되었습니다.", createdAt: "2026-02-16 2:30 PM" },
-  { title: "서버 접속 상황", content: "1SV / 2SV 모두 정상", createdAt: "2026-02-16 00:00~" },
-  { title: "공지사항", content: "홍보많이 해주세요.책임감 넘칩니다,", createdAt: "2026-02-00 00:00" },
-  { title: "이벤트 안내", content: "많은 이벤트 준비 중입니다,", createdAt: "2026-02-00 00:00" }
+  { title: "서버 오픈 안내", content: "02/20 하드코어 오픈점검", createdAt: "2026-02-20 15:00~15:10" },
+  { title: "신규 뽑기 이벤트 시작!", content: "당첨되신 분들은 요청 주시면 지급 처리됩니다.", createdAt: "2026-02-16 14:00" },
+  { title: "업데이트 완료", content: "최신 패치가 적용되었습니다.", createdAt: "2026-02-16 14:30" },
+  { title: "서버 접속 상황", content: "1SV / 2SV 모두 정상 작동 중입니다.", createdAt: "2026-02-16 00:00" },
+  { title: "공지사항", content: "홍보 많이 해주세요. 책임감 있게 운영합니다.", createdAt: "2026-02-15 12:00" },
+  { title: "이벤트 안내", content: "많은 이벤트 준비 중입니다. 기대해주세요!", createdAt: "2026-02-14 10:00" }
 ];
 
 // 🔹 로그인 상태 체크
 onAuthStateChanged(auth, (user) => {
-  if (!user) window.location.href = "login.html";
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
 
   noticeList.innerHTML = "";
   currentIndex = 0;
@@ -73,7 +76,9 @@ logoutBtn.addEventListener("click", async () => {
   try {
     await signOut(auth);
     window.location.href = "login.html";
-  } catch(err) { console.error("로그아웃 실패:", err); }
+  } catch(err) {
+    console.error("로그아웃 실패:", err);
+  }
 });
 
 // 🔹 공지 페이지네이션
