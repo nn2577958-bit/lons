@@ -67,7 +67,7 @@ button {
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0px 6px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
 }
 
 button:active {
@@ -90,18 +90,18 @@ button i {
   background: #f0f0f0;
 }
 
-/* ===== 관리자 상태 ===== */
+/* 관리자 상태 */
 #admin-status {
   color: white;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  background: rgba(0,0,0,0.5); /* 글씨 뒤에 배경 */
   padding: 6px 12px;
-  border-radius: 10px;
-  background: rgba(0,0,0,0.6); /* 반투명 배경 */
+  border-radius: 8px;
   display: inline-block;
 }
 
-/* ===== 에러 메시지 ===== */
+/* 에러 메시지 */
 #login-msg {
   color: #ff4444;
   margin-bottom: 10px;
@@ -127,32 +127,31 @@ const adminStatus = document.getElementById("admin-status");
 const googleBtn = document.getElementById("google-btn");
 const loginMsg = document.getElementById("login-msg");
 
-// ===== 로그인 상태 확인 후 관리자 깜빡임 + 한국 시간 =====
-onAuthStateChanged(auth, (user) => {
-  if(user && user.email === ADMIN_EMAIL){
-    function updateAdminStatus(){
-      const now = new Date();
-      const kst = new Date(now.getTime() + 9*60*60*1000); // 한국 시간
-      const y = kst.getFullYear();
-      const m = String(kst.getMonth()+1).padStart(2,'0');
-      const d = String(kst.getDate()).padStart(2,'0');
-      const h = String(kst.getHours()).padStart(2,'0');
-      const min = String(kst.getMinutes()).padStart(2,'0');
-      const s = String(kst.getSeconds()).padStart(2,'0');
+// ===== 관리자 온라인 시계 (로그인 전/후 상관없이) =====
+function updateAdminClock() {
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9*60*60*1000); // UTC+9
+  const y = kst.getFullYear();
+  const m = String(kst.getMonth()+1).padStart(2,'0');
+  const d = String(kst.getDate()).padStart(2,'0');
+  const h = String(kst.getHours()).padStart(2,'0');
+  const min = String(kst.getMinutes()).padStart(2,'0');
+  const s = String(kst.getSeconds()).padStart(2,'0');
+
+  // 로그인 여부와 상관없이 관리자 이메일이 있으면 온라인
+  onAuthStateChanged(auth, (user)=>{
+    if(user && user.email === ADMIN_EMAIL){
       adminStatus.textContent = `🟢 관리자 온라인 – ${y}-${m}-${d} ${h}:${min}:${s}`;
-    }
-    updateAdminStatus();
-    setInterval(updateAdminStatus, 1000);
-
-    // 깜빡임 효과
-    setInterval(()=>{
+      // 깜빡임
       adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
-    }, 800);
-
-  } else {
-    adminStatus.textContent = "🔴 관리자 오프라인";
-  }
-});
+    } else {
+      adminStatus.textContent = "🔴 관리자 오프라인";
+      adminStatus.style.opacity = "1";
+    }
+  });
+}
+updateAdminClock();
+setInterval(updateAdminClock, 1000);
 
 // ===== Google 로그인 =====
 googleBtn.addEventListener("click", async () => {
@@ -168,6 +167,5 @@ googleBtn.addEventListener("click", async () => {
   }
 });
 </script>
-
 </body>
 </html>
