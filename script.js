@@ -30,7 +30,7 @@ function handleCredentialResponse(response){
     return;
   }
 
-  // ✅ 반드시 Node.js 서버 도메인으로 변경
+  // ✅ fetch URL: 배포된 Node.js 서버 주소로 변경
   fetch("https://lons-server.fly.dev/auth/google", {
     method: "POST",
     headers: {"Content-Type":"application/json"},
