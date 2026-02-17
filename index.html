@@ -47,42 +47,46 @@ function updateAdminClock(isAdmin){
   const now = new Date();
   const kstString = now.toLocaleString("ko-KR",{hour12:false, timeZone:"Asia/Seoul"});
   adminStatus.innerHTML = `${isAdmin ? "🟢 관리자 온라인" : "🔴 관리자 오프라인"}<br>${kstString}`;
-
   if(fadingOut){ opacity -= 0.05; if(opacity<=0){ opacity=0; fadingOut=false;} }
   else { opacity += 0.05; if(opacity>=1){ opacity=1; fadingOut=true;} }
-  adminStatus.style.opacity = opacity;
 }
 
 setInterval(()=>updateAdminClock(!discordBtn.classList.contains('disabled')),1000);
 
-googleBtn.addEventListener("click", () => {
-  google.accounts.id.prompt((response) => {
-    if(!response.credential){
-      loginMsg.textContent="로그인 실패!";
-      return;
-    }
-
-    fetch("/auth/google", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({ idToken: response.credential })
-    })
-    .then(res=>res.json())
-    .then(data=>{
-      if(data.isAdmin){
-        discordBtn.classList.remove("disabled");
-        discordBtn.removeAttribute("data-tooltip");
-        loginMsg.textContent="관리자 로그인 성공! 디스코드 참여 버튼 활성화됨.";
-      } else {
-        loginMsg.textContent="로그인 성공! 일반 사용자입니다.";
-      }
-    })
-    .catch(err=>{
-      console.error(err);
-      loginMsg.textContent="서버 인증 실패!";
-    });
+googleBtn.addEventListener("click", ()=>{
+  google.accounts.id.initialize({
+    client_id: "YOUR_GOOGLE_CLIENT_ID", // 여기에 Firebase 프로젝트용 웹 클라이언트 ID
+    callback: handleCredentialResponse
   });
+  google.accounts.id.prompt();
 });
+
+function handleCredentialResponse(response){
+  if(!response.credential){
+    loginMsg.textContent = "로그인 실패!";
+    return;
+  }
+
+  fetch("/auth/google",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ idToken: response.credential })
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if(data.isAdmin){
+      discordBtn.classList.remove("disabled");
+      discordBtn.removeAttribute("data-tooltip");
+      loginMsg.textContent = "관리자 로그인 성공! 디스코드 참여 버튼 활성화됨.";
+    } else {
+      loginMsg.textContent = "로그인 성공! 일반 사용자입니다.";
+    }
+  })
+  .catch(err=>{
+    console.error(err);
+    loginMsg.textContent = "서버 인증 실패!";
+  });
+}
 
 discordBtn.addEventListener("click", ()=>{
   if(discordBtn.classList.contains('disabled')){
