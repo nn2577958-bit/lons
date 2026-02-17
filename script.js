@@ -31,7 +31,7 @@ setInterval(() => updateAdminClock(!discordBtn.classList.contains('disabled')), 
 googleBtn.addEventListener("click", () => {
   // Google Identity Services 초기화
   google.accounts.id.initialize({
-    client_id: "YOUR_GOOGLE_CLIENT_ID", // 여기에 Firebase 웹 클라이언트 ID
+    client_id: "755692328918-rncbloi5oh3tj9kh4nauhurihui1ohfp.apps.googleusercontent.com", // 여기에 Firebase 웹 클라이언트 ID
     callback: handleCredentialResponse
   });
 
