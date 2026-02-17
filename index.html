@@ -7,7 +7,7 @@
 <link rel="icon" href="https://cdn.phototourl.com/uploads/2026-02-16-b555cb64-84f5-4ab4-b235-73d0d2be6482.png" type="image/png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
-/* 기존 CSS 유지 */
+/* CSS 기존 유지 */
 body { margin:0;height:100vh;display:flex;justify-content:center;align-items:center;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-image:linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),url('https://cdn.phototourl.com/uploads/2026-02-16-be12475d-955e-4258-b559-d05dd22da876.jpg');background-size:cover;background-position:center;background-repeat:no-repeat; }
 .container { width:380px;background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(225,225,225,0.9));padding:35px 25px;border-radius:15px;box-shadow:0 8px 25px rgba(0,0,0,0.35);text-align:center;transition:transform 0.3s ease, box-shadow 0.3s ease; }
 .container:hover { transform:translateY(-6px) scale(1.025); box-shadow:0 14px 38px rgba(0,0,0,0.4); }
@@ -53,12 +53,13 @@ function updateAdminClock(isAdmin){
 
 setInterval(()=>updateAdminClock(!discordBtn.classList.contains('disabled')),1000);
 
+// ===== 버튼 클릭으로 구글 로그인 (popup) =====
 googleBtn.addEventListener("click", ()=>{
   google.accounts.id.initialize({
-    client_id: "YOUR_GOOGLE_CLIENT_ID", // 여기에 Firebase 프로젝트용 웹 클라이언트 ID
+    client_id: "YOUR_GOOGLE_CLIENT_ID", // 여기에 Firebase 콘솔 웹 클라이언트 ID
     callback: handleCredentialResponse
   });
-  google.accounts.id.prompt();
+  google.accounts.id.prompt(); // One Tap UI
 });
 
 function handleCredentialResponse(response){
@@ -67,9 +68,9 @@ function handleCredentialResponse(response){
     return;
   }
 
-  fetch("/auth/google",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
+  fetch("/auth/google", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
     body: JSON.stringify({ idToken: response.credential })
   })
   .then(res=>res.json())
@@ -77,14 +78,14 @@ function handleCredentialResponse(response){
     if(data.isAdmin){
       discordBtn.classList.remove("disabled");
       discordBtn.removeAttribute("data-tooltip");
-      loginMsg.textContent = "관리자 로그인 성공! 디스코드 참여 버튼 활성화됨.";
+      loginMsg.textContent="관리자 로그인 성공! 디스코드 참여 버튼 활성화됨.";
     } else {
-      loginMsg.textContent = "로그인 성공! 일반 사용자입니다.";
+      loginMsg.textContent="로그인 성공! 일반 사용자입니다.";
     }
   })
   .catch(err=>{
     console.error(err);
-    loginMsg.textContent = "서버 인증 실패!";
+    loginMsg.textContent="서버 인증 실패!";
   });
 }
 
