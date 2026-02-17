@@ -4,7 +4,7 @@ import cors from 'cors';
 
 const app = express();
 app.use(express.json());
-app.use(cors()); // GitHub Pages에서 요청 가능하게 허용
+app.use(cors()); // GitHub Pages에서 요청 가능하도록 허용
 
 const CLIENT_ID = "755692328918-rncbloi5oh3tj9kh4nauhurihui1ohfp.apps.googleusercontent.com";
 const client = new OAuth2Client(CLIENT_ID);
