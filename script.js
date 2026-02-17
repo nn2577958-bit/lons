@@ -1,58 +1,37 @@
-import { auth } from "./firebase.js";
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  sendEmailVerification 
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import express from "express";
+import admin from "firebase-admin";
+import dotenv from "dotenv";
+import cors from "cors";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const loginMsg = document.getElementById("login-msg");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const loginBtn = document.getElementById("login-btn");
-  const signupBtn = document.getElementById("signup-btn");
-  const googleBtn = document.getElementById("google-btn");
+dotenv.config();
 
-  loginBtn.addEventListener("click", async () => {
-    loginMsg.textContent = "";
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-      if (!userCredential.user.emailVerified) {
-        loginMsg.textContent = "이메일 인증 후 로그인 가능합니다.";
-        return;
-      }
-      window.location.href = "home.html";
-    } catch (error) {
-      if (error.code === "auth/user-not-found") loginMsg.textContent = "가입된 계정이 없습니다.";
-      else if (error.code === "auth/wrong-password") loginMsg.textContent = "비밀번호가 틀렸습니다.";
-      else loginMsg.textContent = "로그인 실패: " + error.message;
-    }
-  });
+const app = express();
+app.use(cors()); // 다른 포트에서 테스트 시 필요
+app.use(express.json());
 
-  signupBtn.addEventListener("click", async () => {
-    loginMsg.textContent = "";
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-      await sendEmailVerification(userCredential.user);
-      loginMsg.textContent = "회원가입 성공! 이메일 인증 후 로그인 가능합니다.";
-      emailInput.value = "";
-      passwordInput.value = "";
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") loginMsg.textContent = "이미 가입된 이메일입니다.";
-      else loginMsg.textContent = "회원가입 실패: " + error.message;
-    }
-  });
-
-  googleBtn.addEventListener("click", async () => {
-    loginMsg.textContent = "";
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      window.location.href = "home.html";
-    } catch (error) {
-      loginMsg.textContent = "Google 로그인 실패: " + error.message;
-    }
-  });
+// ===== Firebase Admin 초기화 =====
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  }),
 });
+
+const ADMIN_EMAIL = "nn2577958@gmail.com";
+
+// ===== 구글 ID 토큰 검증 API =====
+app.post("/auth/google", async (req, res) => {
+  const { idToken } = req.body;
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const isAdmin = decodedToken.email === ADMIN_EMAIL;
+    res.json({ uid: decodedToken.uid, email: decodedToken.email, isAdmin });
+  } catch (err) {
+    console.error("토큰 검증 실패:", err.message);
+    res.status(401).json({ error: "유효하지 않은 토큰" });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
