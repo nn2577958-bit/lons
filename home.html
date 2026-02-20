@@ -55,6 +55,21 @@ body {
 .discord-btn{ background:#5865F2; color:#fff; }
 .logout-btn{ background:#f44336; color:#fff; }
 
+/* ===== 중앙 이미지 ===== */
+.center-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.center-image img {
+    max-width: 80%;
+    max-height: 400px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
 /* ===== 공지 전체 화면 ===== */
 .notice-section{
     padding:15px;
@@ -129,6 +144,10 @@ body {
     .notice-list{
         grid-template-columns: 1fr; /* 모바일에서 1열 */
     }
+    .center-image img{
+        max-width: 95%;
+        max-height: 300px;
+    }
 }
 </style>
 </head>
@@ -143,6 +162,11 @@ body {
     <button class="top-btn discord-btn" id="discord-btn"><i class="fab fa-discord"></i> Discord</button>
     <button class="top-btn logout-btn" id="logout-btn">로그아웃</button>
   </div>
+</div>
+
+<!-- 중앙 이미지 -->
+<div class="center-image">
+  <img src="https://cdn.phototourl.com/uploads/2026-02-20-87dbd0dd-037b-4378-92c6-5fed64565e84.png" alt="중앙 이미지">
 </div>
 
 <!-- 공지 전체화면 -->
