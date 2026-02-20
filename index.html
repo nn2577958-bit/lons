@@ -6,7 +6,7 @@
 <title>LONS Palworld 로그인</title>
 
 <link rel="icon" href="https://cdn.phototourl.com/uploads/2026-02-16-b555cb64-84f5-4ab4-b235-73d0d2be6482.png" type="image/png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
 
 <style>
 body { 
@@ -16,13 +16,10 @@ body {
   justify-content:center; 
   align-items:center; 
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://cdn.phototourl.com/uploads/2026-02-16-be12475d-955e-4258-b559-d05dd22da876.jpg');
-  background-size:cover; 
-  background-position:center; 
-  background-repeat:no-repeat; 
+  background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://cdn.phototourl.com/uploads/2026-02-16-be12475d-955e-4258-b559-d05dd22da876.jpg') center/cover no-repeat;
 }
 
-/* 그리드 컨테이너 */
+/* 컨테이너 그리드 */
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -37,30 +34,30 @@ h2 {
   grid-column: 1 / 3;
   color:#fff;
   font-size:18px;
-  margin-bottom:8px;
-  text-shadow:1.5px 1.5px 6px rgba(0,0,0,0.8);
+  margin-bottom:6px;
+  padding:4px 6px;
   border:1.5px solid rgba(255,255,255,0.5);
   border-radius:6px;
-  padding:4px 6px;
+  text-shadow:1px 1px 4px rgba(0,0,0,0.8);
 }
 
-/* 관리자/서버 상태 + 로그인 메시지 */
+/* 상태창 / 메시지 */
 #admin-status, #server-status, #login-msg {
   padding:3px 5px;
   font-size:13px;
-  color:white;
   font-weight:bold;
+  color:#fff;
   border:1.5px solid rgba(255,255,255,0.7);
   border-radius:6px;
-  text-shadow: 1.5px 1.5px 6px rgba(0,0,0,1),0 0 3px rgba(255,255,255,0.5);
   background: rgba(0,0,0,0.2);
+  text-shadow:1px 1px 4px rgba(0,0,0,1);
   line-height:1.3;
 }
 
-/* 위치 지정: 두칸 두칸 한칸 */
-#admin-status { grid-column: 1 / 2; }
-#server-status { grid-column: 2 / 3; }
-#login-msg { grid-column: 1 / 3; } /* 두칸 합침 */
+/* 그리드 위치 */
+#admin-status { grid-column:1 / 2; }
+#server-status { grid-column:2 / 3; }
+#login-msg { grid-column:1 / 3; }
 
 /* 버튼 */
 button {
@@ -69,48 +66,37 @@ button {
   font-weight:600;
   border-radius:6px;
   cursor:pointer;
-  border:none;
-  transition: all 0.2s ease;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   display:flex;
   align-items:center;
   justify-content:center;
+  border:none;
+  transition: all 0.2s ease;
+  text-shadow:1px 1px 2px rgba(0,0,0,0.5);
 }
 
 /* 버튼 위치 */
-#google-btn { grid-column: 1 / 2; }
-#discord-btn { grid-column: 2 / 3; }
+#google-btn { grid-column:1 / 2; }
+#discord-btn { grid-column:2 / 3; }
 
-/* Google 버튼 */
+/* Google */
 #google-btn {
-  background: #fff;
+  background:#fff;
   color:#444;
   border:1px solid #ccc;
   box-shadow:0 2px 5px rgba(0,0,0,0.35);
 }
 #google-btn i { margin-right:5px; color:#DB4437; }
-#google-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.45);
-  background:#f0f0f0;
-}
+#google-btn:hover { transform:translateY(-1px); box-shadow:0 3px 8px rgba(0,0,0,0.45); background:#f0f0f0; }
 
-/* Discord 버튼 */
+/* Discord */
 #discord-btn {
   background:#7289DA;
   color:#fff;
   box-shadow:0 2px 5px rgba(0,0,0,0.35);
 }
 #discord-btn i { margin-right:5px; }
-#discord-btn:hover {
-  transform: translateY(-1px);
-  box-shadow:0 3px 8px rgba(0,0,0,0.45);
-  background:#5b6eae;
-}
-#discord-btn.disabled {
-  cursor:not-allowed;
-  opacity:0.6;
-}
+#discord-btn:hover { transform:translateY(-1px); box-shadow:0 3px 8px rgba(0,0,0,0.45); background:#5b6eae; }
+#discord-btn.disabled { cursor:not-allowed; opacity:0.6; }
 
 /* 툴팁 */
 #discord-btn[data-tooltip]:hover::after {
@@ -167,10 +153,9 @@ let fadingOut = true;
 
 function updateStatus(){
   const now = new Date();
-  const kstString = now.toLocaleString("ko-KR",{hour12:false,timeZone:"Asia/Seoul"});
-
-  adminStatus.innerHTML = `🟢 관리자 온라인<br>${kstString}`;
-  serverStatus.innerHTML = `🟢 LONS SV ONLINE<br>${kstString}`;
+  const kst = now.toLocaleString("ko-KR",{hour12:false,timeZone:"Asia/Seoul"});
+  adminStatus.innerHTML = `🟢 관리자 온라인<br>${kst}`;
+  serverStatus.innerHTML = `🟢 LONS SV ONLINE<br>${kst}`;
 
   if(fadingOut){ opacity -=0.05; if(opacity<=0.5){opacity=0.5; fadingOut=false;} }
   else { opacity +=0.05; if(opacity>=1){opacity=1; fadingOut=true;} }
@@ -192,19 +177,19 @@ onAuthStateChanged(auth,user=>{
 });
 
 googleBtn.addEventListener("click", async ()=>{
-  googleBtn.disabled = true;
+  googleBtn.disabled=true;
   loginMsg.textContent="";
   const provider = new GoogleAuthProvider();
   try{
     await signInWithPopup(auth,provider);
     loginMsg.textContent="로그인 성공! 디스코드 참여하기 버튼이 활성화되었습니다.";
-  }catch(err){
-    loginMsg.textContent="로그인 실패: "+err.message;
+  }catch(e){
+    loginMsg.textContent="로그인 실패: "+e.message;
     googleBtn.disabled=false;
   }
 });
 
-discordBtn.addEventListener("click", ()=>{
+discordBtn.addEventListener("click",()=>{
   if(discordBtn.classList.contains('disabled')){
     loginMsg.textContent="구글 로그인 후 참여하기 버튼이 활성화됩니다!";
     return;
