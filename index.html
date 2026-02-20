@@ -26,7 +26,7 @@ body {
   width:380px; 
   padding:35px 25px; 
   text-align:center; 
-  background:none; /* 폼 배경 제거 */
+  background:none;
   border:none;     
 }
 
@@ -34,29 +34,28 @@ h2 {
   color:#fff; 
   margin-bottom:20px; 
   font-size:24px; 
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.9); 
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.5); 
+  border:2px solid rgba(255,255,255,0.5);
+  padding:6px 12px;
+  border-radius:8px;
+  display:inline-block;
 }
 
-#admin-status, #server-status { 
+/* 관리자 & 서버 상태 */
+#admin-status, #server-status, #login-msg {
   color:white; 
   font-weight:bold; 
   margin-bottom:10px; 
   line-height:1.4; 
-  display:inline-block; 
+  display:block;
   padding:6px 12px; 
   border:2px solid rgba(255,255,255,0.7); 
   border-radius:8px; 
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.9); 
+  text-shadow: 2px 2px 8px rgba(0,0,0,1), 0 0 6px rgba(255,255,255,0.5);
+  background: rgba(0,0,0,0.2);
 }
 
-#login-msg { 
-  color:#ff4444; 
-  margin-bottom:10px; 
-  font-weight:500; 
-  text-align:center; 
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
-}
-
+/* 버튼 공통 */
 button { 
   width:100%; 
   padding:14px; 
@@ -68,8 +67,7 @@ button {
   position:relative; 
   border:none; 
   transition: all 0.2s ease; 
-  color:#fff; 
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
 }
 
 /* Google 버튼 */
@@ -77,12 +75,12 @@ button {
   background: #fff; 
   color:#444; 
   border:1px solid #ccc;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
 }
 
 #google-btn:hover { 
   transform: translateY(-2px);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.45);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.5);
   background: #f0f0f0;
 }
 
@@ -90,12 +88,12 @@ button {
 #discord-btn { 
   background: #7289DA; 
   margin-top:10px; 
-  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
 }
 
 #discord-btn:hover { 
   transform: translateY(-2px);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.45);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.5);
   background:#5b6eae;
 }
 
@@ -126,7 +124,7 @@ button {
   <h2>LONS SV Palworld 로그인</h2>
   <div id="admin-status">🟢 관리자 온라인</div>
   <div id="server-status">🟢 LONS SV ONLINE</div>
-  <div id="login-msg"></div>
+  <div id="login-msg">구글 로그인 후 참여하기 버튼이 활성화됩니다!</div>
   <button id="google-btn"><i class="fab fa-google"></i> Google 로그인</button>
   <button id="discord-btn" class="disabled" data-tooltip="로그인 후 활성화됩니다"><i class="fab fa-discord"></i> 디스코드 참여하기</button>
 </div>
@@ -157,20 +155,19 @@ const loginMsg = document.getElementById("login-msg");
 let opacity = 1;
 let fadingOut = true;
 
-// 관리자 & 서버 상태 + 시계 + 깜박임
+// 관리자 & 서버 상태 + 시계 + 테두리 깜박임
 function updateStatus(){
   const now = new Date();
   const kstString = now.toLocaleString("ko-KR",{hour12:false,timeZone:"Asia/Seoul"});
   
   adminStatus.innerHTML = `🟢 관리자 온라인<br>${kstString}`;
   serverStatus.innerHTML = `🟢 LONS SV ONLINE<br>${kstString}`;
-  
-  // 깜박임
-  if(fadingOut){ opacity -= 0.05; if(opacity<=0){ opacity=0; fadingOut=false;} }
+
+  // 테두리 깜박임
+  if(fadingOut){ opacity -= 0.05; if(opacity<=0.5){ opacity=0.5; fadingOut=false;} }
   else { opacity +=0.05; if(opacity>=1){opacity=1; fadingOut=true;} }
-  
-  adminStatus.style.opacity = opacity;
-  serverStatus.style.opacity = opacity;
+  adminStatus.style.borderColor = `rgba(255,255,255,${opacity})`;
+  serverStatus.style.borderColor = `rgba(255,255,255,${opacity})`;
 }
 
 setInterval(updateStatus,1000);
