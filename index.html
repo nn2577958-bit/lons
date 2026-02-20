@@ -23,8 +23,8 @@ body {
 }
 
 .container { 
-  width:380px; 
-  padding:35px 25px; 
+  width:280px;         
+  padding:15px 10px;   
   text-align:center; 
   background:none;
   border:none;     
@@ -32,12 +32,12 @@ body {
 
 h2 { 
   color:#fff; 
-  margin-bottom:20px; 
-  font-size:24px; 
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.5); 
-  border:2px solid rgba(255,255,255,0.5);
-  padding:6px 12px;
-  border-radius:8px;
+  margin-bottom:12px; 
+  font-size:18px; 
+  text-shadow: 1.5px 1.5px 6px rgba(0,0,0,0.8); 
+  border:1.5px solid rgba(255,255,255,0.5);
+  padding:4px 6px;
+  border-radius:6px;
   display:inline-block;
 }
 
@@ -45,29 +45,30 @@ h2 {
 #admin-status, #server-status, #login-msg {
   color:white; 
   font-weight:bold; 
-  margin-bottom:10px; 
-  line-height:1.4; 
+  margin-bottom:8px; 
+  line-height:1.3; 
   display:block;
-  padding:6px 12px; 
-  border:2px solid rgba(255,255,255,0.7); 
-  border-radius:8px; 
-  text-shadow: 2px 2px 8px rgba(0,0,0,1), 0 0 6px rgba(255,255,255,0.5);
+  padding:3px 6px; 
+  border:1.5px solid rgba(255,255,255,0.7); 
+  border-radius:6px; 
+  text-shadow: 1.5px 1.5px 6px rgba(0,0,0,1), 0 0 4px rgba(255,255,255,0.5);
   background: rgba(0,0,0,0.2);
+  font-size:13px;
 }
 
 /* 버튼 공통 */
 button { 
   width:100%; 
-  padding:14px; 
-  margin:10px 0; 
-  border-radius:8px; 
-  font-size:18px; 
+  padding:10px; 
+  margin:6px 0; 
+  border-radius:6px; 
+  font-size:14px; 
   font-weight:600; 
   cursor:pointer; 
   position:relative; 
   border:none; 
   transition: all 0.2s ease; 
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 /* Google 버튼 */
@@ -75,25 +76,24 @@ button {
   background: #fff; 
   color:#444; 
   border:1px solid #ccc;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
 }
 
 #google-btn:hover { 
-  transform: translateY(-2px);
-  box-shadow: 0 5px 14px rgba(0,0,0,0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.45);
   background: #f0f0f0;
 }
 
 /* Discord 버튼 */
 #discord-btn { 
   background: #7289DA; 
-  margin-top:10px; 
-  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
 }
 
 #discord-btn:hover { 
-  transform: translateY(-2px);
-  box-shadow: 0 5px 14px rgba(0,0,0,0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.45);
   background:#5b6eae;
 }
 
@@ -105,14 +105,14 @@ button {
 #discord-btn[data-tooltip]:hover::after { 
   content:attr(data-tooltip); 
   position:absolute; 
-  top:-30px; 
+  top:-25px; 
   left:50%; 
   transform:translateX(-50%); 
   background:#444; 
   color:#fff; 
-  padding:4px 8px; 
-  border-radius:6px; 
-  font-size:12px; 
+  padding:3px 6px; 
+  border-radius:5px; 
+  font-size:11px; 
   white-space:nowrap; 
   z-index:10; 
 }
@@ -155,7 +155,7 @@ const loginMsg = document.getElementById("login-msg");
 let opacity = 1;
 let fadingOut = true;
 
-// 관리자 & 서버 상태 + 시계 + 테두리 깜박임
+// 관리자 & 서버 상태 + 테두리 깜박임
 function updateStatus(){
   const now = new Date();
   const kstString = now.toLocaleString("ko-KR",{hour12:false,timeZone:"Asia/Seoul"});
@@ -163,7 +163,7 @@ function updateStatus(){
   adminStatus.innerHTML = `🟢 관리자 온라인<br>${kstString}`;
   serverStatus.innerHTML = `🟢 LONS SV ONLINE<br>${kstString}`;
 
-  // 테두리 깜박임
+  // 테두리만 깜박임
   if(fadingOut){ opacity -= 0.05; if(opacity<=0.5){ opacity=0.5; fadingOut=false;} }
   else { opacity +=0.05; if(opacity>=1){opacity=1; fadingOut=true;} }
   adminStatus.style.borderColor = `rgba(255,255,255,${opacity})`;
