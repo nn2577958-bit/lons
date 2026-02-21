@@ -5,56 +5,61 @@ body {
   justify-content:center; 
   align-items:center; 
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), 
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
               url('https://cdn.phototourl.com/uploads/2026-02-16-be12475d-955e-4258-b559-d05dd22da876.jpg') center/cover no-repeat;
 }
 
-/* 컨테이너 (크기 확대 + 유리효과) */
+/* ===== 로그인 박스 (조금 더 크게 + 안정형) ===== */
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
-  width: 420px;                /* ⬅ 기존 320 → 확대 */
-  padding: 25px;
-  text-align: center;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-  border: 1px solid rgba(255,255,255,0.15);
+  gap: 10px;
+  width: 420px;          /* ← 320 → 420 */
+  padding: 22px;         /* 여백 증가 */
+  text-align:center;
+
+  border-radius: 14px;
+  background: rgba(0,0,0,0.35);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.6);
 }
 
-/* 타이틀 */
+/* ===== 타이틀 ===== */
 h2 {
   grid-column: 1 / 3;
   color:#fff;
-  font-size:24px;             /* ⬅ 확대 */
+  font-size:22px;       /* 살짝 확대 */
   margin-bottom:10px;
   padding:8px;
-  border:1.5px solid rgba(255,255,255,0.6);
-  border-radius:10px;
-  text-shadow:2px 2px 6px rgba(0,0,0,0.9);
+  border:1.5px solid rgba(255,255,255,0.5);
+  border-radius:8px;
+  text-shadow:1px 1px 6px rgba(0,0,0,0.9);
 }
 
-/* 상태창 */
-#admin-status, #server-status, #login-msg {
+/* ===== 상태창 ===== */
+#admin-status, 
+#server-status, 
+#login-msg {
   padding:6px 8px;
-  font-size:14px;            /* ⬅ 확대 */
+  font-size:14px;
   font-weight:bold;
   color:#fff;
-  border:1.5px solid rgba(255,255,255,0.7);
-  border-radius:10px;
-  background: rgba(0,0,0,0.35);
+  border:1.5px solid rgba(255,255,255,0.6);
+  border-radius:8px;
+  background: rgba(0,0,0,0.3);
   text-shadow:1px 1px 4px rgba(0,0,0,1);
-  line-height:1.4;
+  line-height:1.3;
 }
 
-/* 버튼 */
+#admin-status { grid-column:1 / 2; }
+#server-status { grid-column:2 / 3; }
+#login-msg { grid-column:1 / 3; }
+
+/* ===== 버튼 공통 ===== */
 button {
-  padding:14px;               /* ⬅ 확대 */
-  font-size:16px;             /* ⬅ 확대 */
+  padding:14px;          /* 버튼 크게 */
+  font-size:15px;
   font-weight:600;
-  border-radius:10px;
+  border-radius:8px;
   cursor:pointer;
   display:flex;
   align-items:center;
@@ -63,33 +68,55 @@ button {
   border:none;
 }
 
-/* 구글 버튼 */
+/* ===== 구글 버튼 ===== */
 #google-btn {
   background:#fff;
   color:#3c4043;
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);
-}
-#google-btn i {
-  margin-right:10px;
-  font-size:20px;
-  color:#4285F4;
-}
-#google-btn:hover {
-  transform:translateY(-2px);
-  box-shadow:0 6px 16px rgba(0,0,0,0.4);
-  background:#f8f9fa;
+  box-shadow:0 3px 10px rgba(0,0,0,0.3);
 }
 
-/* 디스코드 버튼 */
+#google-btn i {
+  margin-right:8px;
+  font-size:18px;
+  color:#4285F4;
+}
+
+#google-btn:hover {
+  transform:translateY(-2px);
+  box-shadow:0 5px 14px rgba(0,0,0,0.4);
+}
+
+/* ===== 디스코드 버튼 ===== */
 #discord-btn {
   background:#7289DA;
   color:#fff;
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  box-shadow:0 3px 10px rgba(0,0,0,0.3);
 }
-#discord-btn i { margin-right:8px; }
+
+#discord-btn i { margin-right:6px; }
+
 #discord-btn:hover {
   transform:translateY(-2px);
-  box-shadow:0 6px 16px rgba(0,0,0,0.4);
+  box-shadow:0 5px 14px rgba(0,0,0,0.4);
   background:#5b6eae;
 }
-#discord-btn.disabled { cursor:not-allowed; opacity:0.6; }
+
+#discord-btn.disabled { 
+  cursor:not-allowed; 
+  opacity:0.6; 
+}
+
+/* ===== 툴팁 ===== */
+#discord-btn[data-tooltip]:hover::after {
+  content:attr(data-tooltip);
+  position:absolute;
+  top:-26px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#333;
+  color:#fff;
+  padding:4px 8px;
+  border-radius:5px;
+  font-size:12px;
+  white-space:nowrap;
+}
