@@ -14,7 +14,6 @@ body {
     background:#111;
     color:white;
 }
-/* ===== 상단바 ===== */
 .topbar{
     display:grid;
     grid-template-columns: 2fr 3fr;
@@ -50,27 +49,21 @@ body {
     text-align:center;
     transition: all 0.3s;
 }
-/* 버튼 색상 */
 .pay-btn{ background:#FFDC00; color:#000; }
 .discord-btn{ background:#5865F2; color:#fff; }
 .logout-btn{ background:#f44336; color:#fff; }
-
-/* ===== 중앙 이미지 ===== */
 .center-image {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px 0;
 }
-
 .center-image img {
     max-width: 80%;
     max-height: 400px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
-
-/* ===== 공지 전체 화면 ===== */
 .notice-section{
     padding:15px;
 }
@@ -80,7 +73,7 @@ body {
 }
 .notice-list{
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 최소 250px, 공간 있으면 넓게 */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap:15px;
 }
 .notice-item{
@@ -108,8 +101,6 @@ body {
     color:#aaa;
     margin-bottom:6px;
 }
-
-/* ===== PC 모달 ===== */
 .modal{
     display:none;
     position:fixed;
@@ -138,11 +129,9 @@ body {
     border-radius:8px;
     cursor:pointer;
 }
-
-/* ===== 반응형 ===== */
 @media(max-width:600px){
     .notice-list{
-        grid-template-columns: 1fr; /* 모바일에서 1열 */
+        grid-template-columns: 1fr;
     }
     .center-image img{
         max-width: 95%;
@@ -153,7 +142,6 @@ body {
 </head>
 
 <body>
-<!-- 상단바 -->
 <div class="topbar">
   <div class="topbar-left">🎮 LONS Palworld</div>
   <div class="topbar-right">
@@ -164,18 +152,15 @@ body {
   </div>
 </div>
 
-<!-- 중앙 이미지 -->
 <div class="center-image">
   <img src="https://cdn.phototourl.com/uploads/2026-02-20-87dbd0dd-037b-4378-92c6-5fed64565e84.png" alt="중앙 이미지">
 </div>
 
-<!-- 공지 전체화면 -->
 <div class="notice-section">
   <h2>📢 오늘도 저희 방문 해주셔서 감사합니다!</h2>
   <div class="notice-list" id="notice-list"></div>
 </div>
 
-<!-- PC 안내 팝업 -->
 <div class="modal" id="pc-modal">
   <div class="modal-content">
     <h3>📱 모바일 전용</h3>
@@ -189,7 +174,6 @@ import { auth } from "./firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const ADMIN_EMAIL="nn2577958@gmail.com";
-
 const adminStatus = document.getElementById("admin-status");
 const noticeList = document.getElementById("notice-list");
 const kakaoBtn = document.getElementById("kakao-btn");
@@ -211,67 +195,63 @@ const notices = [
   {title:"모니터링",content:"프로그램&치트&모드 금지 되어있습니다",createdAt:"2026-02-20 11:40"},
 ];
 
-onAuthStateChanged(auth, (user) => {
-  if(!user){ window.location.href="index.html"; return; }
+function renderNotices(){
+    if(!noticeList) return;
+    noticeList.innerHTML = "";
+    notices.forEach(data=>{
+        const div = document.createElement("div");
+        div.className="notice-item";
+        div.innerHTML=`
+            <strong>${data.title}</strong>
+            <small>${data.createdAt}</small>
+            <div>${data.content}</div>
+        `;
+        noticeList.appendChild(div);
+    });
+}
 
-  // 관리자 온라인 표시
-  if(user.email === ADMIN_EMAIL){
-      function updateAdminStatus(){
-          const now = new Date();
-          const kstString = now.toLocaleString("ko-KR", { hour12:false, timeZone:"Asia/Seoul" });
-          adminStatus.innerHTML = `🟢 관리자 온라인 – ${kstString}`;
-      }
-      updateAdminStatus();
-      setInterval(updateAdminStatus,1000);
+onAuthStateChanged(auth, user=>{
+    if(!user){ window.location.href="index.html"; return; }
 
-      // 깜빡임
-      setInterval(()=>{
-          adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
-      }, 800);
+    // 관리자 체크
+    if(user.email === ADMIN_EMAIL){
+        adminStatus.innerHTML = `🟢 관리자 온라인 – ${new Date().toLocaleString("ko-KR",{hour12:false,timeZone:"Asia/Seoul"})}`;
+        adminStatus.style.background = "#28a745";
+        // 깜빡임 효과
+        setInterval(()=>{
+            adminStatus.style.opacity = adminStatus.style.opacity === "0" ? "1" : "0";
+        },800);
+    } else {
+        adminStatus.innerHTML = "🔴 관리자 오프라인";
+        adminStatus.style.background = "#dc3545";
+        adminStatus.style.opacity = "1";
+    }
 
-      adminStatus.style.background = "#28a745";
-  } else {
-      adminStatus.innerHTML = "🔴 관리자 오프라인";
-      adminStatus.style.background = "#dc3545";
-      adminStatus.style.opacity = "1";
-  }
-
-  // 공지사항 렌더
-  noticeList.innerHTML = "";
-  notices.forEach(data => {
-      const div = document.createElement("div");
-      div.className = "notice-item";
-      div.innerHTML = `
-          <strong>${data.title}</strong>
-          <small>${data.createdAt}</small>
-          <div>${data.content}</div>
-      `;
-      noticeList.appendChild(div);
-  });
+    renderNotices();
 });
 
 // 로그아웃
-logoutBtn.onclick = async () => {
-  await signOut(auth);
-  window.location.href="index.html";
+logoutBtn.onclick = async ()=>{
+    await signOut(auth);
+    window.location.href="index.html";
 };
 
 // Discord 버튼
-discordBtn.onclick = () => window.open("https://discord.gg/tnMXbQ65Hk","_blank");
+discordBtn.onclick = ()=> window.open("https://discord.gg/tnMXbQ65Hk","_blank");
 
 // Pay 버튼
-kakaoBtn.onclick = () => {
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
-  if(isMobile){
-      window.location.href="https://qr.kakaopay.com/FRydbZ6Gr";
-  } else {
-      modal.style.display = "flex";
-  }
+kakaoBtn.onclick = ()=>{
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
+    if(isMobile){
+        window.location.href="https://qr.kakaopay.com/FRydbZ6Gr";
+    } else {
+        modal.style.display="flex";
+    }
 };
 
 // 모달 닫기
-window.closeModal = () => modal.style.display="none";
+window.closeModal = ()=> modal.style.display="none";
 </script>
 </body>
 </html>
