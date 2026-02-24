@@ -1,172 +1,22 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONS Palworld Home</title>
-<link rel="icon" href="https://cdn.phototourl.com/uploads/2026-02-16-2fc87bae-3744-4c0a-891f-19f3a20b09fd.png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
-<style>
-body {
-    margin:0;
-    font-family:'Segoe UI',sans-serif;
-    background:#111;
-    color:white;
-}
-.topbar{
-    display:grid;
-    grid-template-columns: 2fr 3fr;
-    align-items:center;
-    padding:10px 15px;
-    background:#000;
-    border-bottom:1px solid #333;
-    gap:10px;
-}
-.topbar-left{
-    font-size:18px;
-    font-weight:bold;
-}
-.topbar-right{
-    display:flex;
-    justify-content:flex-end;
-    align-items:center;
-    gap:8px;
-}
-.top-btn{
-    padding:5px 12px;
-    border-radius:16px;
-    border:none;
-    cursor:pointer;
-    font-size:12px;
-    font-weight:600;
-}
-#admin-status{
-    padding:5px 12px;
-    border-radius:16px;
-    font-size:12px;
-    text-align:center;
-    transition: all 0.3s;
-}
-.pay-btn{ background:#FFDC00; color:#000; }
-.discord-btn{ background:#5865F2; color:#fff; }
-.logout-btn{ background:#f44336; color:#fff; }
-.center-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-}
-.center-image img {
-    max-width: 80%;
-    max-height: 400px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
-.notice-section{
-    padding:15px;
-}
-.notice-section h2{
-    font-size:20px;
-    margin-bottom:10px;
-}
-.notice-list{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap:15px;
-}
-.notice-item{
-    background:#1c1c1c;
-    padding:15px;
-    border-radius:12px;
-    border-left:4px solid #4CAF50;
-    font-size:14px;
-    line-height:1.4;
-    min-height:80px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.notice-item:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.7);
-}
-.notice-item strong{
-    display:block;
-    font-size:15px;
-    margin-bottom:4px;
-}
-.notice-item small{
-    display:block;
-    color:#aaa;
-    margin-bottom:6px;
-}
-.modal{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
-    justify-content:center;
-    align-items:center;
-}
-.modal-content{
-    background:white;
-    color:black;
-    padding:20px;
-    border-radius:12px;
-    text-align:center;
-    width:280px;
-}
-.modal-content button{
-    margin-top:10px;
-    padding:6px 12px;
-    border:none;
-    background:#333;
-    color:white;
-    border-radius:8px;
-    cursor:pointer;
-}
-@media(max-width:600px){
-    .notice-list{
-        grid-template-columns: 1fr;
-    }
-    .center-image img{
-        max-width: 95%;
-        max-height: 300px;
-    }
-}
-</style>
-</head>
-
-<body>
-<div class="topbar">
-  <div class="topbar-left">🎮 LONS Palworld</div>
-  <div class="topbar-right">
-    <div id="admin-status">확인중...</div>
-    <button class="top-btn pay-btn" id="kakao-btn">💛 Pay 지원금</button>
-    <button class="top-btn discord-btn" id="discord-btn"><i class="fab fa-discord"></i> Discord</button>
-    <button class="top-btn logout-btn" id="logout-btn">로그아웃</button>
-  </div>
-</div>
-
-<div class="center-image">
-  <img src="https://cdn.phototourl.com/uploads/2026-02-20-87dbd0dd-037b-4378-92c6-5fed64565e84.png" alt="중앙 이미지">
 </div>
 
 <div class="notice-section">
-  <h2>📢 오늘도 방문 해주셔서 감사합니다!</h2>
+  <h2>📢 오늘도 저희 방문 해주셔서 감사합니다!</h2>
   <div class="notice-list" id="notice-list"></div>
 </div>
 
-<div class="modal" id="pc-modal">
-  <div class="modal-content">
-    <h3>📱 모바일 전용</h3>
-    <p>PC 지원 X 모바일로 해주세요</p>
-    <button onclick="closeModal()">닫기</button>
-  </div>
-</div>
+<!-- Tawk.to 채팅 위젯 -->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/699d55a04f9b741c3664c02a/1ji79cv58';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
 
 <script type="module">
 import { auth } from "./firebase.js";
@@ -178,7 +28,6 @@ const noticeList = document.getElementById("notice-list");
 const kakaoBtn = document.getElementById("kakao-btn");
 const discordBtn = document.getElementById("discord-btn");
 const logoutBtn = document.getElementById("logout-btn");
-const modal = document.getElementById("pc-modal");
 
 const notices = [
   {title:"공지 사항",content:"항상 모니터링 중이며 모든 파일은 데이터 베이스에 기록 됩니다.",createdAt:"2026-02-17 12:00~12:10"},
@@ -189,73 +38,51 @@ const notices = [
   {title:"신규 뽑기",content:"당첨되신 분들은 요청 주시면 지급 처리됩니다.",createdAt:"2026-02-16 14:00"},
   {title:"업데이트",content:"PAL 0.7.2 최신 패치가 적용되었습니다.",createdAt:"2026-02-16 14:30"},
   {title:"지원금",content:"모든 지원금은 운영비에 쓰이고 있습니다,",createdAt:"2026-02-16 14:30"},
-  {title:"서버 상황",content:"1SV / 2SV / 하드코어 모두 정상 작동 중입니다.",createdAt:"2026-02-16 00:00"},
-  {title:"오픈 안내",content:"하드코어 MOD 02 / 20 大 오픈 많이 사랑 해주세요!",createdAt:"2026-02-20 20:00"},
+  {title:"서버 상황",content:"하드코어/ 바닐라 정상",createdAt:"2026-02-16 00:00"},
+  {title:"오픈 안내",content:"하드코어 02 / 20 오픈 많이 사랑 해주세요!",createdAt:"2026-02-20 20:00"},
   {title:"모니터링",content:"프로그램&치트&모드 금지 되어있습니다",createdAt:"2026-02-20 11:40"},
 ];
 
 function renderNotices(){
-    if(!noticeList) return;
     noticeList.innerHTML = "";
     notices.forEach(data=>{
-        const div = document.createElement("div");
+        const div=document.createElement("div");
         div.className="notice-item";
-        div.innerHTML=`
-            <strong>${data.title}</strong>
-            <small>${data.createdAt}</small>
-            <div>${data.content}</div>
-        `;
+        div.innerHTML=`<strong>${data.title}</strong><small>${data.createdAt}</small><div>${data.content}</div>`;
         noticeList.appendChild(div);
     });
 }
 
-onAuthStateChanged(auth, user=>{
+onAuthStateChanged(auth,user=>{
     if(!user){ window.location.href="index.html"; return; }
 
-    const nowKST = new Date().toLocaleString("ko-KR",{hour12:false,timeZone:"Asia/Seoul"});
-
-    if(user.email === ADMIN_EMAIL){
-        adminStatus.innerHTML = `🟢 관리자 온라인 – ${nowKST}`;
-        adminStatus.style.background = "#28a745";
+    // 관리자/사용자 온라인 표시
+    if(user.email===ADMIN_EMAIL){
+        adminStatus.innerHTML=`🟢 관리자 온라인 – ${new Date().toLocaleString("ko-KR",{hour12:false})}`;
+        adminStatus.style.background="#28a745";
+        setInterval(()=>{ adminStatus.style.opacity = adminStatus.style.opacity==="0"?"1":"0"; },800);
     } else {
-        adminStatus.innerHTML = `🟢 사용자 온라인 – ${nowKST}`;
-        adminStatus.style.background = "#17a2b8";
+        adminStatus.innerHTML="🟢 사용자 온라인";
+        adminStatus.style.background="#007bff";
+        adminStatus.style.opacity="1";
     }
-
-    // 모든 계정 깜빡이 적용
-    let opacity = 1;
-    let fadingOut = true;
-    setInterval(()=>{
-        if(fadingOut){ opacity -=0.05; if(opacity<=0.5){opacity=0.5; fadingOut=false;} }
-        else { opacity +=0.05; if(opacity>=1){opacity=1; fadingOut=true;} }
-        adminStatus.style.opacity = opacity;
-    },80);
 
     renderNotices();
 });
 
 // 로그아웃
-logoutBtn.onclick = async ()=>{
-    await signOut(auth);
-    window.location.href="index.html";
-};
+logoutBtn.onclick=async()=>{await signOut(auth); window.location.href="index.html";};
 
 // Discord 버튼
-discordBtn.onclick = ()=> window.open("https://discord.gg/tnMXbQ65Hk","_blank");
+discordBtn.onclick=()=> window.open("https://discord.gg/tnMXbQ65Hk","_blank");
 
 // Pay 버튼
-kakaoBtn.onclick = ()=>{
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
-    if(isMobile){
-        window.location.href="https://qr.kakaopay.com/FRydbZ6Gr";
-    } else {
-        modal.style.display="flex";
-    }
+kakaoBtn.onclick=()=>{
+    const ua=navigator.userAgent || navigator.vendor || window.opera;
+    const isMobile=/iPhone|iPad|iPod|Android/i.test(ua);
+    if(isMobile){ window.location.href="https://qr.kakaopay.com/FRydbZ6Gr"; }
+    else{ alert("PC에서는 지원금 QR 사용 불가"); }
 };
-
-// 모달 닫기
-window.closeModal = ()=> modal.style.display="none";
 </script>
 </body>
 </html>
