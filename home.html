@@ -28,7 +28,7 @@ h1{
   margin-bottom:40px;
 }
 
-/* 🔥 디스코드 임베드 카드 스타일 */
+/* 카드 */
 .embed-card{
   background:#2b2d31;
   border-left:6px solid #5865F2;
@@ -47,7 +47,6 @@ h1{
   font-weight:700;
   font-size:18px;
   margin-bottom:8px;
-  color:#fff;
 }
 
 .embed-desc{
@@ -64,17 +63,40 @@ h1{
   justify-content:space-between;
 }
 
-.logout-btn{
-  display:block;
-  margin:40px auto 0;
+/* 🔥 하단 버튼 그룹 */
+.button-group{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:40px;
+}
+
+.main-btn{
   padding:10px 18px;
-  background:#5865F2;
   border:none;
   border-radius:6px;
   color:#fff;
   cursor:pointer;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:0.2s;
+}
+
+/* 로그아웃 */
+.logout-btn{
+  background:#ED4245;
 }
 .logout-btn:hover{
+  background:#c03537;
+}
+
+/* 디스코드 */
+.discord-btn{
+  background:#5865F2;
+}
+.discord-btn:hover{
   background:#4752c4;
 }
 </style>
@@ -84,7 +106,6 @@ h1{
 <div class="container">
   <h1>🚀 LONS 서버 공지사항</h1>
 
-  <!-- 공지 카드 1 -->
   <div class="embed-card">
     <div class="embed-title">📢 서버 오픈 안내</div>
     <div class="embed-desc">
@@ -97,7 +118,6 @@ h1{
     </div>
   </div>
 
-  <!-- 공지 카드 2 -->
   <div class="embed-card" style="border-left:6px solid #ED4245;">
     <div class="embed-title">⚠ 서버 규칙 필독</div>
     <div class="embed-desc">
@@ -111,11 +131,10 @@ h1{
     </div>
   </div>
 
-  <!-- 공지 카드 3 -->
-  <div class="embed-card" style="border-left:6px solid #ED4245;">
+  <div class="embed-card" style="border-left:6px solid #57F287;">
     <div class="embed-title">❤ 활성화 3월 이벤트</div>
     <div class="embed-desc">
-      • 02-26 ~ 03 ~ 08 홍보 활성화 이벤트<br>
+      • 02-26 ~ 03-08 홍보 활성화 이벤트<br>
       • 많은 참여 부탁 드리겠습니다!<br>
       • 자세한 사항은 디스코드 게시판을 확인해주세요!
     </div>
@@ -125,9 +144,18 @@ h1{
     </div>
   </div>
 
-  <button class="logout-btn" id="logoutBtn">
-    <i class="fa-solid fa-right-from-bracket"></i> 로그아웃
-  </button>
+  <!-- 🔥 하단 버튼 영역 -->
+  <div class="button-group">
+    <a href="https://discord.com/invite/tnMXbQ65Hk"
+       target="_blank"
+       class="main-btn discord-btn">
+       <i class="fa-brands fa-discord"></i> 디스코드
+    </a>
+
+    <button class="main-btn logout-btn" id="logoutBtn">
+      <i class="fa-solid fa-right-from-bracket"></i> 로그아웃
+    </button>
+  </div>
 </div>
 
 <script type="module">
@@ -146,14 +174,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// 🔐 로그인 체크 (로그인 안 했으면 index로)
+// 로그인 체크
 onAuthStateChanged(auth, user => {
   if (!user) {
     window.location.href = "index.html";
   }
 });
 
-// 로그아웃 버튼
+// 로그아웃
 document.getElementById("logoutBtn").addEventListener("click", async ()=>{
   await signOut(auth);
   window.location.href = "index.html";
