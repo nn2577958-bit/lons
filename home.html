@@ -5,126 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LONS Palworld Home</title>
 <link rel="icon" href="https://cdn.phototourl.com/uploads/2026-02-16-2fc87bae-3744-4c0a-891f-19f3a20b09fd.png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-
-/* 리다이렉트용 숨김 */
-body.hidden { display:none!important; }
-
 body {
-    margin:0;
-    font-family:'Orbitron', 'Segoe UI',sans-serif;
-    background: radial-gradient(circle at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255,119,198,0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120,219,255,0.3) 0%, transparent 50%),
-                linear-gradient(135deg, #0c0c0c 0%, #1a0033 50%, #000 100%);
-    color:#fff;
-    overflow:hidden;
-    position:relative;
-}
-
-/* 나머지 모든 스타일들... */
-.container { position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:20px; min-height:100vh; }
-.topbar { display:flex; justify-content:space-between; align-items:center; padding:15px 30px; background:linear-gradient(135deg, rgba(0,0,0,0.9), rgba(20,0,60,0.8)); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:20px; margin-bottom:30px; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
-.topbar-left { font-size:22px; font-weight:900; background:linear-gradient(45deg, #00ffff, #ff00ff, #ffff00); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-shadow:0 0 20px rgba(0,255,255,0.5); }
-.topbar-right { display:flex; gap:12px; align-items:center; }
-.top-btn { padding:10px 20px; border-radius:25px; border:1px solid rgba(255,255,255,0.2); cursor:pointer; font-size:13px; font-weight:700; backdrop-filter:blur(10px); transition:all 0.3s ease; position:relative; overflow:hidden; }
-.top-btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition:left 0.5s; }
-.top-btn:hover::before { left:100%; }
-.pay-btn { background:linear-gradient(45deg, #FFD700, #FFA500); color:#000; box-shadow:0 4px 15px rgba(255,215,0,0.4); }
-.pay-btn:hover { transform:translateY(-3px); box-shadow:0 8px 25px rgba(255,215,0,0.6); }
-.discord-btn { background:linear-gradient(45deg, #5865F2, #7289DA); color:#fff; box-shadow:0 4px 15px rgba(88,101,242,0.4); }
-.discord-btn:hover { transform:translateY(-3px); box-shadow:0 8px 25px rgba(88,101,242,0.6); }
-.logout-btn { background:linear-gradient(45deg, #ff416c, #ff4b2b); color:#fff; box-shadow:0 4px 15px rgba(255,67,108,0.4); }
-.logout-btn:hover { transform:translateY(-3px); box-shadow:0 8px 25px rgba(255,67,108,0.6); }
-#admin-status { padding:8px 16px; border-radius:20px; background:linear-gradient(45deg, rgba(0,255,0,0.2), rgba(0,255,0,0.1)); border:1px solid rgba(0,255,0,0.5); font-size:13px; font-weight:700; box-shadow:0 4px 15px rgba(0,255,0,0.3); }
-.main-content { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:40px; }
-.center-image { display:flex; justify-content:center; margin:40px 0; }
-.center-image img { max-width:90%; max-height:450px; border-radius:25px; box-shadow:0 20px 60px rgba(0,255,255,0.3), 0 0 40px rgba(255,0,255,0.2); border:2px solid rgba(255,255,255,0.1); transition:transform 0.3s ease; }
-.center-image img:hover { transform:scale(1.02) rotate(1deg); }
-.notice-section { padding:30px; background:linear-gradient(135deg, rgba(0,0,0,0.7), rgba(20,0,60,0.5)); backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.1); border-radius:25px; box-shadow:0 15px 40px rgba(0,0,0,0.5); margin:20px 0; }
-.notice-section h2 { font-size:28px; margin-bottom:20px; background:linear-gradient(45deg, #00ffff, #ff00ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-align:center; }
-.stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin:30px 0; }
-.stat-card { background:linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:25px; text-align:center; transition:all 0.3s ease; }
-.stat-card:hover { transform:translateY(-10px); box-shadow:0 20px 40px rgba(0,255,255,0.3); }
-.stat-number { font-size:36px; font-weight:900; background:linear-gradient(45deg, #00ffff, #ff00ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-.stat-label { font-size:14px; color:rgba(255,255,255,0.8); margin-top:10px; }
-@media(max-width:768px){ .main-content { grid-template-columns:1fr; gap:20px; } .topbar { padding:10px 20px; } .topbar-left { font-size:18px; } }
-</style>
-</head>
-
-<body class="hidden">
-<!-- 직접 접속 체크 -->
-<script>
-(function(){
-    // URL 파라미터로 로그인 확인
-    const urlParams = new URLSearchParams(window.location.search);
-    const loggedIn = urlParams.get('login') === 'true' || sessionStorage.getItem('lons_logged_in') === 'true';
-    
-    if (!loggedIn && window.location.pathname.includes('home.html')) {
-        // 직접 접속 차단
-        window.location.replace('/lons/index.html');
-        return;
-    }
-    
-    // 로그인 상태 설정
-    if (loggedIn) {
-        document.body.classList.remove('hidden');
-        sessionStorage.setItem('lons_logged_in', 'true');
-    }
-    
-    // 로그인 성공 시 표시
-    window.addEventListener('load', function() {
-        if (loggedIn) {
-            document.body.classList.remove('hidden');
-        }
-    });
-})();
-</script>
-
-<div class="container">
-    <div class="topbar">
-        <div class="topbar-left">🌌 LONS Palworld Server</div>
-        <div class="topbar-right">
-            <div id="admin-status">🟢 ADMIN ONLINE</div>
-            <button class="top-btn pay-btn">충전하기</button>
-            <button class="top-btn discord-btn">디스코드</button>
-            <button class="top-btn logout-btn" onclick="window.location.href='/lons/index.html'">로그아웃</button>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <div class="center-image">
-            <img src="https://cdn.phototourl.com/uploads/2026-02-16-be12475d-955e-4258-b559-d05dd22da876.jpg" alt="LONS Palworld">
-        </div>
-        <div>
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-number">127</div><div class="stat-label">온라인</div></div>
-                <div class="stat-card"><div class="stat-number">2,847</div><div class="stat-label">총 접속자</div></div>
-                <div class="stat-card"><div class="stat-number">98%</div><div class="stat-label">서버 안정성</div></div>
-                <div class="stat-card"><div class="stat-number">24/7</div><div class="stat-label">가동률</div></div>
-            </div>
-            <div class="notice-section">
-                <h2>🚀 서버 공지사항</h2>
-                <p><strong>✅ 서버 정상 가동중!</strong><br>최신 업데이트 적용완료 | 24시간 모니터링 | 관리자 상시 대기</p>
-                <p style="margin-top:15px; color:#00ff88;">🎮 <strong>접속 방법:</strong> 로그인 → 디스코드 참여 → 게임 접속</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// 실시간 시계
-function updateStatus() {
-    const now = new Date();
-    const kst = now.toLocaleString("ko-KR",{hour12:false,timeZone:"Asia/Seoul"});
-    document.getElementById('admin-status').innerHTML = `🟢 ADMIN ONLINE<br><span style="font-size:11px;">${kst}</span>`;
-}
-setInterval(updateStatus, 1000);
-updateStatus();
-</script>
-</body>
-</html>
+  margin:0;
+  font-family:'Orbitron', 'Segoe UI',sans-serif;
+  background: radial-gradient(circle at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%,
+                              
