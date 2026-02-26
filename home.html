@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LONS Palworld Home</title>
+
 <link rel="icon" href="https://cdn.phototourl.com/uploads/2026-02-16-2fc87bae-3744-4c0a-891f-19f3a20b09fd.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -11,7 +12,139 @@
 <style>
 body {
   margin:0;
-  font-family:'Orbitron', 'Segoe UI',sans-serif;
-  background: radial-gradient(circle at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%,
-                              
+  font-family:'Orbitron','Segoe UI',sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+}
+
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:20px;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+/* 🔥 디스코드 임베드 카드 스타일 */
+.embed-card{
+  background:#2b2d31;
+  border-left:6px solid #5865F2;
+  border-radius:8px;
+  padding:16px 18px;
+  margin-bottom:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.4);
+  transition:transform 0.2s ease;
+}
+
+.embed-card:hover{
+  transform:translateY(-3px);
+}
+
+.embed-title{
+  font-weight:700;
+  font-size:18px;
+  margin-bottom:8px;
+  color:#fff;
+}
+
+.embed-desc{
+  font-size:14px;
+  line-height:1.6;
+  color:#ddd;
+}
+
+.embed-footer{
+  margin-top:12px;
+  font-size:12px;
+  color:#aaa;
+  display:flex;
+  justify-content:space-between;
+}
+
+.logout-btn{
+  display:block;
+  margin:40px auto 0;
+  padding:10px 18px;
+  background:#5865F2;
+  border:none;
+  border-radius:6px;
+  color:#fff;
+  cursor:pointer;
+}
+.logout-btn:hover{
+  background:#4752c4;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>🚀 LONS 서버 공지사항</h1>
+
+  <!-- 공지 카드 1 -->
+  <div class="embed-card">
+    <div class="embed-title">📢 서버 오픈 안내</div>
+    <div class="embed-desc">
+      LONS Palworld 서버가 정식 오픈되었습니다.<br>
+      많은 참여 부탁드립니다!
+    </div>
+    <div class="embed-footer">
+      <span>관리자</span>
+      <span>2026-02-27</span>
+    </div>
+  </div>
+
+  <!-- 공지 카드 2 -->
+  <div class="embed-card" style="border-left:6px solid #ED4245;">
+    <div class="embed-title">⚠ 서버 규칙 필독</div>
+    <div class="embed-desc">
+      • 비매너 행위 금지<br>
+      • 버그 악용 시 영구 정지<br>
+      • 관리자 지시 불이행 시 제재
+    </div>
+    <div class="embed-footer">
+      <span>운영팀</span>
+      <span>공지사항</span>
+    </div>
+  </div>
+
+  <button class="logout-btn" id="logoutBtn">
+    <i class="fa-solid fa-right-from-bracket"></i> 로그아웃
+  </button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyiAepd539cBTPwtcVnAR-HJbb8roLJmE",
+  authDomain: "lons-dc24d.firebaseapp.com",
+  projectId: "lons-dc24d",
+  storageBucket: "lons-dc24d.appspot.com",
+  messagingSenderId: "755692328918",
+  appId: "1:755692328918:web:a4eb4563cb862d3eb5b677"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// 🔐 로그인 체크 (로그인 안 했으면 index로)
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    window.location.href = "index.html";
+  }
+});
+
+// 로그아웃 버튼
+document.getElementById("logoutBtn").addEventListener("click", async ()=>{
+  await signOut(auth);
+  window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>
